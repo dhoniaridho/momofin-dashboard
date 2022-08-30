@@ -305,11 +305,6 @@
   <n-space vertical style="gap: 1rem">
     <n-page-header>
       <template #title> Pengguna </template>
-      <template #header>
-        <n-breadcrumb>
-          <n-breadcrumb-item>Pengguna</n-breadcrumb-item>
-        </n-breadcrumb>
-      </template>
     </n-page-header>
     <main>
       <n-space justify="space-between" style="margin: 2rem 0; width: 100%">
