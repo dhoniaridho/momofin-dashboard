@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@heroicons/vue': ^2.0.8
+  '@iconify/vue': ^3.2.1
   '@intlify/vite-plugin-vue-i18n': 6.0.1
   '@rushstack/eslint-patch': 1.1.4
   '@types/jsdom': 20.0.0
@@ -46,6 +47,7 @@ specifiers:
 
 dependencies:
   '@heroicons/vue': 2.0.8_vue@3.2.37
+  '@iconify/vue': 3.2.1_vue@3.2.37
   '@vue/compiler-sfc': 3.2.37
   '@vueuse/core': 9.1.1_vue@3.2.37
   '@vueuse/head': 0.7.9_vue@3.2.37
@@ -487,6 +489,14 @@ packages:
   /@humanwhocodes/object-schema/1.2.1:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
+
+  /@iconify/vue/3.2.1_vue@3.2.37:
+    resolution: {integrity: sha512-c4R6ZgFo1JrJ8aPMMgOPgfU7lBswihMGR+yWe/P4ZukC3kTkeT4+lkt9Pc/itVFMkwva/S/7u9YofmYv57fnNQ==}
+    peerDependencies:
+      vue: 3.x
+    dependencies:
+      vue: 3.2.37
+    dev: false
 
   /@intlify/bundle-utils/3.1.0_vue-i18n@9.2.2:
     resolution: {integrity: sha512-ghlJ0kR2cCQ8D+poKknC0Xx0ncOt3J3os7CcIAqqIWVF7k6AtGoCDnIru+YzlZcvFRNmP9wEZ7jKliojCdAWNg==}

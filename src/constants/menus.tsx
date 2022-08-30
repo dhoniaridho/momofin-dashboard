@@ -4,6 +4,7 @@ import { NIcon, type MenuOption } from 'naive-ui'
 import type { Component } from 'vue'
 import { useTheme } from '~/store/theme'
 import { MoonIcon, SunIcon } from '@heroicons/vue/24/outline'
+import { Icon } from '@iconify/vue'
 
 function renderIcon(icon: Component) {
   return () => {
@@ -19,30 +20,63 @@ function renderRoute(route: RouterLinkProps, label: string) {
 
 export const mainMenuOptions: MenuOption[] = [
   {
+    label: 'Dashboard',
+    key: 'dashboard',
+    icon: () => {
+      return (
+        <NIcon>
+          <Icon icon="ph:activity" />
+        </NIcon>
+      )
+    },
+  },
+  { type: 'divider' },
+  {
+    label: 'Pengguna',
+    key: 'users',
+    icon: () => {
+      return (
+        <NIcon>
+          <Icon icon="majesticons:users-line" />
+        </NIcon>
+      )
+    },
+  },
+  { type: 'divider' },
+  {
+    label: 'Transaksi',
+    key: 'transactions',
+    icon: () => {
+      return (
+        <NIcon>
+          <Icon icon="icon-park-outline:transaction-order" />
+        </NIcon>
+      )
+    },
+  },
+  { type: 'divider' },
+  {
     label: 'Dokumen',
-    key: 'dokumen',
-    children: [
-      {
-        label: renderRoute({ to: '/document' }, 'Unggah Dokumen'),
-        key: 'unggah-dokumen',
-      },
-      {
-        label: renderRoute({ to: '/document/inbound' }, 'Dokumen Masuk'),
-        key: 'dokumen-masuk',
-      },
-      {
-        label: renderRoute({ to: '/document/outbound' }, 'Dokumen Terkirim'),
-        key: 'dokumen-terkirim',
-      },
-      {
-        label: renderRoute({ to: '/document/draft' }, 'Draft'),
-        key: 'draft',
-      },
-      {
-        label: renderRoute({ to: '/document/trash' }, 'Sampah'),
-        key: 'sampah',
-      },
-    ],
+    key: 'documents',
+    icon: () => {
+      return (
+        <NIcon>
+          <Icon icon="fe:document" />
+        </NIcon>
+      )
+    },
+  },
+  { type: 'divider' },
+  {
+    label: 'Settings',
+    key: 'documents',
+    icon: () => {
+      return (
+        <NIcon>
+          <Icon icon="octicon:gear-16" />
+        </NIcon>
+      )
+    },
   },
   { type: 'divider' },
 ]
@@ -50,46 +84,14 @@ export const mainMenuOptions: MenuOption[] = [
 export const altMenuOptions: MenuOption[] = [
   {
     label: () => {
-      return (
-        <a href="https://momofin.com/about" target="_blank" rel="norefferer">
-          <span>Tentang</span>
-        </a>
-      )
-    },
-    key: 'tentang',
-  },
-  {
-    label: () => {
-      return (
-        <a
-          target="_blank"
-          rel="norefferer"
-          href="https://momofin.com/terms-conditions"
-        >
-          Syarat dan Ketentuan
-        </a>
-      )
-    },
-    key: 'terms',
-  },
-  {
-    label: () => {
-      return (
-        <a
-          target="_blank"
-          rel="norefferer"
-          href="https://momofin.com/privacy-policy"
-        >
-          Kebijakan Privasi
-        </a>
-      )
-    },
-    key: 'privacy',
-  },
-  { type: 'divider' },
-  {
-    label: () => {
       return <RouterLink to="/logout">Logout</RouterLink>
+    },
+    icon: () => {
+      return (
+        <NIcon>
+          <Icon icon="tabler:logout" rotate="180deg" />
+        </NIcon>
+      )
     },
     key: 'logout',
   },
