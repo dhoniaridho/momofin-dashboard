@@ -3,7 +3,8 @@
     NButton as Button,
     NIcon,
     NSpace as Flex,
-    NTag,
+    NTag as Tag,
+    NText as Text,
     type DataTableColumns,
   } from 'naive-ui'
   import { Icon } from '@iconify/vue'
@@ -28,7 +29,7 @@
         key: 'created_at',
       },
       {
-        title: 'ID Transaksi',
+        title: 'ID Dokumen',
         key: 'name',
       },
       {
@@ -36,20 +37,28 @@
         key: 'email',
       },
       {
-        title: 'Product',
-        key: 'product',
+        title: 'Nama Dokumen',
+        key: 'document.name',
       },
       {
-        title: 'Value',
-        key: 'value',
+        title: 'Pihak',
+        key: 'signers.length',
+        render: (row) => {
+          return (
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <span>{row.signers.length} Pihak</span>
+              <Text type="primary">Single</Text>
+            </div>
+          )
+        },
       },
       {
-        title: 'Payment Status',
+        title: 'Status',
         key: 'status',
         render: (row) => {
           if (row.status == 'Paid') {
             return (
-              <NTag bordered={false} type="success" round>
+              <Tag bordered={false} type="success" round>
                 {{
                   icon: () => {
                     return (
@@ -60,12 +69,12 @@
                   },
                   default: () => row.status,
                 }}
-              </NTag>
+              </Tag>
             )
           }
           if (row.status == 'Cancelled') {
             return (
-              <NTag bordered={false} type="default" round>
+              <Tag bordered={false} type="default" round>
                 {{
                   icon: () => {
                     return (
@@ -76,11 +85,11 @@
                   },
                   default: () => row.status,
                 }}
-              </NTag>
+              </Tag>
             )
           }
           return (
-            <NTag bordered={false} type="info" round>
+            <Tag bordered={false} type="info" round>
               {{
                 icon: () => {
                   return (
@@ -91,7 +100,7 @@
                 },
                 default: () => row.status,
               }}
-            </NTag>
+            </Tag>
           )
         },
       },
@@ -146,7 +155,16 @@
       email: 'annette@mail.com',
       status: 'Paid',
       product: 'EMET 5',
-      value: 'Rp 200.000',
+      document: {
+        name: '*****lus.pdf 58,2 KB',
+      },
+      signers: [
+        {
+          user: {
+            name: '',
+          },
+        },
+      ],
     },
     {
       created_at: 'Feb 2, 2019 19:28',
@@ -154,7 +172,16 @@
       email: 'annette@mail.com',
       status: 'Cancelled',
       product: 'EMET 5',
-      value: 'Rp 200.000',
+      document: {
+        name: '*****lus.pdf 58,2 KB',
+      },
+      signers: [
+        {
+          user: {
+            name: '',
+          },
+        },
+      ],
     },
     {
       created_at: 'Feb 2, 2019 19:28',
@@ -162,7 +189,62 @@
       email: 'annette@mail.com',
       status: 'Pending',
       product: 'EMET 5',
-      value: 'Rp 200.000',
+      document: {
+        name: '*****lus.pdf 58,2 KB',
+      },
+      signers: [
+        {
+          user: {
+            name: '',
+          },
+        },
+      ],
+    },
+  ]
+
+  const activities = [
+    {
+      actor: 'Yureka is my name',
+      ip: '139.194.155.147',
+      type: 'open',
+      notes: 'Yureka is my name (yuretech@gmail.com) membuka dokumen',
+      datetime: '26 Agt 2022 - 15:43',
+    },
+    {
+      actor: 'Yureka is my name',
+      ip: '139.194.155.147',
+      type: 'open',
+      notes: 'Yureka is my name (yuretech@gmail.com) membuka dokumen',
+      datetime: '26 Agt 2022 - 15:43',
+    },
+    {
+      actor: 'Yureka is my name',
+      ip: '139.194.155.147',
+      type: 'open',
+      notes: 'Yureka is my name (yuretech@gmail.com) membuka dokumen',
+      datetime: '26 Agt 2022 - 15:43',
+    },
+    {
+      actor: 'Yureka is my name',
+      ip: '139.194.155.147',
+      type: 'signing',
+      notes: 'Yureka is my name (yuretech@gmail.com) menandatangani dokumen',
+      datetime: '26 Agt 2022 - 15:43',
+    },
+    {
+      actor: 'Yureka is my name',
+      ip: '139.194.155.147',
+      type: 'send',
+      notes:
+        'Yureka is my name (yuretech@gmail.com) mengundang Yureka is my name  &  kulo admin   untuk menandatangani dokumen',
+      datetime: '26 Agt 2022 - 15:42',
+    },
+    {
+      actor: 'Yureka is my name',
+      ip: '139.194.155.147',
+      type: 'upload',
+      notes: 'Yureka is my name (yuretech@gmail.com) mengupload dokumen',
+      datetime: '26 Agt 2022 - 15:42',
     },
   ]
 </script>
@@ -170,16 +252,11 @@
 <template>
   <n-space vertical style="gap: 1rem">
     <n-page-header>
-      <template #title> Transaksi </template>
-      <template #header>
-        <n-breadcrumb>
-          <n-breadcrumb-item>Transaksi</n-breadcrumb-item>
-        </n-breadcrumb>
-      </template>
+      <template #title> Dokumen </template>
     </n-page-header>
     <main>
       <n-space justify="space-between" style="margin: 2rem 0; width: 100%">
-        <n-input v-model:value="filter.search" placeholder="Cari Transaksi">
+        <n-input v-model:value="filter.search" placeholder="Cari Dokumen">
           <template #prefix>
             <n-icon>
               <Icon icon="carbon:search" />
@@ -211,109 +288,46 @@
   <n-modal
     v-model:show="isShowQuickDetail"
     preset="card"
-    title="Profil Pengguna"
+    title="Auditrail"
     style="max-width: 40rem"
   >
-    <template #header-extra>
-      <n-dropdown trigger="click" :options="OPTIONS" @select="onSelectDropdown">
-        <n-button quaternary circle>
-          <template #icon>
-            <n-icon>
-              <Iconify icon="carbon:overflow-menu-horizontal" />
-            </n-icon>
-          </template>
-        </n-button>
-      </n-dropdown>
-    </template>
-    <n-space vertical>
-      <n-grid :cols="3">
-        <n-gi>
-          <n-space vertical>
-            <n-text strong> Annette Black </n-text>
-            <n-text> annette@mail.com</n-text>
-          </n-space>
-        </n-gi>
-        <n-gi>
-          <n-space vertical>
-            <n-text> Status Akun </n-text>
-            <n-tag type="success" :bordered="false">
-              <template #icon>
-                <n-icon>
-                  <Iconify icon="carbon:dot-mark" />
-                </n-icon>
-              </template>
-              Verified
-            </n-tag>
-          </n-space>
-        </n-gi>
-        <n-gi>
-          <n-space vertical>
-            <n-text> Status e-KYC </n-text>
-            <n-tag type="success" :bordered="false">
-              <template #icon>
-                <n-icon>
-                  <Iconify icon="carbon:dot-mark" />
-                </n-icon>
-              </template>
-              Verified
-            </n-tag>
-          </n-space>
-        </n-gi>
-      </n-grid>
-      <n-space style="width: 100%" item-style="flex: 1">
-        <n-card>
-          <n-space>
-            <n-icon size="50">
-              <Icons name="emet" />
-            </n-icon>
-            <n-space vertical>
-              <n-text> EMET </n-text>
-              <n-text strong> 25 </n-text>
-            </n-space>
-          </n-space>
+    <n-timeline>
+      <n-timeline-item
+        v-for="(activity, index) in activities"
+        :key="index"
+        type="success"
+        :time="activity.datetime"
+      >
+        <n-card :title="activity.actor">
+          <n-table :striped="true">
+            <tr>
+              <td style="width: 20%">IP Address</td>
+              <td>{{ activity.ip }}</td>
+            </tr>
+            <tr>
+              <td style="width: 20%">Tipe</td>
+              <td>
+                <n-tag
+                  v-if="activity.type == 'open' || activity.type == 'upload'"
+                  type="default"
+                >
+                  {{ activity.type }}
+                </n-tag>
+                <n-tag v-else-if="activity.type == 'finished'" type="success">
+                  {{ activity.type }}
+                </n-tag>
+                <n-tag v-else type="info">
+                  {{ activity.type }}
+                </n-tag>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 20%">Catatan</td>
+              <td>{{ activity.notes }}</td>
+            </tr>
+          </n-table>
         </n-card>
-        <n-card>
-          <n-space>
-            <n-icon size="50">
-              <Icons name="esign" />
-            </n-icon>
-            <n-space vertical>
-              <n-text> ESGN </n-text>
-              <n-text strong> 89 </n-text>
-            </n-space>
-          </n-space>
-        </n-card>
-      </n-space>
-      <n-table striped :bordered="false">
-        <tr>
-          <td style="width: 50%">Nomor telepon</td>
-          <td style="width: 50%">087834806924</td>
-        </tr>
-        <tr>
-          <td>Tanggal sertifikat terbit</td>
-          <td>25 Agustus 2022</td>
-        </tr>
-        <tr>
-          <td>Tanggal sertifikat kadaluarsa</td>
-          <td>18 Oktober 2023</td>
-        </tr>
-        <tr>
-          <td>N dokumen sukses</td>
-          <td>228</td>
-        </tr>
-        <tr>
-          <td>N dokumen dalam proses</td>
-          <td>376</td>
-        </tr>
-        <tr>
-          <td>N top-up</td>
-          <td>594</td>
-        </tr>
-        <tr>
-          <td>Total top-up value</td>
-          <td>Rp 1,890,000.00</td>
-        </tr>
-      </n-table>
-    </n-space>
+      </n-timeline-item>
+    </n-timeline>
   </n-modal>
 </template>

@@ -171,11 +171,6 @@
   <n-space vertical style="gap: 1rem">
     <n-page-header>
       <template #title> Transaksi </template>
-      <template #header>
-        <n-breadcrumb>
-          <n-breadcrumb-item>Transaksi</n-breadcrumb-item>
-        </n-breadcrumb>
-      </template>
     </n-page-header>
     <main>
       <n-space justify="space-between" style="margin: 2rem 0; width: 100%">
