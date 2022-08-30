@@ -1,9 +1,9 @@
 <script setup lang="tsx">
   import {
-    NButton,
+    NButton as Button,
     NDropdown,
     NIcon,
-    NSpace,
+    NSpace as Flex,
     NTag,
     type DataTableColumns,
   } from 'naive-ui'
@@ -18,6 +18,7 @@
     status: '',
     limit: 10,
   })
+  const isShowDeleteModal = ref(false)
 
   const createColumns = (): DataTableColumns<any> => {
     return [
@@ -141,8 +142,8 @@
         key: 'action',
         render: () => {
           return (
-            <NSpace>
-              <NButton quaternary circle>
+            <Flex>
+              <Button quaternary circle>
                 {{
                   icon: () => {
                     return (
@@ -152,9 +153,13 @@
                     )
                   },
                 }}
-              </NButton>
-              <NDropdown trigger="click" options={OPTIONS}>
-                <NButton quaternary circle>
+              </Button>
+              <NDropdown
+                trigger="click"
+                options={OPTIONS}
+                onSelect={onSelectDropdown}
+              >
+                <Button quaternary circle>
                   {{
                     icon: () => {
                       return (
@@ -164,13 +169,24 @@
                       )
                     },
                   }}
-                </NButton>
+                </Button>
               </NDropdown>
-            </NSpace>
+            </Flex>
           )
         },
       },
     ]
+  }
+
+  const onSelectDropdown = (ev: string) => {
+    switch (ev) {
+      case 'delete':
+        isShowDeleteModal.value = true
+        break
+
+      default:
+        break
+    }
   }
 
   const data = [
@@ -243,4 +259,21 @@
       </n-space>
     </main>
   </n-space>
+  <n-modal
+    v-model:show="isShowDeleteModal"
+    preset="card"
+    title="Hapus Pengguna"
+    style="max-width: 40rem"
+  >
+    <n-text>
+      Apakah Anda yakin ingin menghapus data pengguna “Dianne Russell” secara
+      permanen dari sistem
+    </n-text>
+    <template #action>
+      <n-space justify="end">
+        <n-button tertiary> Batalkan </n-button>
+        <n-button type="primary"> Ya, Lanjutkan </n-button>
+      </n-space>
+    </template>
+  </n-modal>
 </template>
