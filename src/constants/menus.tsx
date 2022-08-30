@@ -20,7 +20,9 @@ function renderRoute(route: RouterLinkProps, label: string) {
 
 export const mainMenuOptions: MenuOption[] = [
   {
-    label: 'Dashboard',
+    label: () => {
+      return <RouterLink to="/">Dashboard</RouterLink>
+    },
     key: 'dashboard',
     icon: () => {
       return (
@@ -32,7 +34,9 @@ export const mainMenuOptions: MenuOption[] = [
   },
   { type: 'divider' },
   {
-    label: 'Pengguna',
+    label: () => {
+      return <RouterLink to="/users">Pengguna</RouterLink>
+    },
     key: 'users',
     icon: () => {
       return (
@@ -44,7 +48,9 @@ export const mainMenuOptions: MenuOption[] = [
   },
   { type: 'divider' },
   {
-    label: 'Transaksi',
+    label: () => {
+      return <RouterLink to="/transactions">Transaksi</RouterLink>
+    },
     key: 'transactions',
     icon: () => {
       return (
@@ -56,7 +62,9 @@ export const mainMenuOptions: MenuOption[] = [
   },
   { type: 'divider' },
   {
-    label: 'Dokumen',
+    label: () => {
+      return <RouterLink to="/documents">Dokumen</RouterLink>
+    },
     key: 'documents',
     icon: () => {
       return (
@@ -68,8 +76,10 @@ export const mainMenuOptions: MenuOption[] = [
   },
   { type: 'divider' },
   {
-    label: 'Settings',
-    key: 'documents',
+    label: () => {
+      return <RouterLink to="/settings">Pengaturan</RouterLink>
+    },
+    key: 'settings',
     icon: () => {
       return (
         <NIcon>
