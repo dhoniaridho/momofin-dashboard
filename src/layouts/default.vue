@@ -1,7 +1,6 @@
 <script lang="ts" setup>
   import DEFAULT_AVATAR from '~/assets/images/avatar.png'
   import DEFAULT_LOGO from '~/assets/images/logo.png'
-  import POWERED_BY from '~/assets/images/logo-powered-by.svg'
   import { Icon } from '@iconify/vue'
   import {
     mainMenuOptions,
