@@ -8,19 +8,17 @@
     type DataTableColumns,
   } from 'naive-ui'
   import { Icon } from '@iconify/vue'
-  import { OPTIONS } from '@features/users/users.constant'
+  import { SORT } from '@features/documents/document.constant'
 
   const filter = ref({
     search: '',
     page: 1,
-    periode: 0,
+    periode: 'Last 7 days',
     type: 'in',
     status: '',
     limit: 10,
   })
-  const isShowDeleteModal = ref(false)
   const isShowQuickDetail = ref(false)
-  const isShowVerificationModal = ref(false)
 
   const createColumns = (): DataTableColumns<any> => {
     return [
@@ -132,20 +130,6 @@
         },
       },
     ]
-  }
-
-  const onSelectDropdown = (ev: string) => {
-    switch (ev) {
-      case 'delete':
-        isShowDeleteModal.value = true
-        break
-      case 'verification':
-        isShowVerificationModal.value = true
-        break
-
-      default:
-        break
-    }
   }
 
   const data = [
@@ -263,9 +247,13 @@
             </n-icon>
           </template>
         </n-input>
-        <div>
-          <n-date-picker v-model:value="filter.periode" type="daterange" />
-        </div>
+        <n-space>
+          <n-select
+            v-model:value="filter.periode"
+            style="width: 15rem"
+            :options="SORT"
+          />
+        </n-space>
       </n-space>
       <div style="overflow: auto; white-space: pre">
         <n-data-table
