@@ -6,11 +6,12 @@
     type DataTableColumns,
   } from 'naive-ui'
   import { Icon } from '@iconify/vue'
+  import { SORT } from '~/features/settings/settings.constants'
 
   const filter = ref({
     search: '',
     page: 1,
-    periode: 0,
+    periode: 'Last 7 days',
     type: 'in',
     status: '',
     limit: 10,
@@ -188,12 +189,13 @@
                   </n-icon>
                 </template>
               </n-input>
-              <div>
-                <n-date-picker
+              <n-space>
+                <n-select
                   v-model:value="filter.periode"
-                  type="daterange"
+                  style="width: 15rem"
+                  :options="SORT"
                 />
-              </div>
+              </n-space>
             </n-space>
             <div style="overflow: auto; white-space: pre">
               <n-data-table
@@ -229,12 +231,13 @@
                   </n-icon>
                 </template>
               </n-input>
-              <div>
-                <n-date-picker
+              <n-space>
+                <n-select
                   v-model:value="filter.periode"
-                  type="daterange"
+                  style="width: 15rem"
+                  :options="SORT"
                 />
-              </div>
+              </n-space>
             </n-space>
             <div style="overflow: auto; white-space: pre">
               <n-data-table
