@@ -9,14 +9,14 @@
     type DataTableColumns,
   } from 'naive-ui'
   import { Icon } from '@iconify/vue'
-  import { OPTIONS } from '@features/users/users.constant'
+  import { OPTIONS, SORT } from '@features/users/users.constant'
 
   const { success } = useMessage()
 
   const filter = ref({
     search: '',
     page: 1,
-    periode: 0,
+    periode: 'Last 7 days',
     type: 'in',
     status: '',
     limit: 10,
@@ -315,9 +315,13 @@
             </n-icon>
           </template>
         </n-input>
-        <div>
-          <n-date-picker v-model:value="filter.periode" type="daterange" />
-        </div>
+        <n-space>
+          <n-select
+            v-model:value="filter.periode"
+            style="width: 15rem"
+            :options="SORT"
+          />
+        </n-space>
       </n-space>
       <div style="overflow: auto; white-space: pre">
         <n-data-table
