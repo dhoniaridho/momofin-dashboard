@@ -1,16 +1,9 @@
 import { RouterLink, type RouterLinkProps } from 'vue-router'
 
 import { NIcon, type MenuOption } from 'naive-ui'
-import type { Component } from 'vue'
 import { useTheme } from '~/store/theme'
 import { MoonIcon, SunIcon } from '@heroicons/vue/24/outline'
 import { Icon } from '@iconify/vue'
-
-function renderIcon(icon: Component) {
-  return () => {
-    return <NIcon>{icon}</NIcon>
-  }
-}
 
 function renderRoute(route: RouterLinkProps, label: string) {
   return () => {
@@ -32,7 +25,6 @@ export const mainMenuOptions: MenuOption[] = [
       )
     },
   },
-  { type: 'divider' },
   {
     label: () => {
       return <RouterLink to="/users">Pengguna</RouterLink>
@@ -46,7 +38,6 @@ export const mainMenuOptions: MenuOption[] = [
       )
     },
   },
-  { type: 'divider' },
   {
     label: () => {
       return <RouterLink to="/transactions">Transaksi</RouterLink>
@@ -60,7 +51,6 @@ export const mainMenuOptions: MenuOption[] = [
       )
     },
   },
-  { type: 'divider' },
   {
     label: () => {
       return <RouterLink to="/documents">Dokumen</RouterLink>
@@ -74,7 +64,6 @@ export const mainMenuOptions: MenuOption[] = [
       )
     },
   },
-  { type: 'divider' },
   {
     label: () => {
       return <RouterLink to="/settings">Pengaturan</RouterLink>
@@ -88,7 +77,6 @@ export const mainMenuOptions: MenuOption[] = [
       )
     },
   },
-  { type: 'divider' },
 ]
 
 export const altMenuOptions: MenuOption[] = [
