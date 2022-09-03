@@ -3,7 +3,7 @@ import { RouterLink, type RouterLinkProps } from 'vue-router'
 import { NIcon, type MenuOption } from 'naive-ui'
 import { useTheme } from '~/store/theme'
 import { MoonIcon, SunIcon } from '@heroicons/vue/24/outline'
-import { Icon } from '@iconify/vue'
+import Icons from '@components/Icons.vue'
 
 function renderRoute(route: RouterLinkProps, label: string) {
   return () => {
@@ -20,7 +20,7 @@ export const mainMenuOptions: MenuOption[] = [
     icon: () => {
       return (
         <NIcon>
-          <Icon icon="ph:activity" />
+          <Icons name="dashboard" />
         </NIcon>
       )
     },
@@ -33,7 +33,7 @@ export const mainMenuOptions: MenuOption[] = [
     icon: () => {
       return (
         <NIcon>
-          <Icon icon="majesticons:users-line" />
+          <Icons name="users" />
         </NIcon>
       )
     },
@@ -46,7 +46,7 @@ export const mainMenuOptions: MenuOption[] = [
     icon: () => {
       return (
         <NIcon>
-          <Icon icon="icon-park-outline:transaction-order" />
+          <Icons name="transactions" />
         </NIcon>
       )
     },
@@ -59,7 +59,7 @@ export const mainMenuOptions: MenuOption[] = [
     icon: () => {
       return (
         <NIcon>
-          <Icon icon="fe:document" />
+          <Icons name="document-text" />
         </NIcon>
       )
     },
@@ -72,7 +72,7 @@ export const mainMenuOptions: MenuOption[] = [
     icon: () => {
       return (
         <NIcon>
-          <Icon icon="octicon:gear-16" />
+          <Icons name="gear" />
         </NIcon>
       )
     },
@@ -87,7 +87,7 @@ export const altMenuOptions: MenuOption[] = [
     icon: () => {
       return (
         <NIcon>
-          <Icon icon="tabler:logout" rotate="180deg" />
+          <Icons name="logout" rotate="180deg" />
         </NIcon>
       )
     },

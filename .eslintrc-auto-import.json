@@ -10,6 +10,7 @@
     "EffectScope": true,
     "asyncComputed": true,
     "autoResetRef": true,
+    "charts": true,
     "computed": true,
     "computedAsync": true,
     "computedEager": true,
