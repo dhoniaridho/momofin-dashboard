@@ -17,7 +17,6 @@
     search: '',
     page: 1,
     periode: 'Last 7 days',
-    type: 'in',
     status: '',
     limit: 10,
   })
@@ -63,7 +62,7 @@
                 round: true,
                 bordered: false,
               },
-              () => (row.signer_count > 1 ? 'Multi Signer' : 'Sigle')
+              () => (row.signer_count > 1 ? 'Multi Signer' : 'Single')
             ),
           ])
         },
@@ -303,3 +302,8 @@
     </n-timeline>
   </n-modal>
 </template>
+
+<route lang="yaml">
+meta:
+  requiresAuth: true
+</route>

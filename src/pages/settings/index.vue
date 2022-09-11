@@ -321,3 +321,8 @@
     </n-space>
   </n-modal>
 </template>
+
+<route lang="yaml">
+meta:
+  requiresAuth: true
+</route>

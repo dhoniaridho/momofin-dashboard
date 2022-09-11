@@ -5,6 +5,7 @@ specifiers:
   '@iconify/vue': ^3.2.1
   '@intlify/vite-plugin-vue-i18n': 6.0.1
   '@rushstack/eslint-patch': 1.1.4
+  '@types/js-cookie': ^3.0.2
   '@types/jsdom': 20.0.0
   '@types/node': 16.11.56
   '@types/nprogress': 0.2.0
@@ -74,6 +75,7 @@ dependencies:
 devDependencies:
   '@intlify/vite-plugin-vue-i18n': 6.0.1_vite@3.0.9+vue-i18n@9.2.2
   '@rushstack/eslint-patch': 1.1.4
+  '@types/js-cookie': 3.0.2
   '@types/jsdom': 20.0.0
   '@types/node': 16.11.56
   '@types/nprogress': 0.2.0
@@ -716,6 +718,10 @@ packages:
     resolution: {integrity: sha512-9AonUzyTjXXhEOa0DnqpzZi6VHlqKMswga9EXjpXnnqxwLtdvPPtlO8evrI5D9S6asFRCQ6v+wpiUKbw+vKqyg==}
     dependencies:
       '@types/ms': 0.7.31
+    dev: true
+
+  /@types/js-cookie/3.0.2:
+    resolution: {integrity: sha512-6+0ekgfusHftJNYpihfkMu8BWdeHs9EOJuGcSofErjstGPfPGEu9yTu4t460lTzzAMl2cM5zngQJqPMHbbnvYA==}
     dev: true
 
   /@types/jsdom/20.0.0:

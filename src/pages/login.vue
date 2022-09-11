@@ -4,7 +4,6 @@ meta:
 </route>
 
 <script setup lang="ts">
-  import SvgIcon from '~/components/Icons.vue'
   import { useMutation } from 'vue-query'
   import { AuthRepository } from '@features/auth/auth.repository'
   import type { ILoginPayload } from '@features/auth/auth.interface'
@@ -39,7 +38,8 @@ meta:
         onSuccess: (response) => {
           success('Login berhasil, anda akan di arahkan ke halaman dashboard')
           AuthService.signIn(response.token, formData.remember)
-          router.push('/document')
+          router.push('/')
+          auth.user = response.account
         },
         onError: (response: any) => {
           error(response?.msg)
@@ -63,18 +63,10 @@ meta:
   <n-card :class="$style.container" :content-style="$style.container">
     <n-space justify="center" align="center" :class="$style.container">
       <div :class="$style.card__wrapper">
-        <n-image
-          :class="$style.card__brand"
-          height="100"
-          :src="auth.company.logo"
-          preview-disabled
-          draggable="false"
-        >
-        </n-image>
-        <div :class="$style.branding__wrapper">
-          <n-text> Powered by </n-text>
-          <SvgIcon :class="$style.branding" name="momofin-go" />
-        </div>
+        <Icons name="logo" height="50" />
+        <n-space justify="center">
+          <n-text> Dashboard Tele Sales eMET </n-text>
+        </n-space>
         <n-card :class="$style.card" size="medium">
           <n-h2>Login ke Akun Anda </n-h2>
           <n-text

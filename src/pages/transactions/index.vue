@@ -13,18 +13,28 @@
   const filter = ref({
     search: '',
     page: 1,
-    periode: 0,
-    type: 'in',
+    periode: [Date.now(), Date.now()],
     status: '',
     limit: 10,
   })
+
+  const filterComputed = computed(() => {
+    return {
+      limit: filter.value.limit,
+      page: filter.value.page,
+      start_date: filter.value.periode[0],
+      end_date: filter.value.periode[1],
+      search: filter.value.search,
+    }
+  })
+
   const isShowDeleteModal = ref(false)
   const isShowQuickDetail = ref(false)
   const isShowVerificationModal = ref(false)
 
   function useTransactions() {
     return useQuery(['transactions', filter], () => {
-      return getAllTransactions(filter.value)
+      return getAllTransactions(filterComputed.value)
     })
   }
 
@@ -323,3 +333,8 @@
     </n-space>
   </n-modal>
 </template>
+
+<route lang="yaml">
+meta:
+  requiresAuth: true
+</route>

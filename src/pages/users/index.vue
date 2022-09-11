@@ -18,6 +18,7 @@
     resendEmailVerification,
     deleteUserById,
   } from '@features/users/users.repository'
+  import { toIdr } from '~/helpers'
 
   const { success, error } = useMessage()
 
@@ -25,7 +26,6 @@
     search: '',
     page: 1,
     periode: 'Last 7 days',
-    type: 'in',
     status: '',
     limit: 10,
   })
@@ -538,9 +538,14 @@
         </tr>
         <tr>
           <td>Total top-up value</td>
-          <td>{{ user?.topup.amount }}</td>
+          <td>{{ toIdr(user?.topup.amount ?? 0) }}</td>
         </tr>
       </n-table>
     </n-space>
   </n-modal>
 </template>
+
+<route lang="yaml">
+meta:
+  requiresAuth: true
+</route>
