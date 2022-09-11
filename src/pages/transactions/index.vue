@@ -1,13 +1,14 @@
-<script setup lang="tsx">
+<script setup lang="ts">
   import {
     NButton as Button,
     NIcon,
-    NSpace as Flex,
     NTag,
     type DataTableColumns,
   } from 'naive-ui'
   import { Icon } from '@iconify/vue'
   import { OPTIONS } from '@features/users/users.constant'
+  import { useQuery } from 'vue-query'
+  import { getAllTransactions } from '@features/transactions/transaction.repository'
 
   const filter = ref({
     search: '',
@@ -21,77 +22,90 @@
   const isShowQuickDetail = ref(false)
   const isShowVerificationModal = ref(false)
 
+  function useTransactions() {
+    return useQuery(['transactions', filter], () => {
+      return getAllTransactions(filter.value)
+    })
+  }
+
+  const { data: transactions, isLoading: isTransactionsLoading } =
+    useTransactions()
+
   const createColumns = (): DataTableColumns<any> => {
     return [
       {
         title: 'Waktu & Tanggal',
-        key: 'created_at',
+        key: 'order_datetime',
       },
       {
         title: 'ID Transaksi',
-        key: 'name',
+        key: 'invoice_code',
       },
       {
         title: 'Email',
-        key: 'email',
+        key: 'buyer_email',
       },
       {
         title: 'Product',
-        key: 'product',
+        key: 'product_name',
       },
       {
         title: 'Value',
-        key: 'value',
+        key: 'total_price',
       },
       {
         title: 'Payment Status',
         key: 'status',
         render: (row) => {
-          if (row.status == 'Paid') {
-            return (
-              <NTag bordered={false} type="success" round>
-                {{
-                  icon: () => {
-                    return (
-                      <NIcon>
-                        <Icon icon="carbon:dot-mark" />
-                      </NIcon>
-                    )
-                  },
-                  default: () => row.status,
-                }}
-              </NTag>
+          if (row.status == 'PAID') {
+            return h(
+              NTag,
+              {
+                type: 'primary',
+              },
+              () => [
+                h(NIcon, () =>
+                  h(Icon, {
+                    icon: 'carbon:dot-mark',
+                  })
+                ),
+                row.status,
+              ]
             )
           }
-          if (row.status == 'Cancelled') {
-            return (
-              <NTag bordered={false} type="default" round>
-                {{
-                  icon: () => {
-                    return (
-                      <NIcon>
-                        <Icon icon="carbon:dot-mark" />
-                      </NIcon>
-                    )
-                  },
-                  default: () => row.status,
-                }}
-              </NTag>
-            )
+          if (row.status == 'EXPIRED') {
+            return h(NTag, () => [
+              h(NIcon, () =>
+                h(Icon, {
+                  icon: 'carbon:dot-mark',
+                })
+              ),
+              row.status,
+            ])
           }
-          return (
-            <NTag bordered={false} type="info" round>
-              {{
-                icon: () => {
-                  return (
-                    <NIcon>
-                      <Icon icon="carbon:dot-mark" />
-                    </NIcon>
-                  )
-                },
-                default: () => row.status,
-              }}
-            </NTag>
+          if (row.status == 'PENDING') {
+            return h(NTag, { type: 'warning' }, () => [
+              h(NIcon, () =>
+                h(Icon, {
+                  icon: 'carbon:dot-mark',
+                })
+              ),
+              row.status,
+            ])
+          }
+          return h(
+            NTag,
+            {
+              type: 'info',
+            },
+            () => [
+              h(NIcon, () =>
+                h(Icon, {
+                  icon: 'carbon:dot-mark',
+                })
+              ),
+              row.status,
+            ]
           )
         },
       },
@@ -99,26 +113,20 @@
       {
         key: 'action',
         render: () => {
-          return (
-            <Flex>
-              <Button
-                quaternary
-                circle
-                onClick={() => {
-                  isShowQuickDetail.value = true
-                }}
-              >
-                {{
-                  icon: () => {
-                    return (
-                      <NIcon>
-                        <Icon icon="heroicons:chevron-right" />
-                      </NIcon>
-                    )
-                  },
-                }}
-              </Button>
-            </Flex>
+          return h(
+            Button,
+            {
+              quaternary: true,
+              circle: true,
+              onClick() {
+                isShowQuickDetail.value = true
+              },
+            },
+            () => {
+              return h(Icon, {
+                icon: 'heroicons:chevron-right',
+              })
+            }
           )
         },
       },
@@ -139,32 +147,14 @@
     }
   }
 
-  const data = [
-    {
-      created_at: 'Feb 2, 2019 19:28',
-      name: 'Annette Black',
-      email: 'annette@mail.com',
-      status: 'Paid',
-      product: 'EMET 5',
-      value: 'Rp 200.000',
-    },
-    {
-      created_at: 'Feb 2, 2019 19:28',
-      name: 'Annette Black',
-      email: 'annette@mail.com',
-      status: 'Cancelled',
-      product: 'EMET 5',
-      value: 'Rp 200.000',
-    },
-    {
-      created_at: 'Feb 2, 2019 19:28',
-      name: 'Annette Black',
-      email: 'annette@mail.com',
-      status: 'Pending',
-      product: 'EMET 5',
-      value: 'Rp 200.000',
-    },
-  ]
+  const data = computed(() => {
+    return transactions.value?.data.map((transaction) => {
+      return {
+        ...transaction,
+        status: transaction.status.toUpperCase(),
+      }
+    })
+  })
 </script>
 
 <template>
@@ -189,6 +179,7 @@
         <n-data-table
           :columns="createColumns()"
           :data="data"
+          :loading="isTransactionsLoading"
           :bordered="false"
         />
       </div>
