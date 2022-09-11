@@ -57,55 +57,74 @@
         title: 'Payment Status',
         key: 'status',
         render: (row) => {
-          if (row.status == 'PAID') {
+          if (row.status == 'paid') {
             return h(
               NTag,
               {
                 type: 'primary',
+                round: true,
+                bordered: false,
               },
-              () => [
-                h(NIcon, () =>
-                  h(Icon, {
-                    icon: 'carbon:dot-mark',
-                  })
-                ),
-                row.status,
-              ]
+              {
+                icon: () =>
+                  h(NIcon, () =>
+                    h(Icon, {
+                      icon: 'carbon:dot-mark',
+                    })
+                  ),
+                default: () => [row.status],
+              }
             )
           }
-          if (row.status == 'EXPIRED') {
-            return h(NTag, () => [
-              h(NIcon, () =>
-                h(Icon, {
-                  icon: 'carbon:dot-mark',
-                })
-              ),
-              row.status,
-            ])
+          if (row.status == 'expired') {
+            return h(
+              NTag,
+              {
+                round: true,
+                bordered: false,
+              },
+              {
+                icon: () =>
+                  h(NIcon, () =>
+                    h(Icon, {
+                      icon: 'carbon:dot-mark',
+                    })
+                  ),
+                default: () => [row.status],
+              }
+            )
           }
-          if (row.status == 'PENDING') {
-            return h(NTag, { type: 'warning' }, () => [
-              h(NIcon, () =>
-                h(Icon, {
-                  icon: 'carbon:dot-mark',
-                })
-              ),
-              row.status,
-            ])
+          if (row.status == 'pending') {
+            return h(
+              NTag,
+              { type: 'warning', round: true, bordered: false },
+              {
+                icon: () =>
+                  h(NIcon, () =>
+                    h(Icon, {
+                      icon: 'carbon:dot-mark',
+                    })
+                  ),
+                default: () => [row.status],
+              }
+            )
           }
           return h(
             NTag,
             {
               type: 'info',
+              round: true,
+              bordered: false,
             },
-            () => [
-              h(NIcon, () =>
-                h(Icon, {
-                  icon: 'carbon:dot-mark',
-                })
-              ),
-              row.status,
-            ]
+            {
+              icon: () =>
+                h(NIcon, () =>
+                  h(Icon, {
+                    icon: 'carbon:dot-mark',
+                  })
+                ),
+              default: () => [row.status],
+            }
           )
         },
       },
@@ -151,7 +170,7 @@
     return transactions.value?.data.map((transaction) => {
       return {
         ...transaction,
-        status: transaction.status.toUpperCase(),
+        status: transaction.status.toLowerCase(),
       }
     })
   })
@@ -187,6 +206,7 @@
         <n-pagination
           v-model:page="filter.page"
           v-model:page-size="filter.limit"
+          :page-count="transactions?.pagination.total_page"
           :page-sizes="[10, 20, 30, 40]"
           style="margin-top: 1rem"
           show-size-picker

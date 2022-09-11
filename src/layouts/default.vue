@@ -84,7 +84,7 @@
               <template #trigger>
                 <n-button size="large" quaternary circle>
                   <template #icon>
-                    <n-icon size="24"> <iMenu1Icon /> </n-icon>
+                    <n-icon size="24"> <Icon name="dashboard" /> </n-icon>
                   </template>
                 </n-button>
               </template>

@@ -1,14 +1,17 @@
-<script setup lang="tsx">
+<script setup lang="ts">
   import {
     NButton as Button,
     NIcon,
-    NSpace as Flex,
-    NTag as Tag,
-    NText as Text,
+    NSpace,
+    NTag,
+    NText,
     type DataTableColumns,
   } from 'naive-ui'
   import { Icon } from '@iconify/vue'
   import { SORT } from '@features/documents/document.constant'
+  import { useQuery } from 'vue-query'
+  import { getAllDocuments } from '~/features/documents/document.repository'
+  import type { DocumentResponse } from '~/features/documents/document.interface'
 
   const filter = ref({
     search: '',
@@ -20,7 +23,15 @@
   })
   const isShowQuickDetail = ref(false)
 
-  const createColumns = (): DataTableColumns<any> => {
+  function useDocuments() {
+    return useQuery(['documents', filter], () => {
+      return getAllDocuments(filter.value)
+    })
+  }
+
+  const { data: documents, isLoading: isDocumentLoading } = useDocuments()
+
+  const createColumns = (): DataTableColumns<DocumentResponse.Datum> => {
     return [
       {
         title: 'Waktu & Tanggal',
@@ -28,7 +39,7 @@
       },
       {
         title: 'ID Dokumen',
-        key: 'name',
+        key: 'id',
       },
       {
         title: 'Email',
@@ -36,69 +47,91 @@
       },
       {
         title: 'Nama Dokumen',
-        key: 'document.name',
+        key: 'document_name',
       },
       {
         title: 'Pihak',
         key: 'signers.length',
         render: (row) => {
-          return (
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span>{row.signers.length} Pihak</span>
-              <Text type="primary">Single</Text>
-            </div>
-          )
+          return h(NSpace, { vertical: true }, () => [
+            h(NText, () => row.signer_count),
+
+            h(
+              NTag,
+              {
+                type: row.signer_count > 1 ? 'primary' : 'info',
+                round: true,
+                bordered: false,
+              },
+              () => (row.signer_count > 1 ? 'Multi Signer' : 'Sigle')
+            ),
+          ])
         },
       },
       {
         title: 'Status',
         key: 'status',
         render: (row) => {
-          if (row.status == 'Paid') {
-            return (
-              <Tag bordered={false} type="success" round>
-                {{
-                  icon: () => {
-                    return (
-                      <NIcon>
-                        <Icon icon="carbon:dot-mark" />
-                      </NIcon>
-                    )
-                  },
-                  default: () => row.status,
-                }}
-              </Tag>
+          if (row.status == 'completed') {
+            return h(
+              NTag,
+              { round: true, bordered: false, type: 'success' },
+              {
+                icon: () =>
+                  h(NIcon, () =>
+                    h(Icon, {
+                      icon: 'carbon:dot-mark',
+                    })
+                  ),
+                default: () => [row.status],
+              }
             )
           }
-          if (row.status == 'Cancelled') {
-            return (
-              <Tag bordered={false} type="default" round>
-                {{
-                  icon: () => {
-                    return (
-                      <NIcon>
-                        <Icon icon="carbon:dot-mark" />
-                      </NIcon>
-                    )
-                  },
-                  default: () => row.status,
-                }}
-              </Tag>
+          if (row.status == 'processing') {
+            return h(
+              NTag,
+              { round: true, bordered: false },
+              {
+                icon: () =>
+                  h(NIcon, () =>
+                    h(Icon, {
+                      icon: 'carbon:dot-mark',
+                    })
+                  ),
+                default: () => [row.status],
+              }
             )
           }
-          return (
-            <Tag bordered={false} type="info" round>
-              {{
-                icon: () => {
-                  return (
-                    <NIcon>
-                      <Icon icon="carbon:dot-mark" />
-                    </NIcon>
-                  )
-                },
-                default: () => row.status,
-              }}
-            </Tag>
+          if (row.status == 'draft') {
+            return h(
+              NTag,
+              { round: true, type: 'warning', bordered: false },
+              {
+                icon: () =>
+                  h(NIcon, () =>
+                    h(Icon, {
+                      icon: 'carbon:dot-mark',
+                    })
+                  ),
+                default: () => [row.status],
+              }
+            )
+          }
+          return h(
+            NTag,
+            {
+              type: 'info',
+              bordered: false,
+            },
+            {
+              icon: () =>
+                h(NIcon, () =>
+                  h(Icon, {
+                    icon: 'carbon:dot-mark',
+                  })
+                ),
+              default: () => [row.status],
+            }
           )
         },
       },
@@ -106,85 +139,34 @@
       {
         key: 'action',
         render: () => {
-          return (
-            <Flex>
-              <Button
-                quaternary
-                circle
-                onClick={() => {
-                  isShowQuickDetail.value = true
-                }}
-              >
-                {{
-                  icon: () => {
-                    return (
-                      <NIcon>
-                        <Icon icon="heroicons:chevron-right" />
-                      </NIcon>
-                    )
-                  },
-                }}
-              </Button>
-            </Flex>
+          return h(
+            Button,
+            {
+              quaternary: true,
+              circle: true,
+              onClick() {
+                isShowQuickDetail.value = true
+              },
+            },
+            () => {
+              return h(Icon, {
+                icon: 'heroicons:chevron-right',
+              })
+            }
           )
         },
       },
     ]
   }
 
-  const data = [
-    {
-      created_at: 'Feb 2, 2019 19:28',
-      name: 'Annette Black',
-      email: 'annette@mail.com',
-      status: 'Paid',
-      product: 'EMET 5',
-      document: {
-        name: '*****lus.pdf 58,2 KB',
-      },
-      signers: [
-        {
-          user: {
-            name: '',
-          },
-        },
-      ],
-    },
-    {
-      created_at: 'Feb 2, 2019 19:28',
-      name: 'Annette Black',
-      email: 'annette@mail.com',
-      status: 'Cancelled',
-      product: 'EMET 5',
-      document: {
-        name: '*****lus.pdf 58,2 KB',
-      },
-      signers: [
-        {
-          user: {
-            name: '',
-          },
-        },
-      ],
-    },
-    {
-      created_at: 'Feb 2, 2019 19:28',
-      name: 'Annette Black',
-      email: 'annette@mail.com',
-      status: 'Pending',
-      product: 'EMET 5',
-      document: {
-        name: '*****lus.pdf 58,2 KB',
-      },
-      signers: [
-        {
-          user: {
-            name: '',
-          },
-        },
-      ],
-    },
-  ]
+  const data = computed(() => {
+    return documents.value?.data.map((item) => {
+      return {
+        ...item,
+        created_at: new Date(item.created_at).toLocaleString(),
+      }
+    })
+  })
 
   const activities = [
     {
@@ -260,12 +242,14 @@
           :columns="createColumns()"
           :data="data"
           :bordered="false"
+          :loading="isDocumentLoading"
         />
       </div>
       <n-space justify="start">
         <n-pagination
           v-model:page="filter.page"
           v-model:page-size="filter.limit"
+          :page-count="documents?.pagination.total_page"
           :page-sizes="[10, 20, 30, 40]"
           style="margin-top: 1rem"
           show-size-picker
