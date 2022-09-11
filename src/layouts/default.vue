@@ -68,83 +68,87 @@
 
     <n-layout>
       <!-- header -->
-      <n-layout-header
-        position="absolute"
-        bordered
-        style="z-index: 1; height: 64px"
-      >
-        <n-space
-          align="center"
-          justify="space-between"
-          style="padding: 0 24px; height: 64px"
+      <n-scrollbar>
+        <n-layout-header
+          position="absolute"
+          bordered
+          style="z-index: 1; height: 64px"
         >
-          <n-space align="center">
-            <n-popover
-              v-if="collapsed"
-              placement="bottom-start"
-              trigger="click"
-              style="padding: 0"
-            >
-              <template #trigger>
-                <n-button size="large" quaternary circle>
-                  <template #icon>
-                    <n-icon size="24"> <Icon name="dashboard" /> </n-icon>
-                  </template>
-                </n-button>
-              </template>
-              <n-menu
-                accordion
-                :root-indent="16"
-                :indent="0"
-                :options="collapsedMenuOptions"
-              />
-            </n-popover>
+          <n-space
+            align="center"
+            justify="space-between"
+            style="padding: 0 24px; height: 64px"
+          >
+            <n-space align="center">
+              <n-popover
+                v-if="collapsed"
+                placement="bottom-start"
+                trigger="click"
+                style="padding: 0"
+              >
+                <template #trigger>
+                  <n-button size="large" quaternary circle>
+                    <template #icon>
+                      <n-icon size="24">
+                        <Icon icon="heroicons-outline:menu-alt-1" />
+                      </n-icon>
+                    </template>
+                  </n-button>
+                </template>
+                <n-menu
+                  accordion
+                  :root-indent="16"
+                  :indent="0"
+                  :options="collapsedMenuOptions"
+                />
+              </n-popover>
+            </n-space>
+            <n-space align="center">
+              <n-popover
+                placement="bottom-end"
+                trigger="click"
+                style="padding: 0"
+              >
+                <template #trigger>
+                  <n-button
+                    round
+                    quaternary
+                    style="padding-left: 0; padding-right: 12px"
+                  >
+                    <n-space align="center">
+                      <n-avatar
+                        v-if="DEFAULT_AVATAR"
+                        round
+                        :src="DEFAULT_AVATAR"
+                        :size="32"
+                      />
+                      <n-avatar v-else round :src="DEFAULT_AVATAR" :size="32" />
+                      {{ auth.user.fullname }}
+                      <n-icon><Icon icon="heroicons:chevron-down" /> </n-icon>
+                    </n-space>
+                  </n-button>
+                </template>
+                <n-menu
+                  :root-indent="16"
+                  :indent="0"
+                  :options="profileMenuOptions"
+                />
+              </n-popover>
+            </n-space>
           </n-space>
-          <n-space align="center">
-            <n-popover
-              placement="bottom-end"
-              trigger="click"
-              style="padding: 0"
-            >
-              <template #trigger>
-                <n-button
-                  round
-                  quaternary
-                  style="padding-left: 0; padding-right: 12px"
-                >
-                  <n-space align="center">
-                    <n-avatar
-                      v-if="DEFAULT_AVATAR"
-                      round
-                      :src="DEFAULT_AVATAR"
-                      :size="32"
-                    />
-                    <n-avatar v-else round :src="DEFAULT_AVATAR" :size="32" />
-                    {{ auth.user.fullname }}
-                    <n-icon><Icon icon="heroicons:chevron-down" /> </n-icon>
-                  </n-space>
-                </n-button>
-              </template>
-              <n-menu
-                :root-indent="16"
-                :indent="0"
-                :options="profileMenuOptions"
-              />
-            </n-popover>
-          </n-space>
-        </n-space>
-      </n-layout-header>
+        </n-layout-header>
 
-      <!-- content -->
-      <n-layout-content>
-        <n-space
-          vertical
-          :size="0"
-          style="padding-inline: 2rem; padding-block: 5rem; min-height: 100vh"
-        >
-          <router-view />
-        </n-space>
-      </n-layout-content>
+        <!-- content -->
+        <n-layout-content>
+          <n-space
+            vertical
+            :size="0"
+            style="padding-inline: 2rem; padding-block: 5rem; min-height: 100vh"
+          >
+            <router-view />
+          </n-space>
+        </n-layout-content>
+      </n-scrollbar>
     </n-layout>
   </n-layout>
 </template>

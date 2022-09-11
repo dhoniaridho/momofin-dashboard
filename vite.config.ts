@@ -11,6 +11,7 @@ import path, { resolve } from 'path'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 import Layouts from 'vite-plugin-vue-layouts'
+import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -65,6 +66,7 @@ export default defineConfig({
       layoutsDirs: 'src/layouts',
       defaultLayout: 'default',
     }),
+    VitePWA({ registerType: 'autoUpdate' }),
   ],
   resolve: {
     alias: {
