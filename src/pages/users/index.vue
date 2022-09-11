@@ -123,33 +123,59 @@
         key: 'status',
         render: (row) => {
           if (row.status == 'verified') {
-            return h(NTag, () => [
-              h(NIcon, () =>
-                h(Icon, {
-                  icon: 'carbon:dot-mark',
-                })
-              ),
-              row.status,
-            ])
+            return h(
+              NTag,
+              {
+                bordered: false,
+                round: true,
+                type: 'success',
+              },
+              {
+                icon: () =>
+                  h(NIcon, () =>
+                    h(Icon, {
+                      icon: 'carbon:dot-mark',
+                    })
+                  ),
+                default: () => [row.status],
+              }
+            )
           }
           if (row.status == 'suspended') {
-            return h(NTag, () => [
-              h(NIcon, () =>
-                h(Icon, {
-                  icon: 'carbon:dot-mark',
-                })
-              ),
-              row.status,
-            ])
+            return h(
+              NTag,
+              {
+                bordered: false,
+                round: true,
+                type: 'error',
+              },
+              {
+                icon: () =>
+                  h(NIcon, () =>
+                    h(Icon, {
+                      icon: 'carbon:dot-mark',
+                    })
+                  ),
+                default: () => [row.status],
+              }
+            )
           }
-          return h(NTag, () => [
-            h(NIcon, () =>
-              h(Icon, {
-                icon: 'carbon:dot-mark',
-              })
-            ),
-            row.status,
-          ])
+          return h(
+            NTag,
+            {
+              bordered: false,
+              round: true,
+            },
+            {
+              icon: () =>
+                h(NIcon, () =>
+                  h(Icon, {
+                    icon: 'carbon:dot-mark',
+                  })
+                ),
+              default: () => row.status,
+            }
+          )
         },
       },
       {
@@ -157,33 +183,60 @@
         key: 'kyc',
         render: (row) => {
           if (row.kyc == 'Aktif') {
-            return h(NTag, () => [
-              h(NIcon, () =>
-                h(Icon, {
-                  icon: 'carbon:dot-mark',
-                })
-              ),
-              row.status,
-            ])
+            return h(
+              NTag,
+              {
+                bordered: false,
+                round: true,
+                type: 'success',
+              },
+              {
+                icon: () =>
+                  h(NIcon, () =>
+                    h(Icon, {
+                      icon: 'carbon:dot-mark',
+                    })
+                  ),
+                default: () => [row.status],
+              }
+            )
           }
           if (row.kyc == 'Ditolak') {
-            return h(NTag, () => [
-              h(NIcon, () =>
-                h(Icon, {
-                  icon: 'carbon:dot-mark',
-                })
-              ),
-              row.status,
-            ])
+            return h(
+              NTag,
+              {
+                bordered: false,
+                round: true,
+                type: 'error',
+              },
+              {
+                icon: () =>
+                  h(NIcon, () =>
+                    h(Icon, {
+                      icon: 'carbon:dot-mark',
+                    })
+                  ),
+                default: () => [row.status],
+              }
+            )
           }
-          return h(NTag, () => [
-            h(NIcon, () =>
-              h(Icon, {
-                icon: 'carbon:dot-mark',
-              })
-            ),
-            row.status,
-          ])
+          return h(
+            NTag,
+            {
+              bordered: false,
+              round: true,
+              type: 'default',
+            },
+            {
+              icon: () =>
+                h(NIcon, () =>
+                  h(Icon, {
+                    icon: 'carbon:dot-mark',
+                  })
+                ),
+              default: () => [row.status],
+            }
+          )
         },
       },
       {
@@ -305,6 +358,7 @@
         <n-pagination
           v-model:page="filter.page"
           v-model:page-size="filter.limit"
+          :page-count="users?.pagination.total_page"
           :page-sizes="[10, 20, 30, 40]"
           style="margin-top: 1rem"
           show-size-picker

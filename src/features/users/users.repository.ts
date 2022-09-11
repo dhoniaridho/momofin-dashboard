@@ -8,7 +8,7 @@ export const getAllUsers = async (filter: any) => {
   const {
     data: { data: response },
   } = await http.get<UsersRespose.RootObject>('/users', {
-    ...filter,
+    params: { ...filter },
   })
   return response
 }

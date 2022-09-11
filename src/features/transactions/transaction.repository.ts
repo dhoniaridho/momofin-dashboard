@@ -5,7 +5,7 @@ export const getAllTransactions = async (filter: any) => {
   const {
     data: { data: response },
   } = await http.get<TransactionResponse.RootObject>('transactions', {
-    ...filter,
+    params: { ...filter },
   })
   return response
 }
