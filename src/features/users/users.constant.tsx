@@ -1,7 +1,7 @@
 import { Icon } from '@iconify/vue'
 import { NIcon } from 'naive-ui'
 
-export const OPTIONS = [
+const ACTIONS = [
   {
     label: 'Verifikasi Pengguna',
     key: 'verification',
@@ -36,6 +36,14 @@ export const OPTIONS = [
     },
   },
 ]
+
+export const OPTIONS = (status: string) => {
+  return ACTIONS.filter((option) => {
+    if (status == 'verified') {
+      return !['verification', 'resend'].includes(option.key)
+    } else return option
+  })
+}
 
 export const SORT = [
   {

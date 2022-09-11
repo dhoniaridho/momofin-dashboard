@@ -4,31 +4,31 @@ export interface ILoginPayload {
 }
 
 export declare module LoginResponse {
+  export interface Role {
+    _id: string
+    name: string
+  }
+
   export interface Account {
-    fullname: string
-    email: string
-    business_id: string
+    deleted_at?: any
     is_reset: boolean
-  }
-
-  export interface Data2 {
-    business_info: boolean
-    business_detail: boolean
-    personal_info: boolean
-    business_documents: boolean
-    email_verification: boolean
-  }
-
-  export interface Activation {
-    status: string
-    data: Data2
+    roles: Role[]
+    created_at: string
+    fullname: string
+    password: string
+    email: string
+    phone: string
+    verification_code: string
+    verified_at?: any
+    business_id: string
+    company_role: string
+    id: string
   }
 
   export interface Data {
     token: string
     refresh_token: string
     account: Account
-    activation: Activation
   }
 
   export interface RootObject {
