@@ -6,7 +6,7 @@ export class AuthRepository {
     try {
       const {
         data: { data: response },
-      } = await http.post<LoginResponse.RootObject>('/auth/login', payload)
+      } = await http.post<LoginResponse.RootObject>('/login', payload)
       return response
     } catch (error: any) {
       return Promise.reject(error.response.data)

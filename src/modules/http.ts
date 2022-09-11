@@ -1,3 +1,4 @@
+import { AuthService } from './../features/auth/auth.service'
 import axios from 'axios'
 import type { App } from 'vue'
 
@@ -6,6 +7,7 @@ export const http = axios.create({
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
+    token: AuthService.token,
   },
 })
 
