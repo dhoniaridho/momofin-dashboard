@@ -3,7 +3,8 @@ import jwt_decode from 'jwt-decode'
 import router from '~/router'
 
 export class AuthService {
-  private static readonly key = 'momofingo_token'
+  private static readonly key =
+    import.meta.env.TOKEN_STORAGE_KEY ?? 'emet_token'
   static signIn(token: string, remember: boolean) {
     if (remember) {
       cookie.set(this.key, token, {

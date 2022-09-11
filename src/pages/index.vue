@@ -14,6 +14,9 @@
     ArcElement,
     type ChartOptions,
   } from 'chart.js'
+  import { useQuery } from 'vue-query'
+  import { getDashboardData } from '@features/dashboard/dashboard.repository'
+  import { toIdr } from '~/helpers'
 
   ChartJS.register(
     Title,
@@ -26,6 +29,37 @@
     ArcElement
   )
 
+  const filter = ref({
+    range: [Date.now(), Date.now()],
+  })
+
+  const filterComputed = computed(() => {
+    return {
+      start_date: filter.value.range[0],
+      end_date: filter.value.range[1],
+    }
+  })
+
+  function useDashboard() {
+    return useQuery(
+      ['dashboard', filter],
+      () => {
+        return getDashboardData(filterComputed.value)
+      },
+      {
+        refetchInterval: 60000,
+        onSuccess(data) {
+          chartData.value.labels = data.products.sales.map((item) => item.name)
+          chartData.value.datasets[0].data = data.products.sales.map(
+            (item) => item.percentage
+          ) as number[]
+        },
+      }
+    )
+  }
+
+  const { data: dashboard } = useDashboard()
+
   const chartDataLines: ChartData = {
     labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     datasets: [
@@ -33,45 +67,39 @@
         label: 'Registrasi',
         borderColor: '#0067D6',
         backgroundColor: '#0067D6',
-        data: [90, 430, 90, 40, 430, 80, 400],
+        data: [dashboard.value?.users.new_register as number],
       },
       {
         label: 'Verifikasi',
         borderColor: '#008060',
         backgroundColor: '#008060',
-        data: [60, 430, 90, 40, 400, 80, 40],
+        data: [dashboard.value?.users.verified_user as number],
       },
       {
         label: 'Transaction',
         borderColor: '#D03E34',
         backgroundColor: '#D03E34',
-        data: [300, 430, 400, 40, 430, 80, 40],
+        data: [dashboard.value?.products.total_sales as number],
       },
       {
         label: 'Meterai Used',
         borderColor: '#51B2C9',
         backgroundColor: '#51B2C9',
-        data: [40, 430, 330, 200, 430, 80, 40],
+        data: [dashboard.value?.token.emet_used as number],
       },
       {
         label: 'Documents Uploaded',
         borderColor: '#E4762F',
         backgroundColor: '#E4762F',
-        data: [40, 430, 90, 400, 39, 80, 40],
+        data: [dashboard.value?.documents.doc_uploaded as number],
       },
     ],
   }
 
-  const chartData: ChartData = {
-    labels: [
-      'EMET 5',
-      'BUNDLING 5',
-      'ESGN 10',
-      'ESGN 10',
-      'BUNDLING 1',
-      'BUNDLING 10',
-      'Lainnya',
-    ],
+  const chartData = ref<ChartData>({
+    labels: dashboard.value?.products.sales.map((item) => {
+      return item.name
+    }),
     datasets: [
       {
         backgroundColor: [
@@ -92,10 +120,10 @@
           '#88B252',
           '#008060',
         ],
-        data: [90, 430, 90, 40, 430, 80, 400],
+        data: [],
       },
     ],
-  }
+  })
 
   const chartOptionsLine: ChartOptions = {
     responsive: true,
@@ -116,61 +144,63 @@
     },
   }
 
-  const statistics = [
-    {
-      label: 'Registrasi',
-      value: 100,
-    },
-    {
-      label: 'Verifikasi',
-      value: 80,
-    },
-    {
-      label: 'e-KYC',
-      value: 50,
-    },
-    {
-      label: 'Users with Full First Cycle (Sign/Met)',
-      value: 122,
-    },
-    {
-      label: 'In App Review',
-      value: 63,
-    },
-    {
-      label: 'Number of Transaction',
-      value: 72,
-    },
-    {
-      label: 'Meterai Used',
-      value: 21,
-    },
-    {
-      label: 'PERURI Sign Used',
-      value: 194,
-    },
-    {
-      label: 'Documents Uploaded',
-      value: 39,
-    },
-    {
-      label: 'Documents Completed',
-      value: 28,
-    },
-    {
-      label: 'Jumlah Top Up',
-      value: 72,
-    },
-    {
-      label: 'Total Top Up Value',
-      value: 21,
-    },
-    {
-      label: 'Unique User Top Up',
-      value: 194,
-      colspan: 4,
-    },
-  ]
+  const statistics = computed(() => {
+    return [
+      {
+        label: 'Registrasi',
+        value: dashboard.value?.users.new_register,
+      },
+      {
+        label: 'Verifikasi',
+        value: dashboard.value?.users.verified_user,
+      },
+      {
+        label: 'e-KYC',
+        value: dashboard.value?.users.ekyc_user,
+      },
+      {
+        label: 'Users with Full First Cycle (Sign/Met)',
+        value: dashboard.value?.users.first_full_cycle,
+      },
+      {
+        label: 'In App Review',
+        value: dashboard.value?.reviews.count,
+      },
+      {
+        label: 'Number of Transaction',
+        value: dashboard.value?.topup.topup_count,
+      },
+      {
+        label: 'Meterai Used',
+        value: dashboard.value?.token.emet_used,
+      },
+      {
+        label: 'PERURI Sign Used',
+        value: dashboard.value?.token.esgn_used,
+      },
+      {
+        label: 'Documents Uploaded',
+        value: dashboard.value?.documents.doc_uploaded,
+      },
+      {
+        label: 'Documents Completed',
+        value: dashboard.value?.documents.doc_completed,
+      },
+      {
+        label: 'Jumlah Top Up',
+        value: dashboard.value?.topup.topup_count,
+      },
+      {
+        label: 'Total Top Up Value',
+        value: toIdr(dashboard.value?.topup.paid_topup_value ?? 0),
+      },
+      {
+        label: 'Unique User Top Up',
+        value: dashboard.value?.topup.paid_unique_user,
+        colspan: 4,
+      },
+    ]
+  })
 </script>
 
 <template>
@@ -183,10 +213,10 @@
         <n-form label-placement="left">
           <n-form-item label="Rentang waktu" path="textareaValue">
             <n-date-picker
+              v-model:value="filter.range"
               type="datetimerange"
               :default-value="[Date.now(), Date.now()]"
               clearable
-              default-time="16:00:00"
             />
           </n-form-item>
         </n-form>
@@ -219,3 +249,8 @@
     </n-grid>
   </n-space>
 </template>
+
+<route lang="yaml">
+meta:
+  requiresAuth: true
+</route>

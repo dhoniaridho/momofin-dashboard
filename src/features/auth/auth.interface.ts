@@ -73,19 +73,3 @@ export declare module ProfileResponse {
     district_id?: number
   }
 }
-
-export declare module DomainVerificationResponse {
-  export interface Data {
-    logo: string
-    domain: string
-    nib: string
-    address: string
-    company_name: string
-  }
-
-  export interface RootObject {
-    code: number
-    success: boolean
-    data: Data
-  }
-}

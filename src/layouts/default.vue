@@ -1,6 +1,5 @@
 <script lang="ts" setup>
   import DEFAULT_AVATAR from '~/assets/images/avatar.png'
-  import DEFAULT_LOGO from '~/assets/images/logo.png'
   import { Icon } from '@iconify/vue'
   import {
     mainMenuOptions,
@@ -8,6 +7,11 @@
     profileMenuOptions,
     collapsedMenuOptions,
   } from '~/constants/menus'
+  import Icons from '../components/Icons.vue'
+  import useAuthStore from '@features/auth/auth.store'
+
+  const auth = useAuthStore()
+
   const clientWidth = ref(document.body.clientWidth)
   const activeKey = ref(null)
   const collapsed = computed(() => {
@@ -31,21 +35,21 @@
         <n-space vertical>
           <n-space
             vertical
-            style="padding: 0 16px"
+            style="padding: 0 16px; height: 5rem"
             :size="0"
             :wrap-item="false"
+            align="center"
+            justify="center"
           >
             <!-- logo -->
 
-            <router-link to="/document">
-              <n-image
-                object-fit="contain"
-                preview-disabled
-                height="64"
-                :src="DEFAULT_LOGO"
-                :img-props="{ style: { width: '100%' } }"
-                style="width: 100%"
-              />
+            <router-link to="/" style="text-decoration: none">
+              <Icons width="200" height="37" name="logo" />
+              <n-space justify="end">
+                <n-text style="text-align: end">
+                  Dashboard Tele Sales eMET
+                </n-text>
+              </n-space>
             </router-link>
           </n-space>
           <n-scrollbar style="height: 50%">
@@ -116,7 +120,7 @@
                       :size="32"
                     />
                     <n-avatar v-else round :src="DEFAULT_AVATAR" :size="32" />
-                    eMET
+                    {{ auth.user.fullname }}
                     <n-icon><Icon icon="heroicons:chevron-down" /> </n-icon>
                   </n-space>
                 </n-button>
