@@ -24,4 +24,4 @@ jobs:
       - name: Validating Types
         run: pnpm type-check
       - name: Running Unit Testing
-        run: pnpm test
+        run: pnpm test:unit
