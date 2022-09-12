@@ -57,6 +57,10 @@ meta:
       mutate(formData)
     })
   }
+
+  useHead({
+    title: `Login - ${appConfig.app.name}`,
+  })
 </script>
 
 <template>

@@ -1,22 +1,22 @@
+import { appConfig } from '~/config/app.config'
 import cookie from 'js-cookie'
 import jwt_decode from 'jwt-decode'
 import router from '~/router'
 
 export class AuthService {
-  private static readonly key =
-    import.meta.env.TOKEN_STORAGE_KEY ?? 'emet_token'
+  private static readonly key = appConfig.cookie.storage_key ?? 'emet_token'
   static signIn(token: string, remember: boolean) {
     if (remember) {
       cookie.set(this.key, token, {
         expires: 10,
         path: '/',
-        secure: true,
+        secure: appConfig.cookie.secure,
         sameSite: 'strict',
       })
     } else {
       cookie.set(this.key, token, {
         path: '/',
-        secure: true,
+        secure: appConfig.cookie.secure,
         sameSite: 'strict',
       })
     }

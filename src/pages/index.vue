@@ -17,6 +17,7 @@
   import { useQuery } from 'vue-query'
   import { getDashboardData } from '@features/dashboard/dashboard.repository'
   import { toIdr } from '~/helpers'
+  import { appConfig } from '~/config/app.config'
 
   ChartJS.register(
     Title,
@@ -203,6 +204,10 @@
         colspan: 4,
       },
     ]
+  })
+
+  useHead({
+    title: `Dashboard - ${appConfig.app.name}`,
   })
 </script>
 

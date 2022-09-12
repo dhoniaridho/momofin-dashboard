@@ -12,6 +12,8 @@
 
   const auth = useAuthStore()
 
+  auth.getAuthenticatedUser()
+
   const clientWidth = ref(document.body.clientWidth)
   const activeKey = ref(null)
   const collapsed = computed(() => {
@@ -43,12 +45,12 @@
           >
             <!-- logo -->
 
-            <router-link to="/" style="text-decoration: none">
+            <router-link to="/">
               <Icons width="200" height="37" name="logo" />
               <n-space justify="end">
-                <n-text style="text-align: end">
+                <n-button text style="text-align: end">
                   Dashboard Tele Sales eMET
-                </n-text>
+                </n-button>
               </n-space>
             </router-link>
           </n-space>
@@ -123,7 +125,7 @@
                         :size="32"
                       />
                       <n-avatar v-else round :src="DEFAULT_AVATAR" :size="32" />
-                      {{ auth.user.fullname }}
+                      {{ auth.user?.profile?.fullname }}
                       <n-icon><Icon icon="heroicons:chevron-down" /> </n-icon>
                     </n-space>
                   </n-button>

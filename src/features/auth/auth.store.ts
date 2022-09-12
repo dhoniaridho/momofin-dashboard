@@ -12,10 +12,15 @@ const useAuthStore = defineStore('useAuthStore', {
   }),
   actions: {
     async getAuthenticatedUser() {
-      const { data: response } = await http.get<ProfileResponse.Profile>(
-        `/profile`
-      )
-      return response.data
+      try {
+        const {
+          data: { data: response },
+        } = await http.get<ProfileResponse.Profile>(`/profile`)
+        this.$state.user = response
+        return response
+      } catch (e) {
+        console.error(e)
+      }
     },
   },
   getters: {

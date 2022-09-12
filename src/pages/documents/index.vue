@@ -12,6 +12,7 @@
   import { useQuery } from 'vue-query'
   import { getAllDocuments } from '~/features/documents/document.repository'
   import type { DocumentResponse } from '~/features/documents/document.interface'
+  import { appConfig } from '~/config/app.config'
 
   const filter = ref({
     search: '',
@@ -212,6 +213,10 @@
       datetime: '26 Agt 2022 - 15:42',
     },
   ]
+
+  useHead({
+    title: `Dokumen - ${appConfig.app.name}`,
+  })
 </script>
 
 <template>

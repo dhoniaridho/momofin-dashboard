@@ -7,6 +7,7 @@
   } from 'naive-ui'
   import { Icon } from '@iconify/vue'
   import { SORT } from '~/features/settings/settings.constants'
+  import { appConfig } from '~/config/app.config'
 
   const filter = ref({
     search: '',
@@ -162,6 +163,10 @@
       role: 'Customer Service',
     },
   ]
+
+  useHead({
+    title: `Settings - ${appConfig.app.name}`,
+  })
 </script>
 
 <template>
