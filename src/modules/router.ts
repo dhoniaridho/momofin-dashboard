@@ -9,7 +9,7 @@ const install = (app: App) => {
     next()
   })
 
-  router.afterEach((to, from) => {
+  router.afterEach(() => {
     Nprogress.done()
   })
   return app.use(router)

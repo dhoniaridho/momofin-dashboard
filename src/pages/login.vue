@@ -13,9 +13,11 @@ meta:
   import { AuthService } from '@features/auth/auth.service'
   import useAuthStore from '@features/auth/auth.store'
   import { appConfig } from '~/config/app.config'
+  import { useTheme } from '~/store/theme'
 
   const { error, success } = useMessage()
   const auth = useAuthStore()
+  const theme = useTheme()
 
   const formRef = ref<FormInst | null>(null)
 
@@ -71,58 +73,66 @@ meta:
         <n-space justify="center">
           <n-text> Dashboard Tele Sales eMET </n-text>
         </n-space>
-        <n-card :class="$style.card" size="medium">
-          <n-h2>Login ke Akun Anda </n-h2>
-          <n-text
-            >Silahkan masukkan email & kata sandi untuk masuk ke akun Anda
-          </n-text>
-          <div :class="$style.form__wrapper">
-            <n-form
-              ref="formRef"
-              :model="formData"
-              :rules="LoginPayloadSchema"
-              @submit.prevent="onSubmit"
-            >
-              <n-form-item path="email" label="Alamat Email">
-                <n-input v-model:value="formData.email" placeholder="Email" />
-              </n-form-item>
-              <n-form-item path="password" label="Password">
-                <n-input
-                  v-model:value="formData.password"
-                  show-password-on="mousedown"
-                  type="password"
-                  placeholder="Password"
-                />
-              </n-form-item>
-              <n-row :gutter="[0, 24]">
-                <n-col :span="24">
-                  <div style="display: flex; justify-content: flex-end">
-                    <router-link to="/forgot-password">
-                      <n-button type="primary" text tag="p">
-                        Lupa kata sandi?
-                      </n-button>
-                    </router-link>
-                  </div>
-                </n-col>
-              </n-row>
-              <n-form-item>
-                <n-space vertical :size="20" :class="$style.form__action">
-                  <n-checkbox v-model:checked="formData.remember">
-                    Ingat Saya
-                  </n-checkbox>
-                  <n-button
-                    attr-type="submit"
-                    type="primary"
-                    block
-                    :loading="isLoading"
-                  >
-                    Login
-                  </n-button>
-                </n-space>
-              </n-form-item>
-            </n-form>
-          </div>
-        </n-card>
+        <div style="position: relative">
+          <n-card :class="$style.card" size="medium">
+            <n-h2>Login ke Akun Anda </n-h2>
+            <n-text
+              >Silahkan masukkan email & kata sandi untuk masuk ke akun Anda
+            </n-text>
+            <div :class="$style.form__wrapper">
+              <n-form
+                ref="formRef"
+                :model="formData"
+                :rules="LoginPayloadSchema"
+                @submit.prevent="onSubmit"
+              >
+                <n-form-item path="email" label="Alamat Email">
+                  <n-input v-model:value="formData.email" placeholder="Email" />
+                </n-form-item>
+                <n-form-item path="password" label="Password">
+                  <n-input
+                    v-model:value="formData.password"
+                    show-password-on="click"
+                    type="password"
+                    placeholder="Password"
+                  />
+                </n-form-item>
+                <n-row :gutter="[0, 24]">
+                  <n-col :span="24"> </n-col>
+                </n-row>
+                <n-form-item>
+                  <n-space vertical :size="20" :class="$style.form__action">
+                    <n-checkbox v-model:checked="formData.remember">
+                      Ingat Saya
+                    </n-checkbox>
+                    <n-button
+                      attr-type="submit"
+                      type="primary"
+                      block
+                      :loading="isLoading"
+                    >
+                      Login
+                    </n-button>
+                  </n-space>
+                </n-form-item>
+              </n-form>
+            </div>
+          </n-card>
+          <n-tooltip trigger="hover">
+            <template #trigger>
+              <n-button
+                style="position: absolute; right: 1rem; top: 1rem"
+                circle
+                @click="theme.toggleTheme"
+              >
+                <span v-if="theme.currentTheme"> 🌞 </span>
+                <span v-else> 🌒 </span>
+              </n-button>
+            </template>
+            <span v-if="theme.currentTheme"> Mode Terang </span>
+            <span v-else> Mode Gelap </span>
+          </n-tooltip>
+        </div>
       </div>
     </n-space>
   </n-card>
