@@ -9,6 +9,7 @@
   import { OPTIONS } from '@features/users/users.constant'
   import { useQuery } from 'vue-query'
   import { getAllTransactions } from '@features/transactions/transaction.repository'
+  import { appConfig } from '~/config/app.config'
 
   const filter = ref({
     search: '',
@@ -183,6 +184,10 @@
         status: transaction.status.toLowerCase(),
       }
     })
+  })
+
+  useHead({
+    title: `Transaksi - ${appConfig.app.name}`,
   })
 </script>
 

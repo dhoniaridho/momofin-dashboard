@@ -97,24 +97,21 @@ export const altMenuOptions: MenuOption[] = [
 
 export const profileMenuOptions: MenuOption[] = [
   {
-    label: renderRoute({ to: '/profile' }, 'Profil'),
-    key: 'profil',
-  },
-  {
     label: () => {
       const theme = useTheme()
-      return <div onClick={theme.toggleTheme}>Ganti Tema</div>
+      return <div onClick={theme.toggleTheme}>Ubah Tema</div>
     },
     key: 'change theme',
     icon: () => {
       const theme = useTheme()
       if (!theme.currentTheme) {
-        return <MoonIcon />
+        return <MoonIcon onClick={theme.toggleTheme} />
       }
-      return <SunIcon />
+      return <SunIcon onClick={theme.toggleTheme} />
     },
   },
   {
+    icon: () => <Icons name="logout" />,
     label: renderRoute({ to: '/logout' }, 'Logout'),
     key: 'logout',
   },

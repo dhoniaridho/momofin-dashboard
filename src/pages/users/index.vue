@@ -19,6 +19,7 @@
     deleteUserById,
   } from '@features/users/users.repository'
   import { toIdr } from '~/helpers'
+  import { appConfig } from '~/config/app.config'
 
   const { success, error } = useMessage()
 
@@ -322,6 +323,10 @@
   const onRequestDelete = () => {
     execDelete()
   }
+
+  useHead({
+    title: `Pengguna - ${appConfig.app.name}`,
+  })
 </script>
 
 <template>
