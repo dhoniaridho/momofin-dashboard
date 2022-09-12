@@ -47,82 +47,85 @@
         return getDashboardData(filterComputed.value)
       },
       {
-        refetchInterval: 60000,
+        refetchInterval: 30000,
         onSuccess(data) {
           chartData.value.labels = data.products.sales.map((item) => item.name)
-          chartData.value.datasets[0].data = data.products.sales.map(
-            (item) => item.percentage
-          ) as number[]
         },
       }
     )
   }
 
-  const { data: dashboard } = useDashboard()
+  const { data: dashboard, dataUpdatedAt } = useDashboard()
 
-  const chartDataLines: ChartData = {
-    labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-    datasets: [
-      {
-        label: 'Registrasi',
-        borderColor: '#0067D6',
-        backgroundColor: '#0067D6',
-        data: [dashboard.value?.users.new_register as number],
-      },
-      {
-        label: 'Verifikasi',
-        borderColor: '#008060',
-        backgroundColor: '#008060',
-        data: [dashboard.value?.users.verified_user as number],
-      },
-      {
-        label: 'Transaction',
-        borderColor: '#D03E34',
-        backgroundColor: '#D03E34',
-        data: [dashboard.value?.products.total_sales as number],
-      },
-      {
-        label: 'Meterai Used',
-        borderColor: '#51B2C9',
-        backgroundColor: '#51B2C9',
-        data: [dashboard.value?.token.emet_used as number],
-      },
-      {
-        label: 'Documents Uploaded',
-        borderColor: '#E4762F',
-        backgroundColor: '#E4762F',
-        data: [dashboard.value?.documents.doc_uploaded as number],
-      },
-    ],
-  }
+  const chartDataLines = computed<ChartData>(() => {
+    return {
+      labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      datasets: [
+        {
+          label: 'Registrasi',
+          borderColor: '#0067D6',
+          backgroundColor: '#0067D6',
+          data: [dashboard.value?.users.new_register as number],
+        },
+        {
+          label: 'Verifikasi',
+          borderColor: '#008060',
+          backgroundColor: '#008060',
+          data: [dashboard.value?.users.verified_user as number],
+        },
+        {
+          label: 'Transaction',
+          borderColor: '#D03E34',
+          backgroundColor: '#D03E34',
+          data: [dashboard.value?.products.total_sales as number],
+        },
+        {
+          label: 'Meterai Used',
+          borderColor: '#51B2C9',
+          backgroundColor: '#51B2C9',
+          data: [dashboard.value?.token.emet_used as number],
+        },
+        {
+          label: 'Documents Uploaded',
+          borderColor: '#E4762F',
+          backgroundColor: '#E4762F',
+          data: [dashboard.value?.documents.doc_uploaded as number],
+        },
+      ],
+    }
+  })
 
-  const chartData = ref<ChartData>({
-    labels: dashboard.value?.products.sales.map((item) => {
-      return item.name
-    }),
-    datasets: [
-      {
-        backgroundColor: [
-          '#0067D6',
-          '#51B2C9',
-          '#DD3093',
-          '#E4762F',
-          '#F2AC3C',
-          '#88B252',
-          '#008060',
-        ],
-        borderColor: [
-          '#0067D6',
-          '#51B2C9',
-          '#DD3093',
-          '#E4762F',
-          '#F2AC3C',
-          '#88B252',
-          '#008060',
-        ],
-        data: [],
-      },
-    ],
+  const chartData = computed<ChartData>(() => {
+    return {
+      labels: dashboard.value?.products.sales.map((item) => {
+        return item.name
+      }),
+      datasets: [
+        {
+          backgroundColor: [
+            '#0067D6',
+            '#51B2C9',
+            '#DD3093',
+            '#E4762F',
+            '#F2AC3C',
+            '#88B252',
+            '#008060',
+          ],
+          borderColor: [
+            '#0067D6',
+            '#51B2C9',
+            '#DD3093',
+            '#E4762F',
+            '#F2AC3C',
+            '#88B252',
+            '#008060',
+          ],
+          data: dashboard.value?.products?.sales.map(
+            (item) => item.percentage
+          ) as number[],
+        },
+      ],
+    }
   })
 
   const chartOptionsLine: ChartOptions = {
@@ -219,9 +222,15 @@
               clearable
             />
           </n-form-item>
+          <n-space justify="end">
+            <n-text v-if="dataUpdatedAt">
+              Terakhir di update <n-time :time="dataUpdatedAt"> </n-time
+            ></n-text>
+          </n-space>
         </n-form>
       </template>
     </n-page-header>
+
     <n-grid cols="1 400:1 600:2" :x-gap="40">
       <n-grid-item>
         <Line
@@ -243,7 +252,9 @@
         :span="item?.colspan"
       >
         <n-card style="text-align: center" :title="item.label" hoverable>
-          {{ item.value }}
+          <n-h5>
+            {{ item.value }}
+          </n-h5>
         </n-card>
       </n-grid-item>
     </n-grid>
