@@ -73,7 +73,9 @@ meta:
         <n-space justify="center">
           <n-text> Dashboard Tele Sales eMET </n-text>
         </n-space>
-        <div style="position: relative">
+        <div
+          style="position: relative; width: fit-content; margin-inline: auto"
+        >
           <n-card :class="$style.card" size="medium">
             <n-h2>Login ke Akun Anda </n-h2>
             <n-text
@@ -147,6 +149,8 @@ meta:
   }
   .card {
     max-width: 500px;
+    margin: auto;
+    position: relative;
   }
   .card__brand {
     margin: auto;

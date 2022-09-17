@@ -1,5 +1,5 @@
 import { http } from '~/modules/http'
-import type { UserDetailResponse, UsersRespose } from './users.interface'
+import type { UserDetailResponse, UsersResponse } from './users.interface'
 
 /**
  * Get all users from resource
@@ -7,7 +7,7 @@ import type { UserDetailResponse, UsersRespose } from './users.interface'
 export const getAllUsers = async (filter: any) => {
   const {
     data: { data: response },
-  } = await http.get<UsersRespose.RootObject>('/users', {
+  } = await http.get<UsersResponse.RootObject>('/users', {
     params: { ...filter },
   })
   return response
@@ -29,7 +29,7 @@ export const getUserById = async (id: string) => {
 export const deleteUserById = async (id: string) => {
   const {
     data: { data: response },
-  } = await http.delete<UsersRespose.RootObject>(`users/${id}`)
+  } = await http.delete<UsersResponse.RootObject>(`users/${id}`)
   return response
 }
 

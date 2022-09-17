@@ -39,7 +39,7 @@ const ACTIONS = [
 
 export const OPTIONS = (status: string) => {
   return ACTIONS.filter((option) => {
-    if (status == 'verified') {
+    if (status == 'Verified') {
       return !['verification', 'resend'].includes(option.key)
     } else return option
   })
@@ -67,3 +67,14 @@ export const SORT = [
     value: 'Last 1 year',
   },
 ]
+
+export const STATUS = (text: string) => {
+  switch (text) {
+    case 'Verified':
+      return 'success'
+    case 'Registered':
+      return 'primary'
+    case 'Unregistered':
+      return 'default'
+  }
+}
