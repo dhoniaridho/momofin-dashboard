@@ -10,6 +10,8 @@
   import { useQuery } from 'vue-query'
   import { getAllTransactions } from '@features/transactions/transaction.repository'
   import { appConfig } from '~/config/app.config'
+  import { STATUS } from '~/features/transactions/transaction.constants'
+  import type { TransactionResponse } from '~/features/transactions/transaction.interface'
 
   const filter = ref({
     search: '',
@@ -42,7 +44,7 @@
   const { data: transactions, isLoading: isTransactionsLoading } =
     useTransactions()
 
-  const createColumns = (): DataTableColumns<any> => {
+  const createColumns = (): DataTableColumns<TransactionResponse.Datum> => {
     return [
       {
         title: 'Waktu & Tanggal',
@@ -68,62 +70,10 @@
         title: 'Payment Status',
         key: 'status',
         render: (row) => {
-          if (row.status == 'paid') {
-            return h(
-              NTag,
-              {
-                type: 'primary',
-                round: true,
-                bordered: false,
-              },
-              {
-                icon: () =>
-                  h(NIcon, () =>
-                    h(Icon, {
-                      icon: 'carbon:dot-mark',
-                    })
-                  ),
-                default: () => [row.status],
-              }
-            )
-          }
-          if (row.status == 'expired') {
-            return h(
-              NTag,
-              {
-                round: true,
-                bordered: false,
-              },
-              {
-                icon: () =>
-                  h(NIcon, () =>
-                    h(Icon, {
-                      icon: 'carbon:dot-mark',
-                    })
-                  ),
-                default: () => [row.status],
-              }
-            )
-          }
-          if (row.status == 'pending') {
-            return h(
-              NTag,
-              { type: 'warning', round: true, bordered: false },
-              {
-                icon: () =>
-                  h(NIcon, () =>
-                    h(Icon, {
-                      icon: 'carbon:dot-mark',
-                    })
-                  ),
-                default: () => [row.status],
-              }
-            )
-          }
           return h(
             NTag,
             {
-              type: 'info',
+              type: STATUS(row.status),
               round: true,
               bordered: false,
             },
@@ -134,7 +84,7 @@
                     icon: 'carbon:dot-mark',
                   })
                 ),
-              default: () => [row.status],
+              default: () => [row.status.toLocaleUpperCase('id')],
             }
           )
         },
