@@ -1,7 +1,7 @@
 export const STATUS = (text: string) => {
   switch (text) {
     case 'paid':
-      return 'primary'
+      return 'success'
     case 'expired':
       return 'error'
     case 'pending':
