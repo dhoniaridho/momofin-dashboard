@@ -156,7 +156,7 @@
           </template>
         </n-input>
         <div>
-          <n-date-picker v-model:value="filter.periode" type="daterange" />
+          <n-date-picker v-model:value="filter.periode" type="datetimerange" />
         </div>
       </n-space>
       <div style="overflow: auto; white-space: pre">
