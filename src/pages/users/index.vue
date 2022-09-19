@@ -369,7 +369,7 @@
     v-model:show="isShowQuickDetail"
     preset="card"
     title="Profil Pengguna"
-    style="max-width: 40rem"
+    style="max-width: 43rem"
   >
     <template #header-extra>
       <n-dropdown
@@ -387,8 +387,8 @@
       </n-dropdown>
     </template>
     <n-space vertical>
-      <n-grid :cols="3">
-        <n-gi>
+      <n-grid cols="1 500:4 900:4" :y-gap="10" item-responsive>
+        <n-gi span="2">
           <n-space vertical>
             <n-text strong> {{ user?.profile.fullname }} </n-text>
             <n-text> {{ user?.profile.email }}</n-text>
