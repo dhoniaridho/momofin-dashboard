@@ -210,13 +210,15 @@
               />
             </div>
             <n-space justify="start">
-              <n-pagination
-                v-model:page="filter.page"
-                v-model:page-size="filter.limit"
-                :page-sizes="[10, 20, 30, 40]"
-                style="margin-top: 1rem"
-                show-size-picker
-              />
+              <n-scrollbar x-scrollable style="margin-top: 1rem">
+                <n-pagination
+                  v-model:page="filter.page"
+                  v-model:page-size="filter.limit"
+                  :page-sizes="[10, 20, 30, 40]"
+                  style="margin-top: 1rem"
+                  show-size-picker
+                />
+              </n-scrollbar>
             </n-space>
           </main>
         </n-tab-pane>
@@ -252,13 +254,15 @@
               />
             </div>
             <n-space justify="start">
-              <n-pagination
-                v-model:page="filter.page"
-                v-model:page-size="filter.limit"
-                :page-sizes="[10, 20, 30, 40]"
-                style="margin-top: 1rem"
-                show-size-picker
-              />
+              <n-scrollbar x-scrollable style="margin-top: 1rem">
+                <n-pagination
+                  v-model:page="filter.page"
+                  v-model:page-size="filter.limit"
+                  :page-sizes="[10, 20, 30, 40]"
+                  style="margin-top: 1rem"
+                  show-size-picker
+                />
+              </n-scrollbar>
             </n-space>
           </main>
         </n-tab-pane>
