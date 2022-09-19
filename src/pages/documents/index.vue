@@ -8,7 +8,7 @@
     type DataTableColumns,
   } from 'naive-ui'
   import { Icon } from '@iconify/vue'
-  import { SORT } from '@features/documents/document.constant'
+  import { SORT, STATUS } from '@features/documents/document.constant'
   import { useQuery } from 'vue-query'
   import { getAllDocuments } from '~/features/documents/document.repository'
   import type { DocumentResponse } from '~/features/documents/document.interface'
@@ -72,56 +72,12 @@
         title: 'Status',
         key: 'status',
         render: (row) => {
-          if (row.status == 'completed') {
-            return h(
-              NTag,
-              { round: true, bordered: false, type: 'success' },
-              {
-                icon: () =>
-                  h(NIcon, () =>
-                    h(Icon, {
-                      icon: 'carbon:dot-mark',
-                    })
-                  ),
-                default: () => [row.status],
-              }
-            )
-          }
-          if (row.status == 'processing') {
-            return h(
-              NTag,
-              { round: true, bordered: false },
-              {
-                icon: () =>
-                  h(NIcon, () =>
-                    h(Icon, {
-                      icon: 'carbon:dot-mark',
-                    })
-                  ),
-                default: () => [row.status],
-              }
-            )
-          }
-          if (row.status == 'draft') {
-            return h(
-              NTag,
-              { round: true, type: 'warning', bordered: false },
-              {
-                icon: () =>
-                  h(NIcon, () =>
-                    h(Icon, {
-                      icon: 'carbon:dot-mark',
-                    })
-                  ),
-                default: () => [row.status],
-              }
-            )
-          }
           return h(
             NTag,
             {
-              type: 'info',
+              type: STATUS(row.status),
               bordered: false,
+              round: true,
             },
             {
               icon: () =>
@@ -130,7 +86,7 @@
                     icon: 'carbon:dot-mark',
                   })
                 ),
-              default: () => [row.status],
+              default: () => [row.status.toUpperCase()],
             }
           )
         },
@@ -283,16 +239,7 @@
             <tr>
               <td style="width: 20%">Tipe</td>
               <td>
-                <n-tag
-                  v-if="activity.type == 'open' || activity.type == 'upload'"
-                  type="default"
-                >
-                  {{ activity.type }}
-                </n-tag>
-                <n-tag v-else-if="activity.type == 'finished'" type="success">
-                  {{ activity.type }}
-                </n-tag>
-                <n-tag v-else type="info">
+                <n-tag type="info">
                   {{ activity.type }}
                 </n-tag>
               </td>

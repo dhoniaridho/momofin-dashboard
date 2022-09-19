@@ -77,4 +77,17 @@ export default defineConfig({
       ),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        banner: `/*!
+        * ${require('./package.json').name} v${
+          require('./package.json').version
+        }
+        * Build ${new Date().toLocaleString()}
+        * (c) ${new Date().getFullYear()} ${require('./package.json').author}
+        */`,
+      },
+    },
+  },
 })

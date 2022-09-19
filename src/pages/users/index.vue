@@ -9,7 +9,7 @@
     type DataTableColumns,
   } from 'naive-ui'
   import { Icon } from '@iconify/vue'
-  import { OPTIONS, SORT } from '@features/users/users.constant'
+  import { OPTIONS, SORT, STATUS } from '@features/users/users.constant'
   import { useMutation, useQuery } from 'vue-query'
   import {
     getAllUsers,
@@ -20,6 +20,7 @@
   } from '@features/users/users.repository'
   import { toIdr } from '~/helpers'
   import { appConfig } from '~/config/app.config'
+  import type { UsersResponse } from '~/features/users/users.interface'
 
   const { success, error } = useMessage()
 
@@ -105,7 +106,7 @@
   const { mutate: execResend, isLoading: isResending } = useResendEmail()
   const { mutate: execDelete, isLoading: isDeleting } = useDeleteUser()
 
-  const createColumns = (): DataTableColumns<any> => {
+  const createColumns = (): DataTableColumns<UsersResponse.User> => {
     return [
       {
         title: 'Tanggal Registrasi',
@@ -123,49 +124,12 @@
         title: 'Status Akun',
         key: 'status',
         render: (row) => {
-          if (row.status == 'verified') {
-            return h(
-              NTag,
-              {
-                bordered: false,
-                round: true,
-                type: 'success',
-              },
-              {
-                icon: () =>
-                  h(NIcon, () =>
-                    h(Icon, {
-                      icon: 'carbon:dot-mark',
-                    })
-                  ),
-                default: () => [row.status],
-              }
-            )
-          }
-          if (row.status == 'suspended') {
-            return h(
-              NTag,
-              {
-                bordered: false,
-                round: true,
-                type: 'error',
-              },
-              {
-                icon: () =>
-                  h(NIcon, () =>
-                    h(Icon, {
-                      icon: 'carbon:dot-mark',
-                    })
-                  ),
-                default: () => [row.status],
-              }
-            )
-          }
           return h(
             NTag,
             {
               bordered: false,
               round: true,
+              type: STATUS(row.account_status),
             },
             {
               icon: () =>
@@ -174,7 +138,7 @@
                     icon: 'carbon:dot-mark',
                   })
                 ),
-              default: () => row.status,
+              default: () => row.account_status.toUpperCase(),
             }
           )
         },
@@ -183,50 +147,12 @@
         title: 'Status e-KYC',
         key: 'kyc',
         render: (row) => {
-          if (row.kyc == 'Aktif') {
-            return h(
-              NTag,
-              {
-                bordered: false,
-                round: true,
-                type: 'success',
-              },
-              {
-                icon: () =>
-                  h(NIcon, () =>
-                    h(Icon, {
-                      icon: 'carbon:dot-mark',
-                    })
-                  ),
-                default: () => [row.status],
-              }
-            )
-          }
-          if (row.kyc == 'Ditolak') {
-            return h(
-              NTag,
-              {
-                bordered: false,
-                round: true,
-                type: 'error',
-              },
-              {
-                icon: () =>
-                  h(NIcon, () =>
-                    h(Icon, {
-                      icon: 'carbon:dot-mark',
-                    })
-                  ),
-                default: () => [row.status],
-              }
-            )
-          }
           return h(
             NTag,
             {
               bordered: false,
               round: true,
-              type: 'default',
+              type: STATUS(row.certificate_status),
             },
             {
               icon: () =>
@@ -235,7 +161,7 @@
                     icon: 'carbon:dot-mark',
                   })
                 ),
-              default: () => [row.status],
+              default: () => [row.certificate_status.toUpperCase()],
             }
           )
         },
@@ -264,7 +190,7 @@
               DropDown,
               {
                 trigger: 'click',
-                options: OPTIONS(row.status),
+                options: OPTIONS(row.account_status),
                 onSelect: onSelectDropdown,
                 onClick() {
                   selectedUUID.value = row.id
@@ -398,8 +324,9 @@
     style="max-width: 40rem"
   >
     <n-text>
-      Apakah Anda yakin ingin menghapus data pengguna
-      {{ user?.profile?.fullname }} secara permanen dari sistem
+      Apakah Anda yakin ingin menghapus data pengguna “{{
+        user?.profile?.fullname
+      }}” secara permanen dari sistem
     </n-text>
     <template #action>
       <n-space justify="end">
@@ -419,7 +346,9 @@
     style="max-width: 40rem"
   >
     <n-text>
-      Apakah Anda yakin ingin memverifikasi email pengguna “Dianne Russell”
+      Apakah Anda yakin ingin memverifikasi email pengguna “{{
+        user?.profile?.fullname
+      }}”
     </n-text>
     <template #action>
       <n-space justify="end">
@@ -440,7 +369,7 @@
     v-model:show="isShowQuickDetail"
     preset="card"
     title="Profil Pengguna"
-    style="max-width: 40rem"
+    style="max-width: 43rem"
   >
     <template #header-extra>
       <n-dropdown
@@ -458,8 +387,8 @@
       </n-dropdown>
     </template>
     <n-space vertical>
-      <n-grid :cols="3">
-        <n-gi>
+      <n-grid cols="1 500:4 900:4" :y-gap="10" item-responsive>
+        <n-gi span="2">
           <n-space vertical>
             <n-text strong> {{ user?.profile.fullname }} </n-text>
             <n-text> {{ user?.profile.email }}</n-text>
@@ -468,26 +397,34 @@
         <n-gi>
           <n-space vertical>
             <n-text> Status Akun </n-text>
-            <n-tag type="success" :bordered="false">
+            <n-tag
+              round
+              :type="STATUS(user?.profile.account_status  as string)"
+              :bordered="false"
+            >
               <template #icon>
                 <n-icon>
                   <Iconify icon="carbon:dot-mark" />
                 </n-icon>
               </template>
-              {{ user?.profile.account_status }}
+              {{ user?.profile.account_status.toUpperCase() }}
             </n-tag>
           </n-space>
         </n-gi>
         <n-gi>
           <n-space vertical>
             <n-text> Status e-KYC </n-text>
-            <n-tag type="success" :bordered="false">
+            <n-tag
+              round
+              :type="STATUS(user?.profile.certificate_status as string)"
+              :bordered="false"
+            >
               <template #icon>
                 <n-icon>
                   <Iconify icon="carbon:dot-mark" />
                 </n-icon>
               </template>
-              {{ user?.profile.certificate_status }}
+              {{ user?.profile.certificate_status.toUpperCase() }}
             </n-tag>
           </n-space>
         </n-gi>

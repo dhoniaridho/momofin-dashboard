@@ -39,17 +39,13 @@ const ACTIONS = [
 
 export const OPTIONS = (status: string) => {
   return ACTIONS.filter((option) => {
-    if (status == 'verified') {
+    if (status == 'Verified') {
       return !['verification', 'resend'].includes(option.key)
     } else return option
   })
 }
 
 export const SORT = [
-  {
-    label: 'Last 1 days',
-    value: 'Last 1 days',
-  },
   {
     label: 'Last 7 days',
     value: 'Last 7 days',
@@ -58,12 +54,15 @@ export const SORT = [
     label: 'Last 1 month',
     value: 'Last 1 month',
   },
-  {
-    label: 'Last 1 year',
-    value: 'Last 1 year',
-  },
-  {
-    label: 'Last 5 year',
-    value: 'Last 1 year',
-  },
 ]
+
+export const STATUS = (text: string) => {
+  switch (text) {
+    case 'Verified':
+      return 'success'
+    case 'Registered':
+      return 'primary'
+    case 'Unregistered':
+      return 'default'
+  }
+}

@@ -1,4 +1,4 @@
-export declare module UsersRespose {
+export declare module UsersResponse {
   export interface User {
     id: string
     fullname: string

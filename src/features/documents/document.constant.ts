@@ -20,3 +20,14 @@ export const SORT = [
     value: 'Last 1 year',
   },
 ]
+
+export const STATUS = (text: string) => {
+  switch (text) {
+    case 'completed':
+      return 'success'
+    case 'draft':
+      return 'info'
+    case 'processing':
+      return 'primary'
+  }
+}

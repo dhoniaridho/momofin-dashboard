@@ -250,11 +250,28 @@
         />
       </n-grid-item>
     </n-grid>
-    <n-grid cols="1 500:2 900:4" :x-gap="20" :y-gap="20">
+    <n-grid cols="1 500:2 900:5" :x-gap="20" :y-gap="20">
       <n-grid-item
-        v-for="item in statistics"
+        v-for="item in statistics.slice(0, 10)"
         :key="item.label"
         :span="item?.colspan"
+        align="self-stretch"
+      >
+        <n-card
+          style="text-align: center; height: 100%"
+          :title="item.label"
+          hoverable
+        >
+          <n-h5>
+            {{ item.value }}
+          </n-h5>
+        </n-card>
+      </n-grid-item>
+    </n-grid>
+    <n-grid cols="1 500:2 900:3" :x-gap="20" :y-gap="20">
+      <n-grid-item
+        v-for="item in statistics.slice(10, statistics.length)"
+        :key="item.label"
       >
         <n-card style="text-align: center" :title="item.label" hoverable>
           <n-h5>
