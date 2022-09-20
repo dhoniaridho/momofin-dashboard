@@ -138,7 +138,7 @@
                     icon: 'carbon:dot-mark',
                   })
                 ),
-              default: () => row.account_status.toUpperCase(),
+              default: () => row.account_status,
             }
           )
         },
@@ -161,7 +161,7 @@
                     icon: 'carbon:dot-mark',
                   })
                 ),
-              default: () => [row.certificate_status.toUpperCase()],
+              default: () => [row.certificate_status],
             }
           )
         },
@@ -270,11 +270,15 @@
           </template>
         </n-input>
         <n-space>
-          <n-select
-            v-model:value="filter.periode"
-            style="width: 15rem"
-            :options="SORT"
-          />
+          <n-form label-placement="left">
+            <n-form-item label="Sort:">
+              <n-select
+                v-model:value="filter.periode"
+                style="width: 15rem"
+                :options="SORT"
+              />
+            </n-form-item>
+          </n-form>
         </n-space>
       </n-space>
       <div style="overflow: auto; white-space: pre">
@@ -409,7 +413,7 @@
                   <Iconify icon="carbon:dot-mark" />
                 </n-icon>
               </template>
-              {{ user?.profile.account_status.toUpperCase() }}
+              {{ user?.profile.account_status }}
             </n-tag>
           </n-space>
         </n-gi>
@@ -426,7 +430,7 @@
                   <Iconify icon="carbon:dot-mark" />
                 </n-icon>
               </template>
-              {{ user?.profile.certificate_status.toUpperCase() }}
+              {{ user?.profile.certificate_status }}
             </n-tag>
           </n-space>
         </n-gi>

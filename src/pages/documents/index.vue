@@ -54,7 +54,7 @@
         key: 'signers.length',
         render: (row) => {
           return h(NSpace, { vertical: true }, () => [
-            h(NText, () => row.signer_count),
+            h(NText, () => `${row.signer_count} Pihak`),
 
             h(
               NTag,
@@ -86,13 +86,14 @@
                     icon: 'carbon:dot-mark',
                   })
                 ),
-              default: () => [row.status.toUpperCase()],
+              default: () => [row.status],
             }
           )
         },
       },
 
       {
+        title: 'Aksi',
         key: 'action',
         render: () => {
           return h(
@@ -106,7 +107,7 @@
             },
             () => {
               return h(Icon, {
-                icon: 'heroicons:chevron-right',
+                icon: 'heroicons:eye',
               })
             }
           )
@@ -190,11 +191,15 @@
           </template>
         </n-input>
         <n-space>
-          <n-select
-            v-model:value="filter.periode"
-            style="width: 15rem"
-            :options="SORT"
-          />
+          <n-form label-placement="left">
+            <n-form-item label="Sort:">
+              <n-select
+                v-model:value="filter.periode"
+                style="width: 15rem"
+                :options="SORT"
+              />
+            </n-form-item>
+          </n-form>
         </n-space>
       </n-space>
       <div style="overflow: auto; white-space: pre">
