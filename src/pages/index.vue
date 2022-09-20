@@ -209,6 +209,10 @@
   useHead({
     title: `Dashboard - ${appConfig.app.name}`,
   })
+
+  const disablePreviousDate = (ts: number) => {
+    return ts > Date.now()
+  }
 </script>
 
 <template>
@@ -224,6 +228,7 @@
               v-model:value="filter.range"
               type="datetimerange"
               :default-value="[Date.now(), Date.now()]"
+              :is-date-disabled="disablePreviousDate"
               clearable
             />
           </n-form-item>

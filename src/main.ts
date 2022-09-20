@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import 'virtual:svg-icons-register'
+import '~/assets/css/main.css'
 
 import App from './App.vue'
 import { Icon } from '@iconify/vue'

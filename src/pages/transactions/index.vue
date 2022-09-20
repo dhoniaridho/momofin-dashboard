@@ -84,7 +84,7 @@
                     icon: 'carbon:dot-mark',
                   })
                 ),
-              default: () => [row.status.toLocaleUpperCase('id')],
+              default: () => [row.status],
             }
           )
         },
@@ -155,9 +155,14 @@
             </n-icon>
           </template>
         </n-input>
-        <div>
-          <n-date-picker v-model:value="filter.periode" type="datetimerange" />
-        </div>
+        <n-form label-placement="left">
+          <n-form-item label="Rentang waktu:">
+            <n-date-picker
+              v-model:value="filter.periode"
+              type="datetimerange"
+            />
+          </n-form-item>
+        </n-form>
       </n-space>
       <div style="overflow: auto; white-space: pre">
         <n-data-table
