@@ -104,7 +104,7 @@
             },
             () => {
               return h(Icon, {
-                icon: 'heroicons:chevron-right',
+                icon: 'heroicons:eye',
               })
             }
           )
