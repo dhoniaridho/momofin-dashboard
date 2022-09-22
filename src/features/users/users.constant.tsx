@@ -47,12 +47,16 @@ export const OPTIONS = (status: string) => {
 
 export const SORT = [
   {
-    label: 'Last 7 days',
-    value: 'Last 7 days',
+    label: '30 hari terakhir',
+    value: '30d',
   },
   {
-    label: 'Last 1 month',
-    value: 'Last 1 month',
+    label: '7 hari terakhir',
+    value: '7d',
+  },
+  {
+    label: 'Custom',
+    value: '30custom',
   },
 ]
 

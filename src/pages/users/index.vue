@@ -55,8 +55,9 @@
         return verifyUserById(selectedUUID.value)
       },
       {
-        onSuccess() {
-          success('Berhasil memverifikasi pengguna')
+        onSuccess({ msg }) {
+          success(msg)
+          refetchUsers.value()
           isShowVerificationModal.value = false
         },
         onError: ({ data }) => {
@@ -72,9 +73,9 @@
         return resendEmailVerification(selectedUUID.value)
       },
       {
-        onSuccess() {
+        onSuccess({ msg }) {
           isShowResend.value = false
-          success('Berhasil Mengirim Ulang Email')
+          success(msg)
         },
         onError() {
           error('Gagal Mengirim Ulang Email')
@@ -89,18 +90,23 @@
         return deleteUserById(selectedUUID.value)
       },
       {
-        onSuccess() {
-          isShowResend.value = false
-          success('Berhasil Mengirim Ulang Email')
+        onSuccess({ msg }) {
+          isShowDeleteModal.value = false
+          success(msg)
+          refetchUsers.value()
         },
         onError() {
-          error('Gagal Mengirim Ulang Email')
+          error('Gagal menghapus user')
         },
       }
     )
   }
 
-  const { data: users, isLoading: isLoadingUsers } = useUsers()
+  const {
+    data: users,
+    isLoading: isLoadingUsers,
+    refetch: refetchUsers,
+  } = useUsers()
   const { data: user, refetch: refetchUserDetail } = useUsersDetail()
   const { mutate: execVerify, isLoading: isVerifiying } = useVerifyUser()
   const { mutate: execResend, isLoading: isResending } = useResendEmail()
@@ -167,6 +173,7 @@
         },
       },
       {
+        title: 'Aksi',
         key: 'action',
         render: (row) => {
           return h(Flex, () => [

@@ -18,6 +18,9 @@
   import { getDashboardData } from '@features/dashboard/dashboard.repository'
   import { toIdr } from '~/helpers'
   import { appConfig } from '~/config/app.config'
+  import Datepicker from '@vuepic/vue-datepicker'
+  import '@vuepic/vue-datepicker/dist/main.css'
+  import { useTheme } from '~/store/theme'
 
   ChartJS.register(
     Title,
@@ -33,6 +36,8 @@
   const filter = ref({
     range: [Date.now(), Date.now()],
   })
+
+  const theme = useTheme()
 
   const filterComputed = computed(() => {
     return {
@@ -171,7 +176,7 @@
         value: dashboard.value?.reviews.count,
       },
       {
-        label: 'Number of Transaction',
+        label: 'Number of Top-up',
         value: dashboard.value?.topup.topup_count,
       },
       {
@@ -191,7 +196,7 @@
         value: dashboard.value?.documents.doc_completed,
       },
       {
-        label: 'Jumlah Top Up',
+        label: 'Number of Paid Topup',
         value: dashboard.value?.topup.topup_count,
       },
       {
@@ -206,13 +211,13 @@
     ]
   })
 
+  const maxDate = computed(() => {
+    return new Date()
+  })
+
   useHead({
     title: `Dashboard - ${appConfig.app.name}`,
   })
-
-  const disablePreviousDate = (ts: number) => {
-    return ts > Date.now()
-  }
 </script>
 
 <template>
@@ -224,13 +229,13 @@
       <template #extra>
         <n-form label-placement="left">
           <n-form-item label="Rentang waktu" path="textareaValue">
-            <n-date-picker
-              v-model:value="filter.range"
-              type="datetimerange"
-              :default-value="[Date.now(), Date.now()]"
-              :is-date-disabled="disablePreviousDate"
-              clearable
-            />
+            <Datepicker
+              v-model="filter.range"
+              :max-date="maxDate"
+              range
+              :dark="theme.currentTheme"
+              placeholder="Pilih Rentang waktu"
+            ></Datepicker>
           </n-form-item>
           <n-space justify="end">
             <n-text v-if="dataUpdatedAt">

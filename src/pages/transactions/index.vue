@@ -12,11 +12,15 @@
   import { appConfig } from '~/config/app.config'
   import { STATUS } from '~/features/transactions/transaction.constants'
   import type { TransactionResponse } from '~/features/transactions/transaction.interface'
+  import Datepicker from '@vuepic/vue-datepicker'
+  import '@vuepic/vue-datepicker/dist/main.css'
+  import { useTheme } from '~/store/theme'
 
+  const theme = useTheme()
   const filter = ref({
     search: '',
     page: 1,
-    periode: [Date.now(), Date.now()],
+    period: [],
     status: '',
     limit: 10,
   })
@@ -25,8 +29,8 @@
     return {
       limit: filter.value.limit,
       page: filter.value.page,
-      start_date: filter.value.periode[0],
-      end_date: filter.value.periode[1],
+      start_date: filter.value.period[0],
+      end_date: filter.value.period[1],
       search: filter.value.search,
     }
   })
@@ -92,6 +96,7 @@
 
       {
         key: 'action',
+        title: 'Aksi',
         render: () => {
           return h(
             Button,
@@ -136,6 +141,10 @@
     })
   })
 
+  const maxDate = computed(() => {
+    return new Date()
+  })
+
   useHead({
     title: `Transaksi - ${appConfig.app.name}`,
   })
@@ -157,10 +166,13 @@
         </n-input>
         <n-form label-placement="left">
           <n-form-item label="Rentang waktu:">
-            <n-date-picker
-              v-model:value="filter.periode"
-              type="datetimerange"
-            />
+            <Datepicker
+              v-model="filter.period"
+              placeholder="Pilih Rentang waktu"
+              :max-date="maxDate"
+              range
+              :dark="theme.currentTheme"
+            ></Datepicker>
           </n-form-item>
         </n-form>
       </n-space>
