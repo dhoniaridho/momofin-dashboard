@@ -3,6 +3,7 @@ export declare module TransactionResponse {
     id: string
     invoice_code: string
     buyer_email: string
+    buyer_user_id: string
     product_name: string
     total_price: string
     status: string

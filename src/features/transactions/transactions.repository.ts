@@ -9,3 +9,5 @@ export const getAllTransactions = async (filter: any) => {
   })
   return response
 }
+
+export { getUserById } from '../users/users.repository'

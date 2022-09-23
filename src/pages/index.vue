@@ -35,6 +35,7 @@
 
   const filter = ref({
     range: [Date.now(), Date.now()],
+    period: '7d',
   })
 
   const theme = useTheme()
@@ -228,15 +229,17 @@
       </template>
       <template #extra>
         <n-form label-placement="left">
-          <n-form-item label="Rentang waktu" path="textareaValue">
-            <Datepicker
-              v-model="filter.range"
-              :max-date="maxDate"
-              range
-              :dark="theme.currentTheme"
-              placeholder="Pilih Rentang waktu"
-            ></Datepicker>
-          </n-form-item>
+          <n-space>
+            <n-form-item label="Rentang waktu">
+              <Datepicker
+                v-model="filter.range"
+                :max-date="maxDate"
+                range
+                :dark="theme.currentTheme"
+                placeholder="Pilih Rentang waktu"
+              />
+            </n-form-item>
+          </n-space>
           <n-space justify="end">
             <n-text v-if="dataUpdatedAt">
               Terakhir di update <n-time :time="dataUpdatedAt"> </n-time

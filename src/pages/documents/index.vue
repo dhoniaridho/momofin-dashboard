@@ -1,141 +1,18 @@
 <script setup lang="ts">
-  import {
-    NButton as Button,
-    NIcon,
-    NSpace,
-    NTag,
-    NText,
-    type DataTableColumns,
-  } from 'naive-ui'
-  import { Icon } from '@iconify/vue'
-  import { SORT, STATUS } from '@features/documents/document.constant'
-  import { useQuery } from 'vue-query'
-  import {
-    getAllDocuments,
-    getAuditTrail,
-  } from '@features/documents/document.repository'
-  import type { DocumentResponse } from '~/features/documents/document.interface'
   import { appConfig } from '~/config/app.config'
+  import { SORT } from '~/features/documents/document.constant'
+  import { useDocumentFeature } from '~/features/documents/documents.module'
 
-  const filter = ref({
-    search: '',
-    page: 1,
-    periode: 'Last 7 days',
-    status: '',
-    limit: 10,
-  })
-  const isShowQuickDetail = ref(false)
-  const selectedDocumentId = ref(0)
-
-  function useDocuments() {
-    return useQuery(['documents', filter], () => {
-      return getAllDocuments(filter.value)
-    })
-  }
-
-  function useAuditTrail() {
-    return useQuery(['auditTrail', selectedDocumentId], () => {
-      return getAuditTrail(selectedDocumentId.value)
-    })
-  }
-
-  const { data: documents, isLoading: isDocumentLoading } = useDocuments()
-  const { data: auditTrails } = useAuditTrail()
-
-  const createColumns = (): DataTableColumns<DocumentResponse.Datum> => {
-    return [
-      {
-        title: 'Waktu & Tanggal',
-        key: 'created_at',
-      },
-      {
-        title: 'ID Dokumen',
-        key: 'id',
-      },
-      {
-        title: 'Email',
-        key: 'email',
-      },
-      {
-        title: 'Nama Dokumen',
-        key: 'document_name',
-      },
-      {
-        title: 'Pihak',
-        key: 'signers.length',
-        render: (row) => {
-          return h(NSpace, { vertical: true }, () => [
-            h(NText, () => `${row.signer_count} Pihak`),
-
-            h(
-              NTag,
-              {
-                type: row.signer_count > 1 ? 'primary' : 'info',
-                round: true,
-                bordered: false,
-              },
-              () => (row.signer_count > 1 ? 'Multi Signer' : 'Single')
-            ),
-          ])
-        },
-      },
-      {
-        title: 'Status',
-        key: 'status',
-        render: (row) => {
-          return h(
-            NTag,
-            {
-              type: STATUS(row.status),
-              bordered: false,
-              round: true,
-            },
-            {
-              icon: () =>
-                h(NIcon, () =>
-                  h(Icon, {
-                    icon: 'carbon:dot-mark',
-                  })
-                ),
-              default: () => [row.status],
-            }
-          )
-        },
-      },
-
-      {
-        title: 'Aksi',
-        key: 'action',
-        render: (row) => {
-          return h(
-            Button,
-            {
-              quaternary: true,
-              circle: true,
-              onClick() {
-                isShowQuickDetail.value = true
-                selectedDocumentId.value = row.id
-              },
-            },
-            () => {
-              return h(Icon, {
-                icon: 'heroicons:eye',
-              })
-            }
-          )
-        },
-      },
-    ]
-  }
-
-  const data = computed(() => {
-    return documents.value?.data.map((item) => {
-      return {
-        ...item,
-        created_at: new Date(item.created_at).toLocaleString(),
-      }
-    })
-  })
+  const {
+    auditTrails,
+    isAuditTrailsLoading,
+    createColumns,
+    documents,
+    filter,
+    isDocumentLoading,
+    isShowQuickDetail,
+    pagination,
+  } = useDocumentFeature()
 
   useHead({
     title: `Dokumen - ${appConfig.app.name}`,
@@ -160,7 +37,7 @@
           <n-form label-placement="left">
             <n-form-item label="Sort:">
               <n-select
-                v-model:value="filter.periode"
+                v-model:value="filter.period"
                 style="width: 15rem"
                 :options="SORT"
               />
@@ -171,7 +48,7 @@
       <div style="overflow: auto; white-space: pre">
         <n-data-table
           :columns="createColumns()"
-          :data="data"
+          :data="documents"
           :bordered="false"
           :loading="isDocumentLoading"
         />
@@ -181,7 +58,7 @@
           <n-pagination
             v-model:page="filter.page"
             v-model:page-size="filter.limit"
-            :page-count="documents?.pagination.total_page"
+            :page-count="pagination?.total_page"
             :page-sizes="[10, 20, 30, 40]"
             style="margin-top: 1rem"
             show-size-picker
@@ -196,7 +73,10 @@
     title="Auditrail"
     style="max-width: 40rem"
   >
-    <n-timeline>
+    <n-space v-if="isAuditTrailsLoading" align="items-center">
+      <n-spin size="large" />
+    </n-space>
+    <n-timeline v-else>
       <n-timeline-item
         v-for="(activity, index) in auditTrails"
         :key="index"
