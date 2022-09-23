@@ -31,3 +31,19 @@ export declare module DocumentResponse {
     data: Data
   }
 }
+
+export declare module AuditTrailResponse {
+  export interface Datum {
+    datetime: string
+    name: string
+    ip_address: string
+    description: string
+    type: string
+  }
+
+  export interface RootObject {
+    code: number
+    success: boolean
+    data: Datum[]
+  }
+}

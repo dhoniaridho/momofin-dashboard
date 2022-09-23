@@ -197,7 +197,7 @@
       },
       {
         label: 'Number of Paid Topup',
-        value: dashboard.value?.topup.topup_count,
+        value: dashboard.value?.topup.paid_topup_count,
       },
       {
         label: 'Total Top Up Value',

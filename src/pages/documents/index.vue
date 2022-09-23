@@ -10,7 +10,10 @@
   import { Icon } from '@iconify/vue'
   import { SORT, STATUS } from '@features/documents/document.constant'
   import { useQuery } from 'vue-query'
-  import { getAllDocuments } from '~/features/documents/document.repository'
+  import {
+    getAllDocuments,
+    getAuditTrail,
+  } from '@features/documents/document.repository'
   import type { DocumentResponse } from '~/features/documents/document.interface'
   import { appConfig } from '~/config/app.config'
 
@@ -22,6 +25,7 @@
     limit: 10,
   })
   const isShowQuickDetail = ref(false)
+  const selectedDocumentId = ref(0)
 
   function useDocuments() {
     return useQuery(['documents', filter], () => {
@@ -29,7 +33,14 @@
     })
   }
 
+  function useAuditTrail() {
+    return useQuery(['auditTrail', selectedDocumentId], () => {
+      return getAuditTrail(selectedDocumentId.value)
+    })
+  }
+
   const { data: documents, isLoading: isDocumentLoading } = useDocuments()
+  const { data: auditTrails } = useAuditTrail()
 
   const createColumns = (): DataTableColumns<DocumentResponse.Datum> => {
     return [
@@ -95,7 +106,7 @@
       {
         title: 'Aksi',
         key: 'action',
-        render: () => {
+        render: (row) => {
           return h(
             Button,
             {
@@ -103,6 +114,7 @@
               circle: true,
               onClick() {
                 isShowQuickDetail.value = true
+                selectedDocumentId.value = row.id
               },
             },
             () => {
@@ -124,52 +136,6 @@
       }
     })
   })
-
-  const activities = [
-    {
-      actor: 'Yureka is my name',
-      ip: '139.194.155.147',
-      type: 'open',
-      notes: 'Yureka is my name (yuretech@gmail.com) membuka dokumen',
-      datetime: '26 Agt 2022 - 15:43',
-    },
-    {
-      actor: 'Yureka is my name',
-      ip: '139.194.155.147',
-      type: 'open',
-      notes: 'Yureka is my name (yuretech@gmail.com) membuka dokumen',
-      datetime: '26 Agt 2022 - 15:43',
-    },
-    {
-      actor: 'Yureka is my name',
-      ip: '139.194.155.147',
-      type: 'open',
-      notes: 'Yureka is my name (yuretech@gmail.com) membuka dokumen',
-      datetime: '26 Agt 2022 - 15:43',
-    },
-    {
-      actor: 'Yureka is my name',
-      ip: '139.194.155.147',
-      type: 'signing',
-      notes: 'Yureka is my name (yuretech@gmail.com) menandatangani dokumen',
-      datetime: '26 Agt 2022 - 15:43',
-    },
-    {
-      actor: 'Yureka is my name',
-      ip: '139.194.155.147',
-      type: 'send',
-      notes:
-        'Yureka is my name (yuretech@gmail.com) mengundang Yureka is my name  &  kulo admin   untuk menandatangani dokumen',
-      datetime: '26 Agt 2022 - 15:42',
-    },
-    {
-      actor: 'Yureka is my name',
-      ip: '139.194.155.147',
-      type: 'upload',
-      notes: 'Yureka is my name (yuretech@gmail.com) mengupload dokumen',
-      datetime: '26 Agt 2022 - 15:42',
-    },
-  ]
 
   useHead({
     title: `Dokumen - ${appConfig.app.name}`,
@@ -232,16 +198,16 @@
   >
     <n-timeline>
       <n-timeline-item
-        v-for="(activity, index) in activities"
+        v-for="(activity, index) in auditTrails"
         :key="index"
         type="success"
         :time="activity.datetime"
       >
-        <n-card :title="activity.actor">
+        <n-card :title="activity.name">
           <n-table :striped="true">
             <tr>
               <td style="width: 20%">IP Address</td>
-              <td>{{ activity.ip }}</td>
+              <td>{{ activity.ip_address }}</td>
             </tr>
             <tr>
               <td style="width: 20%">Tipe</td>
@@ -253,7 +219,7 @@
             </tr>
             <tr>
               <td style="width: 20%">Catatan</td>
-              <td>{{ activity.notes }}</td>
+              <td>{{ activity.description }}</td>
             </tr>
           </n-table>
         </n-card>
