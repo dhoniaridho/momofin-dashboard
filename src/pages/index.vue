@@ -273,7 +273,7 @@
           hoverable
         >
           <n-h5>
-            {{ item.value }}
+            <n-number-animation :from="0" :to="item.value" />
           </n-h5>
         </n-card>
       </n-grid-item>
