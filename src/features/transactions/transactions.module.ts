@@ -4,9 +4,9 @@ import { useQuery } from 'vue-query'
 import {
   getAllTransactions,
   getUserById,
-} from '@features/transactions/transaction.repository'
-import { STATUS } from '~/features/transactions/transaction.constants'
-import type { TransactionResponse } from '~/features/transactions/transaction.interface'
+} from '@features/transactions/transactions.repository'
+import { STATUS } from '@features/transactions/transactions.constants'
+import type { TransactionResponse } from '@features/transactions/transactions.interface'
 
 export function useTransactionFeature() {
   const filter = ref({
