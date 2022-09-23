@@ -1,254 +1,29 @@
 <script setup lang="ts">
-  import {
-    NButton as Button,
-    NDropdown as DropDown,
-    NIcon,
-    NSpace as Flex,
-    NTag,
-    useMessage,
-    type DataTableColumns,
-  } from 'naive-ui'
   import { Icon } from '@iconify/vue'
   import { OPTIONS, SORT, STATUS } from '@features/users/users.constant'
-  import { useMutation, useQuery } from 'vue-query'
-  import {
-    getAllUsers,
-    getUserById,
-    verifyUserById,
-    resendEmailVerification,
-    deleteUserById,
-  } from '@features/users/users.repository'
   import { toIdr } from '~/helpers'
   import { appConfig } from '~/config/app.config'
-  import type { UsersResponse } from '~/features/users/users.interface'
+  import { useUsersFeature } from '@features/users/users.module'
 
-  const { success, error } = useMessage()
-
-  const filter = ref({
-    search: '',
-    page: 1,
-    periode: 'Last 7 days',
-    status: '',
-    limit: 10,
-  })
-  const isShowDeleteModal = ref(false)
-  const isShowQuickDetail = ref(false)
-  const isShowVerificationModal = ref(false)
-  const isShowResend = ref(false)
-  const selectedUUID = ref('')
-
-  function useUsers() {
-    return useQuery(['users', filter], () => {
-      return getAllUsers(filter.value)
-    })
-  }
-
-  function useUsersDetail() {
-    return useQuery(['users', selectedUUID], () => {
-      return getUserById(selectedUUID.value)
-    })
-  }
-
-  function useVerifyUser() {
-    return useMutation(
-      () => {
-        return verifyUserById(selectedUUID.value)
-      },
-      {
-        onSuccess() {
-          success('Berhasil memverifikasi pengguna')
-          isShowVerificationModal.value = false
-        },
-        onError: ({ data }) => {
-          error(data)
-        },
-      }
-    )
-  }
-
-  function useResendEmail() {
-    return useMutation(
-      () => {
-        return resendEmailVerification(selectedUUID.value)
-      },
-      {
-        onSuccess() {
-          isShowResend.value = false
-          success('Berhasil Mengirim Ulang Email')
-        },
-        onError() {
-          error('Gagal Mengirim Ulang Email')
-        },
-      }
-    )
-  }
-
-  function useDeleteUser() {
-    return useMutation(
-      () => {
-        return deleteUserById(selectedUUID.value)
-      },
-      {
-        onSuccess() {
-          isShowResend.value = false
-          success('Berhasil Mengirim Ulang Email')
-        },
-        onError() {
-          error('Gagal Mengirim Ulang Email')
-        },
-      }
-    )
-  }
-
-  const { data: users, isLoading: isLoadingUsers } = useUsers()
-  const { data: user, refetch: refetchUserDetail } = useUsersDetail()
-  const { mutate: execVerify, isLoading: isVerifiying } = useVerifyUser()
-  const { mutate: execResend, isLoading: isResending } = useResendEmail()
-  const { mutate: execDelete, isLoading: isDeleting } = useDeleteUser()
-
-  const createColumns = (): DataTableColumns<UsersResponse.User> => {
-    return [
-      {
-        title: 'Tanggal Registrasi',
-        key: 'created_at',
-      },
-      {
-        title: 'Nama Lengkap',
-        key: 'fullname',
-      },
-      {
-        title: 'Email',
-        key: 'email',
-      },
-      {
-        title: 'Status Akun',
-        key: 'status',
-        render: (row) => {
-          return h(
-            NTag,
-            {
-              bordered: false,
-              round: true,
-              type: STATUS(row.account_status),
-            },
-            {
-              icon: () =>
-                h(NIcon, () =>
-                  h(Icon, {
-                    icon: 'carbon:dot-mark',
-                  })
-                ),
-              default: () => row.account_status,
-            }
-          )
-        },
-      },
-      {
-        title: 'Status e-KYC',
-        key: 'kyc',
-        render: (row) => {
-          return h(
-            NTag,
-            {
-              bordered: false,
-              round: true,
-              type: STATUS(row.certificate_status),
-            },
-            {
-              icon: () =>
-                h(NIcon, () =>
-                  h(Icon, {
-                    icon: 'carbon:dot-mark',
-                  })
-                ),
-              default: () => [row.certificate_status],
-            }
-          )
-        },
-      },
-      {
-        key: 'action',
-        render: (row) => {
-          return h(Flex, () => [
-            h(
-              Button,
-              {
-                quaternary: true,
-                circle: true,
-                onClick() {
-                  isShowQuickDetail.value = true
-                  selectedUUID.value = row.id
-                  refetchUserDetail.value()
-                },
-              },
-              () =>
-                h(Icon, {
-                  icon: 'akar-icons:eye',
-                })
-            ),
-            h(
-              DropDown,
-              {
-                trigger: 'click',
-                options: OPTIONS(row.account_status),
-                onSelect: onSelectDropdown,
-                onClick() {
-                  selectedUUID.value = row.id
-                  refetchUserDetail.value()
-                },
-              },
-              () =>
-                h(Button, () =>
-                  h(NIcon, () =>
-                    h(Icon, {
-                      icon: 'carbon:overflow-menu-horizontal',
-                    })
-                  )
-                )
-            ),
-          ])
-        },
-      },
-    ]
-  }
-
-  const onSelectDropdown = (ev: string) => {
-    switch (ev) {
-      case 'delete':
-        isShowDeleteModal.value = true
-        break
-      case 'verification':
-        isShowVerificationModal.value = true
-        break
-      case 'resend':
-        isShowResend.value = true
-        break
-
-      default:
-        break
-    }
-  }
-
-  const data = computed(() => {
-    return users.value?.user.map((user) => {
-      return {
-        ...user,
-        status: 'verified',
-      }
-    })
-  })
-
-  const onRequestResend = () => {
-    execResend()
-  }
-
-  const onRequestVerify = () => {
-    execVerify()
-  }
-
-  const onRequestDelete = () => {
-    execDelete()
-  }
+  const {
+    createColumns,
+    isDeleting,
+    isLoadingUsers,
+    isResending,
+    isVerifiying,
+    onRequestDelete,
+    onRequestResend,
+    onRequestVerify,
+    onSelectDropdown,
+    user,
+    users,
+    pagination,
+    filter,
+    isShowQuickDetail,
+    isShowResend,
+    isShowVerificationModal,
+    isShowDeleteModal,
+  } = useUsersFeature()
 
   useHead({
     title: `Pengguna - ${appConfig.app.name}`,
@@ -273,7 +48,7 @@
           <n-form label-placement="left">
             <n-form-item label="Sort:">
               <n-select
-                v-model:value="filter.periode"
+                v-model:value="filter.period"
                 style="width: 15rem"
                 :options="SORT"
               />
@@ -284,7 +59,7 @@
       <div style="overflow: auto; white-space: pre">
         <n-data-table
           :columns="createColumns()"
-          :data="data"
+          :data="users"
           :bordered="false"
           :loading="isLoadingUsers"
         />
@@ -294,7 +69,7 @@
           <n-pagination
             v-model:page="filter.page"
             v-model:page-size="filter.limit"
-            :page-count="users?.pagination.total_page"
+            :page-count="pagination?.total_page"
             :page-sizes="[10, 20, 30, 40]"
             style="margin-top: 1rem"
             show-size-picker

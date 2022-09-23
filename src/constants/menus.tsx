@@ -64,19 +64,19 @@ export const mainMenuOptions: MenuOption[] = [
       )
     },
   },
-  {
-    label: () => {
-      return <RouterLink to="/settings">Pengaturan</RouterLink>
-    },
-    key: 'settings',
-    icon: () => {
-      return (
-        <NIcon>
-          <Icons name="gear" />
-        </NIcon>
-      )
-    },
-  },
+  // {
+  //   label: () => {
+  //     return <RouterLink to="/settings">Pengaturan</RouterLink>
+  //   },
+  //   key: 'settings',
+  //   icon: () => {
+  //     return (
+  //       <NIcon>
+  //         <Icons name="gear" />
+  //       </NIcon>
+  //     )
+  //   },
+  // },
 ]
 
 export const altMenuOptions: MenuOption[] = [

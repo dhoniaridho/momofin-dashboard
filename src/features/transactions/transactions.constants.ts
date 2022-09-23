@@ -8,3 +8,18 @@ export const STATUS = (text: string) => {
       return 'warning'
   }
 }
+
+export const SORT = [
+  {
+    label: '30 hari terakhir',
+    value: '30d',
+  },
+  {
+    label: '7 hari terakhir',
+    value: '7d',
+  },
+  {
+    label: 'Custom',
+    value: 'custom',
+  },
+]

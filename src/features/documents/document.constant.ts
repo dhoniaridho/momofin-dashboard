@@ -1,23 +1,15 @@
 export const SORT = [
   {
-    label: 'Last 1 days',
-    value: 'Last 1 days',
+    label: '30 hari terakhir',
+    value: '30d',
   },
   {
-    label: 'Last 7 days',
-    value: 'Last 7 days',
+    label: '7 hari terakhir',
+    value: '7d',
   },
   {
-    label: 'Last 1 month',
-    value: 'Last 1 month',
-  },
-  {
-    label: 'Last 1 year',
-    value: 'Last 1 year',
-  },
-  {
-    label: 'Last 5 year',
-    value: 'Last 1 year',
+    label: 'Custom',
+    value: 'custom',
   },
 ]
 

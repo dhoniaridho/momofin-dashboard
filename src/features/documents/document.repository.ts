@@ -1,5 +1,5 @@
 import { http } from '~/modules/http'
-import type { DocumentResponse } from './document.interface'
+import type { DocumentResponse, AuditTrailResponse } from './document.interface'
 export const getAllDocuments = async (filter: any) => {
   const {
     data: { data: response },
@@ -7,4 +7,14 @@ export const getAllDocuments = async (filter: any) => {
     params: { ...filter },
   })
   return response
+}
+
+export const getAuditTrail = async (id: number) => {
+  if (!id) return
+  const {
+    data: { data },
+  } = await http.get<AuditTrailResponse.RootObject>(
+    `documents/audittrail/${id}`
+  )
+  return data
 }

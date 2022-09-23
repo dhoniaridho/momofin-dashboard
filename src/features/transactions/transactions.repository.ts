@@ -1,5 +1,5 @@
 import { http } from '~/modules/http'
-import type { TransactionResponse } from './transaction.interface'
+import type { TransactionResponse } from './transactions.interface'
 
 export const getAllTransactions = async (filter: any) => {
   const {
@@ -9,3 +9,5 @@ export const getAllTransactions = async (filter: any) => {
   })
   return response
 }
+
+export { getUserById } from '../users/users.repository'

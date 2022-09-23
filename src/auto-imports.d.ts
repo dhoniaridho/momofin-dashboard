@@ -27,6 +27,7 @@ declare global {
   const createSharedComposable: typeof import('@vueuse/core')['createSharedComposable']
   const createUnrefFn: typeof import('@vueuse/core')['createUnrefFn']
   const customRef: typeof import('vue')['customRef']
+  const datepicker: typeof import('./modules/datepicker')['default']
   const debouncedRef: typeof import('@vueuse/core')['debouncedRef']
   const debouncedWatch: typeof import('@vueuse/core')['debouncedWatch']
   const defineAsyncComponent: typeof import('vue')['defineAsyncComponent']
@@ -40,6 +41,7 @@ declare global {
   const head: typeof import('./modules/head')['default']
   const http: typeof import('./modules/http')['default']
   const i18n: typeof import('./modules/i18n')['default']
+  const iconify: typeof import('./modules/iconify')['default']
   const ignorableWatch: typeof import('@vueuse/core')['ignorableWatch']
   const inject: typeof import('vue')['inject']
   const install: typeof import('./modules/http')['install']
@@ -305,6 +307,7 @@ declare module '@vue/runtime-core' {
     readonly createSharedComposable: UnwrapRef<typeof import('@vueuse/core')['createSharedComposable']>
     readonly createUnrefFn: UnwrapRef<typeof import('@vueuse/core')['createUnrefFn']>
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>
+    readonly datepicker: UnwrapRef<typeof import('./modules/datepicker')['default']>
     readonly debouncedRef: UnwrapRef<typeof import('@vueuse/core')['debouncedRef']>
     readonly debouncedWatch: UnwrapRef<typeof import('@vueuse/core')['debouncedWatch']>
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
@@ -318,6 +321,7 @@ declare module '@vue/runtime-core' {
     readonly head: UnwrapRef<typeof import('./modules/head')['default']>
     readonly http: UnwrapRef<typeof import('./modules/http')['default']>
     readonly i18n: UnwrapRef<typeof import('./modules/i18n')['default']>
+    readonly iconify: UnwrapRef<typeof import('./modules/iconify')['default']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly install: UnwrapRef<typeof import('./modules/http')['install']>

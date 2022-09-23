@@ -12,5 +12,3 @@ export const appConfig = {
     secure: import.meta.env.VITE_COOKIE_SECURE == 'true' ? true : false,
   },
 }
-
-console.log(appConfig)

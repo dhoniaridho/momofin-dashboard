@@ -1,8 +1,16 @@
 import type { App } from 'vue'
-import { VueQueryPlugin } from 'vue-query'
+import { VueQueryPlugin, type VueQueryPluginOptions } from 'vue-query'
+
+const vueQueryPluginOptions: VueQueryPluginOptions = {
+  queryClientConfig: {
+    defaultOptions: {
+      mutations: {},
+    },
+  },
+}
 
 const install = (app: App) => {
-  app.use(VueQueryPlugin)
+  app.use(VueQueryPlugin, vueQueryPluginOptions)
 }
 
 export default install

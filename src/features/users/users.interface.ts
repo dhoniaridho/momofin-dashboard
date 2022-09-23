@@ -71,3 +71,27 @@ export declare module UserDetailResponse {
     data: Data
   }
 }
+
+export declare module DeleteUser {
+  export interface RootObject {
+    code: number
+    success: boolean
+    msg: string
+  }
+}
+
+export declare module ResendEmail {
+  export interface RootObject {
+    code: number
+    success: boolean
+    msg: string
+  }
+}
+
+export declare module VerifyResponse {
+  export interface RootObject {
+    code: number
+    success: boolean
+    msg: string
+  }
+}

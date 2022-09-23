@@ -1,140 +1,19 @@
 <script setup lang="ts">
-  import {
-    NButton as Button,
-    NIcon,
-    NTag,
-    type DataTableColumns,
-  } from 'naive-ui'
-  import { Icon } from '@iconify/vue'
-  import { OPTIONS } from '@features/users/users.constant'
-  import { useQuery } from 'vue-query'
-  import { getAllTransactions } from '@features/transactions/transaction.repository'
   import { appConfig } from '~/config/app.config'
-  import { STATUS } from '~/features/transactions/transaction.constants'
-  import type { TransactionResponse } from '~/features/transactions/transaction.interface'
+  import { STATUS } from '@features/transactions/transactions.constants'
+  import { useTransactionFeature } from '@features/transactions/transactions.module'
+  import { toIdr } from '~/helpers'
 
-  const filter = ref({
-    search: '',
-    page: 1,
-    periode: [Date.now(), Date.now()],
-    status: '',
-    limit: 10,
-  })
-
-  const filterComputed = computed(() => {
-    return {
-      limit: filter.value.limit,
-      page: filter.value.page,
-      start_date: filter.value.periode[0],
-      end_date: filter.value.periode[1],
-      search: filter.value.search,
-    }
-  })
-
-  const isShowDeleteModal = ref(false)
-  const isShowQuickDetail = ref(false)
-  const isShowVerificationModal = ref(false)
-
-  function useTransactions() {
-    return useQuery(['transactions', filter], () => {
-      return getAllTransactions(filterComputed.value)
-    })
-  }
-
-  const { data: transactions, isLoading: isTransactionsLoading } =
-    useTransactions()
-
-  const createColumns = (): DataTableColumns<TransactionResponse.Datum> => {
-    return [
-      {
-        title: 'Waktu & Tanggal',
-        key: 'order_datetime',
-      },
-      {
-        title: 'ID Transaksi',
-        key: 'invoice_code',
-      },
-      {
-        title: 'Email',
-        key: 'buyer_email',
-      },
-      {
-        title: 'Product',
-        key: 'product_name',
-      },
-      {
-        title: 'Value',
-        key: 'total_price',
-      },
-      {
-        title: 'Payment Status',
-        key: 'status',
-        render: (row) => {
-          return h(
-            NTag,
-            {
-              type: STATUS(row.status),
-              round: true,
-              bordered: false,
-            },
-            {
-              icon: () =>
-                h(NIcon, () =>
-                  h(Icon, {
-                    icon: 'carbon:dot-mark',
-                  })
-                ),
-              default: () => [row.status],
-            }
-          )
-        },
-      },
-
-      {
-        key: 'action',
-        render: () => {
-          return h(
-            Button,
-            {
-              quaternary: true,
-              circle: true,
-              onClick() {
-                isShowQuickDetail.value = true
-              },
-            },
-            () => {
-              return h(Icon, {
-                icon: 'heroicons:eye',
-              })
-            }
-          )
-        },
-      },
-    ]
-  }
-
-  const onSelectDropdown = (ev: string) => {
-    switch (ev) {
-      case 'delete':
-        isShowDeleteModal.value = true
-        break
-      case 'verification':
-        isShowVerificationModal.value = true
-        break
-
-      default:
-        break
-    }
-  }
-
-  const data = computed(() => {
-    return transactions.value?.data.map((transaction) => {
-      return {
-        ...transaction,
-        status: transaction.status.toLowerCase(),
-      }
-    })
-  })
+  const {
+    createColumns,
+    maxDate,
+    transactions,
+    user,
+    filter,
+    isShowQuickDetail,
+    isTransactionsLoading,
+    pagination,
+  } = useTransactionFeature()
 
   useHead({
     title: `Transaksi - ${appConfig.app.name}`,
@@ -157,17 +36,19 @@
         </n-input>
         <n-form label-placement="left">
           <n-form-item label="Rentang waktu:">
-            <n-date-picker
-              v-model:value="filter.periode"
-              type="datetimerange"
-            />
+            <Datepicker
+              v-model="filter.period"
+              placeholder="Pilih Rentang waktu"
+              :max-date="maxDate"
+              range
+            ></Datepicker>
           </n-form-item>
         </n-form>
       </n-space>
       <div style="overflow: auto; white-space: pre">
         <n-data-table
           :columns="createColumns()"
-          :data="data"
+          :data="transactions"
           :loading="isTransactionsLoading"
           :bordered="false"
         />
@@ -177,7 +58,7 @@
           <n-pagination
             v-model:page="filter.page"
             v-model:page-size="filter.limit"
-            :page-count="transactions?.pagination.total_page"
+            :page-count="pagination?.total_page"
             :page-sizes="[10, 20, 30, 40]"
             style="margin-top: 1rem"
             show-size-picker
@@ -192,48 +73,45 @@
     title="Profil Pengguna"
     style="max-width: 40rem"
   >
-    <template #header-extra>
-      <n-dropdown trigger="click" :options="OPTIONS" @select="onSelectDropdown">
-        <n-button quaternary circle>
-          <template #icon>
-            <n-icon>
-              <Iconify icon="carbon:overflow-menu-horizontal" />
-            </n-icon>
-          </template>
-        </n-button>
-      </n-dropdown>
-    </template>
     <n-space vertical>
-      <n-grid :cols="3">
-        <n-gi>
+      <n-grid cols="1 500:4 900:4" :y-gap="10" item-responsive>
+        <n-gi span="2">
           <n-space vertical>
-            <n-text strong> Annette Black </n-text>
-            <n-text> annette@mail.com</n-text>
+            <n-text strong> {{ user?.profile.fullname }} </n-text>
+            <n-text> {{ user?.profile.email }}</n-text>
           </n-space>
         </n-gi>
         <n-gi>
           <n-space vertical>
             <n-text> Status Akun </n-text>
-            <n-tag type="success" :bordered="false">
+            <n-tag
+              round
+              :type="STATUS(user?.profile.account_status  as string)"
+              :bordered="false"
+            >
               <template #icon>
                 <n-icon>
                   <Iconify icon="carbon:dot-mark" />
                 </n-icon>
               </template>
-              Verified
+              {{ user?.profile.account_status }}
             </n-tag>
           </n-space>
         </n-gi>
         <n-gi>
           <n-space vertical>
             <n-text> Status e-KYC </n-text>
-            <n-tag type="success" :bordered="false">
+            <n-tag
+              round
+              :type="STATUS(user?.profile.certificate_status as string)"
+              :bordered="false"
+            >
               <template #icon>
                 <n-icon>
                   <Iconify icon="carbon:dot-mark" />
                 </n-icon>
               </template>
-              Verified
+              {{ user?.profile.certificate_status }}
             </n-tag>
           </n-space>
         </n-gi>
@@ -246,7 +124,7 @@
             </n-icon>
             <n-space vertical>
               <n-text> EMET </n-text>
-              <n-text strong> 25 </n-text>
+              <n-text strong> {{ user?.balance.emet }} </n-text>
             </n-space>
           </n-space>
         </n-card>
@@ -257,7 +135,7 @@
             </n-icon>
             <n-space vertical>
               <n-text> ESGN </n-text>
-              <n-text strong> 89 </n-text>
+              <n-text strong> {{ user?.balance.esgn }} </n-text>
             </n-space>
           </n-space>
         </n-card>
@@ -265,31 +143,31 @@
       <n-table striped :bordered="false">
         <tr>
           <td style="width: 50%">Nomor telepon</td>
-          <td style="width: 50%">087834806924</td>
+          <td style="width: 50%">{{ user?.profile.phone_number }}</td>
         </tr>
         <tr>
           <td>Tanggal sertifikat terbit</td>
-          <td>25 Agustus 2022</td>
+          <td>{{ user?.profile.certificate_issued_at }}</td>
         </tr>
         <tr>
           <td>Tanggal sertifikat kadaluarsa</td>
-          <td>18 Oktober 2023</td>
+          <td>{{ user?.profile.certificate_expired_at }}</td>
         </tr>
         <tr>
           <td>N dokumen sukses</td>
-          <td>228</td>
+          <td>{{ user?.document.completed }}</td>
         </tr>
         <tr>
           <td>N dokumen dalam proses</td>
-          <td>376</td>
+          <td>{{ user?.document.processing }}</td>
         </tr>
         <tr>
           <td>N top-up</td>
-          <td>594</td>
+          <td>{{ user?.topup.count }}</td>
         </tr>
         <tr>
           <td>Total top-up value</td>
-          <td>Rp 1,890,000.00</td>
+          <td>{{ toIdr(user?.topup.amount ?? 0) }}</td>
         </tr>
       </n-table>
     </n-space>
