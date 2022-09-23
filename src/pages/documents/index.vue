@@ -201,10 +201,9 @@
         v-for="(activity, index) in auditTrails"
         :key="index"
         type="success"
-        :time="activity.datetime"
       >
-        <n-card :title="activity.name">
-          <n-table :striped="true">
+        <n-card :title="activity.name" :bordered="false">
+          <n-table bottom-bordered :bordered="false" :striped="true">
             <tr>
               <td style="width: 20%">IP Address</td>
               <td>{{ activity.ip_address }}</td>
@@ -220,6 +219,12 @@
             <tr>
               <td style="width: 20%">Catatan</td>
               <td>{{ activity.description }}</td>
+            </tr>
+            <tr>
+              <td style="width: 20%">Tanggal & Waktu</td>
+              <td>
+                {{ activity.datetime }}
+              </td>
             </tr>
           </n-table>
         </n-card>

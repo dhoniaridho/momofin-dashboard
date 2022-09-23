@@ -285,7 +285,12 @@
       >
         <n-card style="text-align: center" :title="item.label" hoverable>
           <n-h5>
-            {{ item.value }}
+            <n-number-animation
+              v-if="typeof item.value == 'number'"
+              :from="0"
+              :to="item.value"
+            />
+            <span v-else>{{ item.value }}</span>
           </n-h5>
         </n-card>
       </n-grid-item>
