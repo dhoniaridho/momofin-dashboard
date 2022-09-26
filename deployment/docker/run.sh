@@ -5,4 +5,5 @@ docker run -d \
     -e VITE_API_BASE_URL="https://api-dev.momofin.com/emet_dashboard" \
     -e TOKEN_STORAGE_KEY="{{ token-storage-key }}" \
     --restart always \
+    --pull=always \
     ghcr.io/momofin/dev-emet-dashboard:latest

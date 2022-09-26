@@ -48,6 +48,6 @@ jobs:
       - name: login to container registry
         run: |
           ssh  ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'echo ${{ env.cr_pat }} | docker login ${{ env.cr }} -u ${{ env.cr_user }} --password-stdin'
-      # - name: deploy container
-      #   run: |
-      #     ssh  ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd /home/deployer/${{ github.event.repository.name }}/ && ./run.sh'
+      - name: deploy container
+        run: |
+          ssh  ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd /home/deployer/${{ github.event.repository.name }}/ && ./run.sh'
