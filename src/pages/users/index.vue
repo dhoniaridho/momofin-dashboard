@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { Icon } from '@iconify/vue'
-  import { OPTIONS, SORT, STATUS } from '@features/users/users.constant'
+  import { OPTIONS, STATUS } from '@features/users/users.constant'
   import { toIdr } from '~/helpers'
   import { appConfig } from '~/config/app.config'
   import { useUsersFeature } from '@features/users/users.module'
@@ -45,15 +45,7 @@
           </template>
         </n-input>
         <n-space>
-          <n-form label-placement="left">
-            <n-form-item label="Sort:">
-              <n-select
-                v-model:value="filter.period"
-                style="width: 15rem"
-                :options="SORT"
-              />
-            </n-form-item>
-          </n-form>
+          <m-datatable-filter v-model="filter.period"></m-datatable-filter>
         </n-space>
       </n-space>
       <div style="overflow: auto; white-space: pre">

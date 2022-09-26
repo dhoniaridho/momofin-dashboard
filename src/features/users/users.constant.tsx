@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/vue'
-import { NIcon } from 'naive-ui'
+import { NDatePicker, NIcon } from 'naive-ui'
 
 const ACTIONS = [
   {
@@ -45,18 +45,40 @@ export const OPTIONS = (status: string) => {
   })
 }
 
-export const SORT = [
+export const SORT = (onDateChange: any) => [
   {
     label: '30 hari terakhir',
-    value: '30d',
+    key: '30d',
   },
   {
     label: '7 hari terakhir',
-    value: '7d',
+    key: '7d',
   },
   {
     label: 'Custom',
-    value: '30custom',
+    key: 'custom',
+    children: [
+      {
+        key: 'custom',
+        props: {
+          onClick: () => {
+            console.log('c')
+          },
+        },
+        label: () => {
+          return (
+            <div>
+              <NDatePicker
+                onConfirm={onDateChange}
+                type="daterange"
+                class="single"
+                panel
+              />
+            </div>
+          )
+        },
+      },
+    ],
   },
 ]
 
