@@ -23,7 +23,7 @@ jobs:
           VITE_API_BASE_URL: "https://api-dev.momofin.com/emet_dashboard"
           token_storage_key: "${{ secrets.token_storage_key }}"
         run: |
-          docker build --build-arg VITE_API_BASE_URL=${{ VITE_API_BASE_URL }} --build-arg token_storage_key=${{ token_storage_key }} -t $image_name .
+          docker build --build-arg VITE_API_BASE_URL=$VITE_API_BASE_URL --build-arg token_storage_key=$token_storage_key -t $image_name .
           docker push $image_name
   deploy:
     needs: build
