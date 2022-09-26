@@ -18,12 +18,17 @@ jobs:
         uses: actions/checkout@v3
       - name: login to container registry
         run: echo ${{ env.cr_pat }} | docker login ${{ env.cr }} -u ${{ env.cr_user }} --password-stdin
-      - name: build docker image 
-        env: 
-          VITE_API_BASE_URL: "https://api-dev.momofin.com/emet_dashboard"
-          token_storage_key: "${{ secrets.token_storage_key }}"
+      # - name: env-filter
+      #   env: 
+      #     VITE_API_BASE_URL: "https://api-dev.momofin.com/emet_dashboard"
+      #     token_storage_key: "${{ secrets.token_storage_key }}"
         run: |
-          docker build --build-arg VITE_API_BASE_URL=$VITE_API_BASE_URL --build-arg token_storage_key=$token_storage_key -t $image_name .
+          ls -al deployment/docker/
+          chmod +x -R deployment/docker/
+          ./deployment/docker/env-filter.sh
+      - name: build docker image 
+        run: |
+          docker build -t $image_name .
           docker push $image_name
   deploy:
     needs: build
@@ -31,11 +36,6 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      - name: env-filter
-        run: |
-          ls -al deployment/docker/
-          chmod +x -R deployment/docker/
-          ./deployment/docker/env-filter.sh
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
