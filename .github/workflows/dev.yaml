@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v3
       - name: login to container registry
         run: echo ${{ env.cr_pat }} | docker login ${{ env.cr }} -u ${{ env.cr_user }} --password-stdin
-      # - name: env-filter
+      - name: env-filter
       #   env: 
       #     VITE_API_BASE_URL: "https://api-dev.momofin.com/emet_dashboard"
       #     token_storage_key: "${{ secrets.token_storage_key }}"
