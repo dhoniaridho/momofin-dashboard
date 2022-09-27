@@ -27,12 +27,12 @@
       <template #extra>
         <n-form label-placement="left">
           <n-space justify="end" align="end" vertical>
-            <n-text>
-              Terakhir di update <n-time :time="dataUpdatedAt"> </n-time
-            ></n-text>
             <div class="filter__search">
               <m-datatable-filter v-model="filter.period" />
             </div>
+            <n-text>
+              Terakhir di update <n-time :time="dataUpdatedAt"> </n-time
+            ></n-text>
           </n-space>
         </n-form>
       </template>
