@@ -28,9 +28,10 @@ export function useUsersFeature() {
   const filter = ref({
     search: '',
     page: 1,
-    period: '7d',
+    period: '',
     status: '',
     limit: 10,
+    range: '7d',
   })
   const isShowDeleteModal = ref(false)
   const isShowQuickDetail = ref(false)

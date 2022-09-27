@@ -50,3 +50,9 @@
     </n-message-provider>
   </n-config-provider>
 </template>
+
+<style>
+  .n-date-panel:is(.single) .n-date-panel-calendar--end {
+    display: none;
+  }
+</style>

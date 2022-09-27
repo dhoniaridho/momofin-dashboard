@@ -6,7 +6,6 @@
 
   const {
     createColumns,
-    maxDate,
     transactions,
     user,
     filter,
@@ -34,16 +33,7 @@
             </n-icon>
           </template>
         </n-input>
-        <n-form label-placement="left">
-          <n-form-item label="Rentang waktu:">
-            <Datepicker
-              v-model="filter.period"
-              placeholder="Pilih Rentang waktu"
-              :max-date="maxDate"
-              range
-            ></Datepicker>
-          </n-form-item>
-        </n-form>
+        <m-datatable-filter v-model="filter.period"></m-datatable-filter>
       </n-space>
       <div style="overflow: auto; white-space: pre">
         <n-data-table
