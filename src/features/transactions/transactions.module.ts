@@ -12,7 +12,7 @@ export function useTransactionFeature() {
   const filter = ref({
     search: '',
     page: 1,
-    period: [],
+    period: '',
     status: '',
     limit: 10,
   })
@@ -149,13 +149,8 @@ export function useTransactionFeature() {
     })
   })
 
-  const maxDate = computed(() => {
-    return new Date()
-  })
-
   return {
     createColumns,
-    maxDate,
     transactions: computed(() => data.value),
     user,
     onSelectDropdown,

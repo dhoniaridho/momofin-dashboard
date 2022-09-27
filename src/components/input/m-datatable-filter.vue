@@ -31,7 +31,7 @@
 
   watchEffect(() => {
     if (dropdownValue) {
-      emits('update:modelValue', valueModel)
+      emits('update:modelValue', valueModel.value)
     }
   })
 
