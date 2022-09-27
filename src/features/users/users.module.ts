@@ -31,7 +31,6 @@ export function useUsersFeature() {
     period: '',
     status: '',
     limit: 10,
-    range: '7d',
   })
   const isShowDeleteModal = ref(false)
   const isShowQuickDetail = ref(false)
@@ -60,6 +59,7 @@ export function useUsersFeature() {
           success(msg)
           refetchUsers.value()
           isShowVerificationModal.value = false
+          isShowQuickDetail.value = false
         },
         onError: ({ data }) => {
           error(data)
@@ -76,6 +76,7 @@ export function useUsersFeature() {
       {
         onSuccess({ msg }) {
           isShowResend.value = false
+          isShowQuickDetail.value = false
           success(msg)
         },
         onError() {
@@ -93,6 +94,7 @@ export function useUsersFeature() {
       {
         onSuccess({ msg }) {
           isShowDeleteModal.value = false
+          isShowQuickDetail.value = false
           success(msg)
           refetchUsers.value()
         },

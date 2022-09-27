@@ -1,12 +1,16 @@
 <!-- eslint-disable vue/require-prop-types -->
 <script setup lang="ts">
+  import { startOfDay } from 'date-fns'
   import { DateTime } from 'luxon'
 
   const showPopover = ref(false)
   const dropdownValue = ref('')
+  const activeValue = ref('')
   const dateRange = ref([Date.now(), Date.now()])
   const timeFrom = ref(Date.now())
   const timeEnd = ref(Date.now())
+
+  const d = 86400000
 
   const dateStart = computed(() => dateRange.value[0])
   const dateEnd = computed(() => dateRange.value[1])
@@ -18,7 +22,7 @@
   }
 
   const valueModel = computed(() => {
-    if (dropdownValue.value == 'custom')
+    if (activeValue.value == 'custom')
       return [
         formatDate(dateStart.value, timeFrom.value),
         formatDate(dateEnd.value, timeEnd.value),
@@ -30,114 +34,156 @@
   const emits = defineEmits(['update:modelValue'])
 
   watchEffect(() => {
-    if (dropdownValue) {
+    if (valueModel) {
       emits('update:modelValue', valueModel.value)
     }
   })
 
-  const disablePreviousDate = (ts: number) => {
-    return ts > Date.now()
+  const isRangeDateDisabled = (
+    ts: number,
+    type: 'start' | 'end',
+    range: [number, number] | null
+  ) => {
+    if (ts > Date.now()) return true
+    if (type === 'start' && range !== null) {
+      return startOfDay(range[1]).valueOf() - startOfDay(ts).valueOf() > d * 30
+    }
+    if (type === 'end' && range !== null) {
+      return startOfDay(ts).valueOf() - startOfDay(range[0]).valueOf() > d * 30
+    }
+    return false
+  }
+
+  const options = [
+    {
+      label: 'Semua',
+      value: '',
+    },
+    {
+      label: '7 hari terakhir',
+      value: '7d',
+    },
+    {
+      label: '30 hari terakhir',
+      value: '30d',
+    },
+    {
+      label: 'Custom',
+      value: 'custom',
+    },
+  ]
+
+  const changeValue = (value: string) => {
+    dropdownValue.value = value
+    activeValue.value = value
+  }
+
+  const getLabel = computed(() => {
+    switch (activeValue.value) {
+      case '':
+        return 'Sort'
+      case '7d':
+        return '7 hari terakhir'
+      case '30d':
+        return '30 hari terakhir'
+      case 'custom':
+        return 'Custom'
+
+      default:
+        return dropdownValue.value
+    }
+  })
+
+  const onClose = () => {
+    emits('update:modelValue', valueModel.value)
+    showPopover.value = false
   }
 </script>
 
 <template>
-  <div label-placement="left">
-    <n-popover placement="bottom" trigger="click" :show="showPopover">
-      <template #trigger>
-        <div @click="showPopover = !showPopover">
-          <n-button size="small" style="grid-area: 1 / 3 / 2 / 4">
-            Sort
-          </n-button>
-        </div>
-      </template>
-      <n-space :wrap-item="false" class="filter__wrapper">
-        <n-space vertical item-style="width: 100%" class="filter__item">
-          <n-button
-            block
-            :type="dropdownValue == '' ? 'primary' : ''"
-            @click="dropdownValue = ''"
-          >
-            Semua
-          </n-button>
-          <n-button
-            block
-            :type="dropdownValue == '7d' ? 'primary' : ''"
-            @click="dropdownValue = '7d'"
-          >
-            7 hari terakhir
-          </n-button>
-          <n-button
-            block
-            :type="dropdownValue == '30d' ? 'primary' : ''"
-            @click="dropdownValue = '30d'"
-          >
-            30 hari terakhir
-          </n-button>
-          <n-button
-            block
-            :type="dropdownValue == 'custom' ? 'primary' : ''"
-            @click="dropdownValue = 'custom'"
-          >
-            Custom
-          </n-button>
-        </n-space>
-        <n-space
-          v-if="dropdownValue == 'custom'"
-          style="flex: 1; height: 100%"
-          :wrap-item="false"
+  <n-popover
+    placement="bottom-end"
+    trigger="click"
+    :show="showPopover"
+    class="popover-filter"
+  >
+    <template #trigger>
+      <n-button block @click="showPopover = !showPopover">
+        {{ getLabel }}
+      </n-button>
+    </template>
+    <n-space :wrap-item="false" class="filter__wrapper">
+      <n-space vertical item-style="width: 100%" class="filter__item">
+        <n-button
+          v-for="option in options"
+          :key="option.value"
+          block
+          :type="activeValue == option.value ? 'primary' : ''"
+          @click="changeValue(option.value)"
         >
-          <n-date-picker
-            v-model:value="dateRange"
-            class="single"
-            type="daterange"
-            panel
-            :actions="[]"
-            :is-date-disabled="disablePreviousDate"
-          />
-          <n-form>
-            <n-space
-              vertical
-              :wrap-item="false"
-              align="items-center"
-              style="height: 100%"
-              justify="between"
-            >
-              <n-space style="flex: 1" vertical>
-                <n-form-item label="From">
-                  <n-time-picker
-                    v-model:value="timeFrom"
-                    :default-value="Date.now()"
-                  />
-                </n-form-item>
-                <n-form-item label="To">
-                  <n-time-picker
-                    v-model:value="timeEnd"
-                    :default-value="Date.now()"
-                  />
-                </n-form-item>
-              </n-space>
-              <n-space justify="end">
-                <n-button
-                  size="tiny"
-                  type="primary"
-                  @click="showPopover = false"
-                >
-                  Konfirmasi
-                </n-button>
-              </n-space>
-            </n-space>
-          </n-form>
-        </n-space>
+          {{ option.label }}
+        </n-button>
       </n-space>
-    </n-popover>
-  </div>
+      <n-space
+        v-if="activeValue == 'custom'"
+        style="flex: 1; height: 100%"
+        :wrap-item="false"
+      >
+        <n-date-picker
+          v-model:value="dateRange"
+          class="single"
+          type="daterange"
+          panel
+          :actions="[]"
+          :is-date-disabled="isRangeDateDisabled"
+        />
+        <n-form class="form__wrapper">
+          <n-space
+            vertical
+            :wrap-item="false"
+            align="items-center"
+            style="height: 100%"
+            justify="between"
+          >
+            <n-space style="flex: 1" vertical>
+              <n-form-item label="From">
+                <n-time-picker
+                  v-model:value="timeFrom"
+                  style="width: 100%"
+                  :default-value="Date.now()"
+                />
+              </n-form-item>
+              <n-form-item label="To">
+                <n-time-picker
+                  v-model:value="timeEnd"
+                  style="width: 100%"
+                  :default-value="Date.now()"
+                />
+              </n-form-item>
+            </n-space>
+            <n-space justify="end">
+              <n-button size="tiny" type="primary" @click="onClose">
+                Konfirmasi
+              </n-button>
+            </n-space>
+          </n-space>
+        </n-form>
+      </n-space>
+    </n-space>
+  </n-popover>
 </template>
 
-<style lang="postcss">
+<style lang="postcss" scoped>
   .filter__wrapper {
     @apply flex-col md:flex-row max-w-xs md:max-w-max;
   }
   .filter__item {
     @apply w-full sm:w-auto;
+  }
+  .popover-filter {
+    @apply max-w-[80%] ml-auto sm:max-w-full;
+  }
+  .form__wrapper {
+    @apply w-full md:w-auto;
   }
 </style>

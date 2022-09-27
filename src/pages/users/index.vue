@@ -36,17 +36,23 @@
       <template #title> Pengguna </template>
     </n-page-header>
     <main>
-      <n-space justify="space-between" style="margin: 2rem 0; width: 100%">
-        <n-input v-model:value="filter.search" placeholder="Cari Pengguna">
-          <template #prefix>
-            <n-icon>
-              <Icon icon="carbon:search" />
-            </n-icon>
-          </template>
-        </n-input>
-        <n-space>
-          <m-datatable-filter v-model="filter.period"></m-datatable-filter>
-        </n-space>
+      <n-space
+        justify="space-between"
+        style="margin: 2rem 0"
+        :wrap-item="false"
+      >
+        <div class="filter__search">
+          <n-input v-model:value="filter.search" placeholder="Cari Transaksi">
+            <template #prefix>
+              <n-icon>
+                <Icon icon="carbon:search" />
+              </n-icon>
+            </template>
+          </n-input>
+        </div>
+        <div class="filter__search">
+          <m-datatable-filter v-model="filter.period" />
+        </div>
       </n-space>
       <div style="overflow: auto; white-space: pre">
         <n-data-table
@@ -259,6 +265,12 @@
     </n-space>
   </n-modal>
 </template>
+
+<style scoped lang="postcss">
+  .filter__search {
+    @apply w-full md:w-fit;
+  }
+</style>
 
 <route lang="yaml">
 meta:

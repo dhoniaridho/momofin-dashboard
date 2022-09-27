@@ -9,7 +9,6 @@
     chartOptions,
     chartOptionsLine,
     dataUpdatedAt,
-    maxDate,
     filter,
     statistics,
   } = useDashboardFeature()
@@ -27,20 +26,13 @@
       </template>
       <template #extra>
         <n-form label-placement="left">
-          <n-space>
-            <n-form-item label="Rentang waktu">
-              <Datepicker
-                v-model="filter.range"
-                :max-date="maxDate"
-                range
-                placeholder="Pilih Rentang waktu"
-              />
-            </n-form-item>
-          </n-space>
-          <n-space justify="end">
-            <n-text v-if="dataUpdatedAt">
+          <n-space justify="end" align="end" vertical>
+            <n-text>
               Terakhir di update <n-time :time="dataUpdatedAt"> </n-time
             ></n-text>
+            <div class="filter__search">
+              <m-datatable-filter v-model="filter.period" />
+            </div>
           </n-space>
         </n-form>
       </template>
@@ -97,6 +89,12 @@
     </n-grid>
   </n-space>
 </template>
+
+<style scoped lang="postcss">
+  .filter__search {
+    @apply w-full md:w-fit;
+  }
+</style>
 
 <route lang="yaml">
 meta:
