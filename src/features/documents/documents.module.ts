@@ -18,7 +18,7 @@ export function useDocumentFeature() {
   const filter = ref({
     search: '',
     page: 1,
-    period: '7d',
+    period: '',
     status: '',
     limit: 10,
   })

@@ -21,9 +21,8 @@ export function useTransactionFeature() {
     return {
       limit: filter.value.limit,
       page: filter.value.page,
-      start_date: filter.value.period[0],
-      end_date: filter.value.period[1],
       search: filter.value.search,
+      period: filter.value.period,
     }
   })
 

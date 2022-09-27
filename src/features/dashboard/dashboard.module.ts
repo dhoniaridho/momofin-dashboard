@@ -28,22 +28,14 @@ export function useDashboardFeature() {
   )
 
   const filter = ref({
-    range: [],
-    period: '7d',
-  })
-
-  const filterComputed = computed(() => {
-    return {
-      start_date: filter.value.range[0],
-      end_date: filter.value.range[1],
-    }
+    period: '',
   })
 
   function useDashboard() {
     return useQuery(
       ['dashboard', filter],
       () => {
-        return getDashboardData(filterComputed.value)
+        return getDashboardData(filter.value)
       },
       {
         refetchInterval: 30000,
