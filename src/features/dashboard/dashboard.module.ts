@@ -89,7 +89,13 @@ export function useDashboardFeature() {
   const chartData = computed<ChartData>(() => {
     return {
       labels: dashboard.value?.products.sales.map((item) => {
-        return item.name
+        const name = [...item.name]
+        return name
+          .map((item, index) => {
+            if (index == 0) return item.toUpperCase()
+            return item
+          })
+          .join('')
       }),
       datasets: [
         {
