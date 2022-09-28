@@ -166,7 +166,7 @@ export function useUsersFeature() {
             {
               bordered: false,
               round: true,
-              type: STATUS(row.certificate_status),
+              type: getKycStatus(row.certificate_status).type as any,
             },
             {
               icon: () =>
@@ -256,11 +256,53 @@ export function useUsersFeature() {
     execDelete()
   }
 
+  const getKycStatus = (status: string) => {
+    switch (status.toLocaleLowerCase()) {
+      case 'unregistered':
+        return {
+          text: 'Tidak Terdaftar',
+          type: 'default',
+        }
+      case 'rejected':
+        return {
+          text: 'Ditolak',
+          type: 'error',
+        }
+      case 'active':
+        return {
+          text: 'Aktif',
+          type: 'primary',
+        }
+      case 'expired':
+        return {
+          text: 'Expired',
+          type: 'warning',
+        }
+      case 'waiting verification':
+        return {
+          text: 'Menunggu Verifikasi',
+          type: 'info',
+        }
+      default:
+        return {
+          text: 'Tidak Terdaftar',
+          type: 'default',
+        }
+    }
+  }
+
   return {
     onRequestDelete,
     onRequestVerify,
     onRequestResend,
-    users: computed(() => users.value?.user),
+    users: computed(() =>
+      users.value?.user.map((item) => {
+        return {
+          ...item,
+          certificate_status: getKycStatus(item.certificate_status)?.text,
+        }
+      })
+    ),
     pagination: computed(() => users.value?.pagination),
     onSelectDropdown,
     isVerifiying,
