@@ -44,6 +44,7 @@
       </n-space>
       <div style="overflow: auto; white-space: pre">
         <n-data-table
+          :row-key="(row) => row.id"
           :columns="createColumns()"
           :data="documents"
           :bordered="false"
@@ -70,7 +71,7 @@
     title="Auditrail"
     style="max-width: 40rem"
   >
-    <n-space v-if="isAuditTrailsLoading" align="items-center">
+    <n-space v-if="isAuditTrailsLoading" align="center">
       <n-spin size="large" />
     </n-space>
     <n-timeline v-else>
