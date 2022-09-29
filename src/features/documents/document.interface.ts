@@ -1,4 +1,8 @@
 export declare module DocumentResponse {
+  interface Signer {
+    name: string
+    email: string
+  }
   export interface Datum {
     id: number
     created_at: Date
@@ -6,6 +10,7 @@ export declare module DocumentResponse {
     document_name: string
     signer_count: number
     status: string
+    signer: Signer[]
   }
 
   export interface Pagination {

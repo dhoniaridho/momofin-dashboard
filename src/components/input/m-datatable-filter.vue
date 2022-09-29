@@ -6,7 +6,7 @@
   const showPopover = ref(false)
   const dropdownValue = ref('')
   const activeValue = ref('')
-  const dateRange = ref([Date.now(), Date.now()])
+  const dateRange = ref<any>([Date.now(), Date.now()])
   const timeFrom = ref(Date.now())
   const timeEnd = ref(Date.now())
 
@@ -118,7 +118,7 @@
           v-for="option in options"
           :key="option.value"
           block
-          :type="activeValue == option.value ? 'primary' : ''"
+          :type="activeValue == option.value ? 'primary' : 'default'"
           @click="changeValue(option.value)"
         >
           {{ option.label }}
@@ -141,9 +141,8 @@
           <n-space
             vertical
             :wrap-item="false"
-            align="items-center"
             style="height: 100%"
-            justify="between"
+            justify="space-between"
           >
             <n-space style="flex: 1" vertical>
               <n-form-item label="From">
