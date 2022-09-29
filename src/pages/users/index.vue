@@ -42,7 +42,7 @@
         :wrap-item="false"
       >
         <div class="filter__search">
-          <n-input v-model:value="filter.search" placeholder="Cari Pnegguna">
+          <n-input v-model:value="filter.search" placeholder="Cari Pengguna">
             <template #prefix>
               <n-icon>
                 <Icon icon="carbon:search" />
