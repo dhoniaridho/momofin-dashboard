@@ -112,9 +112,7 @@
                   <Iconify icon="carbon:dot-mark" />
                 </n-icon>
               </template>
-              {{
-                getKycStatus(user?.profile.certificate_status as string).text
-              }}
+              {{ getKycStatus(user?.profile.certificate_status ?? '').text }}
             </n-tag>
           </n-space>
         </n-gi>
