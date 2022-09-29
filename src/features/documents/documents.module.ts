@@ -63,6 +63,11 @@ export function useDocumentFeature() {
         sorter: 'default',
       },
       {
+        title: 'Ukuran Dokumen',
+        key: 'file_size',
+        sorter: 'default',
+      },
+      {
         title: 'Pihak',
         key: 'signers.length',
         render: (row) => {
