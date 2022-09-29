@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { Icon } from '@iconify/vue'
-  import { OPTIONS, STATUS } from '@features/users/users.constant'
+  import { getKycStatus, OPTIONS, STATUS } from '@features/users/users.constant'
   import { toIdr } from '~/helpers'
   import { appConfig } from '~/config/app.config'
   import { useUsersFeature } from '@features/users/users.module'
@@ -195,7 +195,9 @@
             <n-text> Status e-KYC </n-text>
             <n-tag
               round
-              :type="STATUS(user?.profile.certificate_status as string)"
+              :type="
+                getKycStatus(user?.profile.certificate_status ?? '')?.type as any
+              "
               :bordered="false"
             >
               <template #icon>
@@ -203,7 +205,7 @@
                   <Iconify icon="carbon:dot-mark" />
                 </n-icon>
               </template>
-              {{ user?.profile.certificate_status }}
+              {{ getKycStatus(user?.profile.certificate_status ?? '').text }}
             </n-tag>
           </n-space>
         </n-gi>

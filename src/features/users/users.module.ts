@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/vue'
-import { OPTIONS, STATUS } from '@features/users/users.constant'
+import { getKycStatus, OPTIONS, STATUS } from '@features/users/users.constant'
 import { useMutation, useQuery } from 'vue-query'
 import {
   getAllUsers,
@@ -255,41 +255,6 @@ export function useUsersFeature() {
 
   const onRequestDelete = () => {
     execDelete()
-  }
-
-  const getKycStatus = (status: string) => {
-    switch (status.toLocaleLowerCase()) {
-      case 'unregistered':
-        return {
-          text: 'Tidak Terdaftar',
-          type: 'default',
-        }
-      case 'rejected':
-        return {
-          text: 'Ditolak',
-          type: 'error',
-        }
-      case 'active':
-        return {
-          text: 'Aktif',
-          type: 'primary',
-        }
-      case 'expired':
-        return {
-          text: 'Expired',
-          type: 'warning',
-        }
-      case 'waiting verification':
-        return {
-          text: 'Menunggu Verifikasi',
-          type: 'info',
-        }
-      default:
-        return {
-          text: 'Tidak Terdaftar',
-          type: 'default',
-        }
-    }
   }
 
   return {

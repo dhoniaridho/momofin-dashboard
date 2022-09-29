@@ -92,3 +92,38 @@ export const STATUS = (text: string) => {
       return 'default'
   }
 }
+
+export const getKycStatus = (status: string) => {
+  switch (status.toLocaleLowerCase()) {
+    case 'unregistered':
+      return {
+        text: 'Tidak Terdaftar',
+        type: 'default',
+      }
+    case 'rejected':
+      return {
+        text: 'Ditolak',
+        type: 'error',
+      }
+    case 'active':
+      return {
+        text: 'Aktif',
+        type: 'primary',
+      }
+    case 'expired':
+      return {
+        text: 'Expired',
+        type: 'warning',
+      }
+    case 'waiting verification':
+      return {
+        text: 'Menunggu Verifikasi',
+        type: 'info',
+      }
+    default:
+      return {
+        text: 'Tidak Terdaftar',
+        type: 'default',
+      }
+  }
+}

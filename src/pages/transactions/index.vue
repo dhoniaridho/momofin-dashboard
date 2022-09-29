@@ -1,6 +1,9 @@
 <script setup lang="ts">
   import { appConfig } from '~/config/app.config'
-  import { STATUS } from '@features/transactions/transactions.constants'
+  import {
+    getKycStatus,
+    STATUS,
+  } from '@features/transactions/transactions.constants'
   import { useTransactionFeature } from '@features/transactions/transactions.module'
   import { toIdr } from '~/helpers'
 
@@ -101,7 +104,7 @@
             <n-text> Status e-KYC </n-text>
             <n-tag
               round
-              :type="STATUS(user?.profile.certificate_status as string)"
+              :type="getKycStatus(user?.profile.certificate_status as string).type as any"
               :bordered="false"
             >
               <template #icon>
@@ -109,7 +112,9 @@
                   <Iconify icon="carbon:dot-mark" />
                 </n-icon>
               </template>
-              {{ user?.profile.certificate_status }}
+              {{
+                getKycStatus(user?.profile.certificate_status as string).text
+              }}
             </n-tag>
           </n-space>
         </n-gi>
