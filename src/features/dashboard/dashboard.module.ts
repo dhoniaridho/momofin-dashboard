@@ -51,7 +51,7 @@ export function useDashboardFeature() {
 
   function useChartLine() {
     return useQuery(['line'], () => {
-      return getChartLineData()
+      return getChartLineData(filter.value)
     })
   }
 
@@ -150,6 +150,13 @@ export function useDashboardFeature() {
     plugins: {
       legend: {
         position: 'right',
+      },
+      tooltip: {
+        callbacks: {
+          label: (data) => {
+            return `${data.label}: ${Math.round(+data.formattedValue)} %`
+          },
+        },
       },
     },
   }

@@ -65,7 +65,10 @@
           hoverable
         >
           <n-h5>
-            <n-number-animation :from="0" :to="item.value" />
+            <n-number-animation
+              :from="0"
+              :to="parseInt(item.value?.toString() ?? '')"
+            />
           </n-h5>
         </n-card>
       </n-grid-item>
