@@ -104,7 +104,7 @@
             <n-text> Status e-KYC </n-text>
             <n-tag
               round
-              :type="getKycStatus(user?.profile.certificate_status as string).type as any"
+              :type="getKycStatus(user?.profile.certificate_status ?? '').type as any"
               :bordered="false"
             >
               <template #icon>
