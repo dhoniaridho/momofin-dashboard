@@ -67,7 +67,7 @@
           <n-h5>
             <n-number-animation
               :from="0"
-              :to="parseInt(item.value?.toString() ?? '')"
+              :to="parseInt(item.value?.toString() ?? '0')"
             />
           </n-h5>
         </n-card>
