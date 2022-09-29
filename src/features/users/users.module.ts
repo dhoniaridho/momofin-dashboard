@@ -95,6 +95,7 @@ export function useUsersFeature() {
         onSuccess({ msg }) {
           isShowDeleteModal.value = false
           isShowQuickDetail.value = false
+          filter.value.search = ''
           success(msg)
           refetchUsers.value()
         },
