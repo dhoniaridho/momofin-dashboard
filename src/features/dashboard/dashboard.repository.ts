@@ -14,9 +14,13 @@ export const getDashboardData = async (filter: any) => {
   return response
 }
 
-export const getChartLineData = async () => {
+export const getChartLineData = async (filter: any) => {
   const {
     data: { data: response },
-  } = await http.get<ChartLineResponse.RootObject>('dashboard/chart_line')
+  } = await http.get<ChartLineResponse.RootObject>('dashboard/chart_line', {
+    params: {
+      ...filter,
+    },
+  })
   return response
 }
