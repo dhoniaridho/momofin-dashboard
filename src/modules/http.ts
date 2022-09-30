@@ -28,6 +28,9 @@ http.interceptors.response.use(
     return response
   },
   (error) => {
+    if (error.response.data.code == 401) {
+      AuthService.signOut()
+    }
     return Promise.reject(error)
   }
 )

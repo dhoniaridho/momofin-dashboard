@@ -19,7 +19,7 @@
 </script>
 
 <template>
-  <n-space vertical style="gap: 3rem">
+  <n-space vertical style="gap: 2rem">
     <n-page-header>
       <template #title>
         <n-h2> Dashboard </n-h2>
@@ -30,20 +30,28 @@
             <div class="filter__search">
               <m-datatable-filter v-model="filter.period" />
             </div>
-            <n-text>
-              Terakhir di update <n-time :time="dataUpdatedAt"> </n-time
-            ></n-text>
           </n-space>
         </n-form>
       </template>
     </n-page-header>
 
-    <n-grid cols="1 400:1 600:2" :x-gap="40">
+    <n-space justify="end">
+      <n-text>
+        Terakhir di update <n-time :time="dataUpdatedAt"> </n-time
+      ></n-text>
+    </n-space>
+
+    <n-grid cols="1 400:1 600:2" :x-gap="40" :y-gap="30">
       <n-grid-item>
         <Line
           :chart-data="(chartDataLines as any)"
           :chart-options="chartOptionsLine"
         />
+      </n-grid-item>
+      <n-grid-item class="filter__search_sm">
+        <div>
+          <m-datatable-filter v-model="filter.period" />
+        </div>
       </n-grid-item>
       <n-grid-item>
         <Doughnut
@@ -95,7 +103,10 @@
 
 <style scoped lang="postcss">
   .filter__search {
-    @apply w-full md:w-fit;
+    @apply w-full md:w-fit hidden sm:block;
+  }
+  .filter__search_sm {
+    @apply w-full md:w-fit block sm:hidden;
   }
 </style>
 
