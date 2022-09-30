@@ -157,9 +157,9 @@ export function useDashboardFeature() {
       tooltip: {
         callbacks: {
           label: (data) => {
-            return `${data.label}: ( ${Math.round(+data.formattedValue)} ) ${
+            return `${data.label}: ( ${
               dashboard.value?.products?.sales[data.dataIndex].sales
-            } %`
+            } ) ${Math.round(+data.formattedValue)}   %`
           },
         },
       },
