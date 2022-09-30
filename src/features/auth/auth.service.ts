@@ -4,7 +4,7 @@ import jwt_decode from 'jwt-decode'
 import router from '~/router'
 
 export class AuthService {
-  private static readonly key = appConfig.cookie.storage_key ?? 'emet_token'
+  private static readonly key = appConfig.cookie.storage_key
   static signIn(token: string, remember: boolean) {
     if (remember) {
       cookie.set(this.key, token, {

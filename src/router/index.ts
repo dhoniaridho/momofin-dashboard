@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { setupLayouts } from 'virtual:generated-layouts'
 import generatedRoutes from 'virtual:generated-pages'
-import middleware from './_middleware'
 
 const routes = setupLayouts(generatedRoutes)
 
@@ -10,6 +9,11 @@ const router = createRouter({
   history: createWebHistory(),
 })
 
-router.beforeEach(middleware)
+const modules = import.meta.glob('../middlewares/*.ts', {
+  eager: true,
+})
+Object.values(modules).forEach((module: any) => {
+  return router.beforeEach(module?.default)
+})
 
 export default router

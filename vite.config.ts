@@ -84,7 +84,7 @@ export default defineConfig({
         * ${require('./package.json').name} v${
           require('./package.json').version
         }
-        * Build ${new Date().toLocaleString()}
+        * Build ${new Date().toLocaleString()} ${new Date().getTimezoneOffset()}
         * (c) ${new Date().getFullYear()} ${require('./package.json').author}
         */`,
       },

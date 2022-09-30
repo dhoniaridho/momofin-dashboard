@@ -50,7 +50,7 @@ export function useDashboardFeature() {
   }
 
   function useChartLine() {
-    return useQuery(['line'], () => {
+    return useQuery(['line', filter], () => {
       return getChartLineData(filter.value)
     })
   }
@@ -66,13 +66,13 @@ export function useDashboardFeature() {
           label: 'Registrasi',
           borderColor: '#0067D6',
           backgroundColor: '#0067D6',
-          data: chartLine.value?.registration,
+          data: chartLine.value?.registration ?? [],
         },
         {
           label: 'Verifikasi',
           borderColor: '#008060',
           backgroundColor: '#008060',
-          data: chartLine.value?.verification as number[],
+          data: chartLine.value?.verification ?? [],
         },
         {
           label: 'Transaction',
@@ -84,13 +84,13 @@ export function useDashboardFeature() {
           label: 'Meterai Used',
           borderColor: '#51B2C9',
           backgroundColor: '#51B2C9',
-          data: chartLine.value?.emet_used,
+          data: chartLine.value?.emet_used ?? [],
         },
         {
           label: 'Documents Uploaded',
           borderColor: '#E4762F',
           backgroundColor: '#E4762F',
-          data: chartLine.value?.doc_uploaded,
+          data: chartLine.value?.doc_uploaded ?? [],
         },
       ],
     }
