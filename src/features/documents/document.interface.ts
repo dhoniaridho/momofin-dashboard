@@ -2,6 +2,12 @@ export declare module DocumentResponse {
   interface Signer {
     name: string
     email: string
+    sign_status: boolean
+    usage: 'EMET' | 'ESGN'
+    usage_count: {
+      emet: number
+      esgn: number
+    }
   }
   export interface Datum {
     id: number
