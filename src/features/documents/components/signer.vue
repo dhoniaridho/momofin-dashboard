@@ -1,17 +1,6 @@
 <!-- eslint-disable vue/require-prop-types -->
 <script setup lang="ts">
-  const props = defineProps(['signers'])
-
-  const USAGES = computed<{ emet: number; esgn: number }[]>(() => {
-    return props.signers.map((item: any) => item.usage_count)
-  })
-
-  const esgnUsage = computed(() => {
-    return USAGES.value.reduce((a, b) => a + b.esgn, 0)
-  })
-  const emetUsage = computed(() => {
-    return USAGES.value.reduce((a, b) => a + b.emet, 0)
-  })
+  defineProps(['signers'])
 </script>
 
 <template>
@@ -49,7 +38,12 @@
             </n-space>
           </n-space>
         </div>
-        <n-space style="margin-top: 2rem">
+      </div>
+    </n-space>
+    <n-space vertical>
+      <n-h4> Token Dipakai </n-h4>
+      <div v-for="user in $props?.signers" :key="user.email">
+        <n-space>
           <n-space>
             <n-icon size="25">
               <icons name="esign" />
@@ -64,21 +58,6 @@
           </n-space>
         </n-space>
       </div>
-    </n-space>
-    <n-space vertical>
-      <n-h4>Total Penggunaan </n-h4>
-      <n-space>
-        <n-icon size="40">
-          <icons name="esign" />
-        </n-icon>
-        {{ esgnUsage }} ESGN
-      </n-space>
-      <n-space>
-        <n-icon size="40">
-          <icons name="emet" />
-        </n-icon>
-        {{ emetUsage }} EMET
-      </n-space>
     </n-space>
   </n-space>
 </template>
