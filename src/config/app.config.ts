@@ -9,7 +9,7 @@ export const appConfig = {
     base_url: import.meta.env.VITE_API_BASE_URL,
   },
   cookie: {
-    storage_key: import.meta.env.VITE_COOKIE_STORAGE_KEY,
+    storage_key: import.meta.env.VITE_COOKIE_STORAGE_KEY ?? 'emet_token',
     secure: import.meta.env.VITE_COOKIE_SECURE ?? true,
   },
 }
