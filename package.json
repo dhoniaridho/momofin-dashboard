@@ -1,6 +1,6 @@
 {
-  "name": "vue-starter",
-  "version": "0.0.0",
+  "name": "emet-dash",
+  "version": "1.0.0",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",

@@ -53,3 +53,21 @@ export declare module DashboardResponse {
     data: Data
   }
 }
+
+export declare module ChartLineResponse {
+  export interface Data {
+    days: number[]
+    month: string[]
+    registration: number[]
+    verification: number[]
+    transaction: number[]
+    doc_uploaded: number[]
+    emet_used: number[]
+  }
+
+  export interface RootObject {
+    code: number
+    success: boolean
+    data: Data
+  }
+}

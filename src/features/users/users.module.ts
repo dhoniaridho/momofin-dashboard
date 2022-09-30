@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/vue'
-import { OPTIONS, STATUS } from '@features/users/users.constant'
+import { getKycStatus, OPTIONS, STATUS } from '@features/users/users.constant'
 import { useMutation, useQuery } from 'vue-query'
 import {
   getAllUsers,
@@ -31,7 +31,6 @@ export function useUsersFeature() {
     period: '',
     status: '',
     limit: 10,
-    range: '7d',
   })
   const isShowDeleteModal = ref(false)
   const isShowQuickDetail = ref(false)
@@ -60,6 +59,7 @@ export function useUsersFeature() {
           success(msg)
           refetchUsers.value()
           isShowVerificationModal.value = false
+          isShowQuickDetail.value = false
         },
         onError: ({ data }) => {
           error(data)
@@ -76,6 +76,7 @@ export function useUsersFeature() {
       {
         onSuccess({ msg }) {
           isShowResend.value = false
+          isShowQuickDetail.value = false
           success(msg)
         },
         onError() {
@@ -93,6 +94,8 @@ export function useUsersFeature() {
       {
         onSuccess({ msg }) {
           isShowDeleteModal.value = false
+          isShowQuickDetail.value = false
+          filter.value.search = ''
           success(msg)
           refetchUsers.value()
         },
@@ -164,7 +167,7 @@ export function useUsersFeature() {
             {
               bordered: false,
               round: true,
-              type: STATUS(row.certificate_status),
+              type: getKycStatus(row.certificate_status).type as any,
             },
             {
               icon: () =>
@@ -258,7 +261,14 @@ export function useUsersFeature() {
     onRequestDelete,
     onRequestVerify,
     onRequestResend,
-    users: computed(() => users.value?.user),
+    users: computed(() =>
+      users.value?.user.map((item) => {
+        return {
+          ...item,
+          certificate_status: getKycStatus(item.certificate_status)?.text,
+        }
+      })
+    ),
     pagination: computed(() => users.value?.pagination),
     onSelectDropdown,
     isVerifiying,

@@ -1,3 +1,4 @@
+import { appConfig } from '~/config/app.config'
 import { createApp } from 'vue'
 import 'virtual:svg-icons-register'
 import '~/assets/css/main.css'
@@ -14,6 +15,15 @@ Object.values(modules).forEach((module: any) => {
     return module?.default(app)
   })
 })
+
+if (appConfig.app.mode == 'production') {
+  app.config.warnHandler = function () {
+    return null
+  }
+  app.config.errorHandler = () => {
+    return
+  }
+}
 
 app.component('Iconify', Icon)
 

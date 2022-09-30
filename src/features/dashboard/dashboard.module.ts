@@ -12,7 +12,10 @@ import {
   type ChartOptions,
 } from 'chart.js'
 import { useQuery } from 'vue-query'
-import { getDashboardData } from '@features/dashboard/dashboard.repository'
+import {
+  getDashboardData,
+  getChartLineData,
+} from '@features/dashboard/dashboard.repository'
 import { toIdr } from '~/helpers'
 
 export function useDashboardFeature() {
@@ -28,22 +31,14 @@ export function useDashboardFeature() {
   )
 
   const filter = ref({
-    range: [],
-    period: '7d',
-  })
-
-  const filterComputed = computed(() => {
-    return {
-      start_date: filter.value.range[0],
-      end_date: filter.value.range[1],
-    }
+    period: '',
   })
 
   function useDashboard() {
     return useQuery(
       ['dashboard', filter],
       () => {
-        return getDashboardData(filterComputed.value)
+        return getDashboardData(filter.value)
       },
       {
         refetchInterval: 30000,
@@ -54,41 +49,48 @@ export function useDashboardFeature() {
     )
   }
 
-  const { data: dashboard, dataUpdatedAt } = useDashboard()
+  function useChartLine() {
+    return useQuery(['line', filter], () => {
+      return getChartLineData(filter.value)
+    })
+  }
 
-  const chartDataLines = computed<ChartData>(() => {
+  const { data: dashboard, dataUpdatedAt } = useDashboard()
+  const { data: chartLine } = useChartLine()
+
+  const chartDataLines = computed(() => {
     return {
-      labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      labels: chartLine.value?.days,
       datasets: [
         {
           label: 'Registrasi',
           borderColor: '#0067D6',
           backgroundColor: '#0067D6',
-          data: [dashboard.value?.users.new_register as number],
+          data: chartLine.value?.registration ?? [],
         },
         {
           label: 'Verifikasi',
           borderColor: '#008060',
           backgroundColor: '#008060',
-          data: [dashboard.value?.users.verified_user as number],
+          data: chartLine.value?.verification ?? [],
         },
         {
           label: 'Transaction',
           borderColor: '#D03E34',
           backgroundColor: '#D03E34',
-          data: [dashboard.value?.products.total_sales as number],
+          data: chartLine.value?.transaction,
         },
         {
           label: 'Meterai Used',
           borderColor: '#51B2C9',
           backgroundColor: '#51B2C9',
-          data: [dashboard.value?.token.emet_used as number],
+          data: chartLine.value?.emet_used ?? [],
         },
         {
           label: 'Documents Uploaded',
           borderColor: '#E4762F',
           backgroundColor: '#E4762F',
-          data: [dashboard.value?.documents.doc_uploaded as number],
+          data: chartLine.value?.doc_uploaded ?? [],
         },
       ],
     }
@@ -97,7 +99,13 @@ export function useDashboardFeature() {
   const chartData = computed<ChartData>(() => {
     return {
       labels: dashboard.value?.products.sales.map((item) => {
-        return item.name
+        const name = [...item.name]
+        return name
+          .map((item, index) => {
+            if (index == 0) return item.toUpperCase()
+            return item
+          })
+          .join('')
       }),
       datasets: [
         {
@@ -142,6 +150,13 @@ export function useDashboardFeature() {
     plugins: {
       legend: {
         position: 'right',
+      },
+      tooltip: {
+        callbacks: {
+          label: (data) => {
+            return `${data.label}: ${Math.round(+data.formattedValue)} %`
+          },
+        },
       },
     },
   }
@@ -217,5 +232,6 @@ export function useDashboardFeature() {
     chartDataLines,
     dataUpdatedAt,
     filter,
+    chartLine,
   }
 }

@@ -14,11 +14,13 @@ import {
   getAuditTrail,
 } from '@features/documents/document.repository'
 import type { DocumentResponse } from '~/features/documents/document.interface'
+import Signers from './components/signer.vue'
+
 export function useDocumentFeature() {
   const filter = ref({
     search: '',
     page: 1,
-    period: '7d',
+    period: '',
     status: '',
     limit: 10,
   })
@@ -43,6 +45,14 @@ export function useDocumentFeature() {
   const createColumns = (): DataTableColumns<DocumentResponse.Datum> => {
     return [
       {
+        type: 'expand',
+        renderExpand: (rowData) => {
+          return h(Signers, {
+            signers: rowData.signer,
+          })
+        },
+      },
+      {
         title: 'Waktu & Tanggal',
         key: 'created_at',
         sorter: 'default',
@@ -63,8 +73,13 @@ export function useDocumentFeature() {
         sorter: 'default',
       },
       {
+        title: 'Ukuran Dokumen',
+        key: 'file_size',
+        sorter: 'default',
+      },
+      {
         title: 'Pihak',
-        key: 'signers.length',
+        key: 'signer_count',
         render: (row) => {
           return h(NSpace, { vertical: true }, () => [
             h(NText, () => `${row.signer_count} Pihak`),
