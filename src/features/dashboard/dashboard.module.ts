@@ -60,7 +60,10 @@ export function useDashboardFeature() {
 
   const chartDataLines = computed(() => {
     return {
-      labels: chartLine.value?.days,
+      labels: chartLine.value?.days.map((day, index) => {
+        const currentMonth = chartLine.value.month[index]
+        return `${day} ${currentMonth}`
+      }),
       datasets: [
         {
           label: 'Registrasi',
