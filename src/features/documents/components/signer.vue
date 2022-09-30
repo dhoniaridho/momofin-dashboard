@@ -15,8 +15,8 @@
 </script>
 
 <template>
-  <n-space>
-    <n-space vertical>
+  <n-space style="gap: 2rem">
+    <n-space vertical style="gap: 1rem">
       <n-h4> Penandatangan </n-h4>
       <div v-for="user in $props?.signers" :key="user.email">
         <div>
@@ -49,10 +49,24 @@
             </n-space>
           </n-space>
         </div>
+        <n-space style="margin-top: 2rem">
+          <n-space>
+            <n-icon size="25">
+              <icons name="esign" />
+            </n-icon>
+            {{ user.usage_count.esgn }} ESGN
+          </n-space>
+          <n-space>
+            <n-icon size="25">
+              <icons name="emet" />
+            </n-icon>
+            <n-text> {{ user.usage_count.emet }} EMET </n-text>
+          </n-space>
+        </n-space>
       </div>
     </n-space>
     <n-space vertical>
-      <n-h4> Penggunaan </n-h4>
+      <n-h4>Total Penggunaan </n-h4>
       <n-space>
         <n-icon size="40">
           <icons name="esign" />
