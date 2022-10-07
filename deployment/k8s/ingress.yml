@@ -9,7 +9,7 @@ spec:
   tls:
   - hosts:
     - 'superadmin.emet.momofin.com'
-    secretName: momofin-com-tls
+    secretName: superadmin-emet-momofin-com-tls
   rules:
   - host: 'superadmin.emet.momofin.com'
     http:
