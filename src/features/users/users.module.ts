@@ -7,6 +7,7 @@ import {
   verifyUserById,
   resendEmailVerification,
   deleteUserById,
+  exportUsersToFile,
 } from '@features/users/users.repository'
 
 import type { UsersResponse } from '~/features/users/users.interface'
@@ -257,6 +258,10 @@ export function useUsersFeature() {
     execDelete()
   }
 
+  const onExportData = () => {
+    exportUsersToFile()
+  }
+
   return {
     onRequestDelete,
     onRequestVerify,
@@ -282,5 +287,6 @@ export function useUsersFeature() {
     isShowQuickDetail,
     isShowVerificationModal,
     isShowDeleteModal,
+    onExportData,
   }
 }

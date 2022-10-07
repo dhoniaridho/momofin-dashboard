@@ -62,3 +62,19 @@ export const resendEmailVerification = async (id: string) => {
   )
   return response
 }
+
+/**
+ * Export data user then download
+ */
+export const exportUsersToFile = async () => {
+  const { data: response } = await http.get('users/download', {
+    responseType: 'blob',
+  })
+  const url = URL.createObjectURL(response)
+  const a = document.createElement<'a'>('a')
+  a.download = `Export-users-${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`
+  a.href = url
+  a.click()
+  URL.revokeObjectURL(url)
+  return url
+}

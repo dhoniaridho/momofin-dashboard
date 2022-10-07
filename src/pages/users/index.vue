@@ -23,6 +23,7 @@
     isShowResend,
     isShowVerificationModal,
     isShowDeleteModal,
+    onExportData,
   } = useUsersFeature()
 
   useHead({
@@ -38,7 +39,7 @@
     <main>
       <n-space
         justify="space-between"
-        style="margin: 2rem 0"
+        style="margin: 1rem 0"
         :wrap-item="false"
       >
         <div class="filter__search">
@@ -51,6 +52,9 @@
           </n-input>
         </div>
         <div class="filter__search">
+          <n-button type="primary" block @click="onExportData">
+            Export Data
+          </n-button>
           <m-datatable-filter v-model="filter.period" />
         </div>
       </n-space>
@@ -270,7 +274,7 @@
 
 <style scoped lang="postcss">
   .filter__search {
-    @apply w-full md:w-fit;
+    @apply w-full md:w-fit grid md:grid-cols-2 gap-5;
   }
 </style>
 
