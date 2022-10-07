@@ -159,7 +159,7 @@ export function useDashboardFeature() {
           label: (data) => {
             return `${data.label}: ( ${
               dashboard.value?.products?.sales[data.dataIndex].sales
-            } ) ${Math.round(+data.formattedValue)}   %`
+            } ) ${Math.round(+data.formattedValue)}%`
           },
         },
       },
