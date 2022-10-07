@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: momofin-fe-emet-superadmin-ingress
+  namespace: prod-emet
+  generation: 1
+spec:
+  ingressClassName: public
+  tls:
+  - hosts:
+    - 'superadmin.emet.momofin.com'
+    secretName: momofin-com-tls
+  rules:
+  - host: 'superadmin.emet.momofin.com'
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: momofin-fe-emet-superadmin-service
+            port:
+              number: 80

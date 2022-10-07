@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: momofin-fe-emet-superadmin-service
+  namespace: prod-momofingo
+  annotations:
+spec:
+  ports:
+  - name: 80app
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    name: momofin-fe-emet-superadmin
+  type: ClusterIP
