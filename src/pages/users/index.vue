@@ -52,10 +52,10 @@
           </n-input>
         </div>
         <div class="filter__search">
+          <n-button type="primary" block @click="onExportData">
+            Export Data
+          </n-button>
           <m-datatable-filter v-model="filter.period" />
-          <n-button type="info" block @click="onExportData"
-            >Export Data</n-button
-          >
         </div>
       </n-space>
       <div style="overflow: auto; white-space: pre">
