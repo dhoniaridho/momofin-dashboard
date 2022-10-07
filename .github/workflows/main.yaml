@@ -47,9 +47,6 @@ jobs:
         run: |
           chmod +x -R deployment/k8s/
           rsync -avz deployment/k8s/ ${{ secrets.PROD_SSH_USER }}@${{ secrets.PROD_SSH_HOST }}:/home/deployer/${{ github.event.repository.name }}
-      - name: login to container registry
-        run: |
-          ssh  ${{ secrets.PROD_SSH_USER }}@${{ secrets.PROD_SSH_HOST }} 'echo ${{ env.cr_pat }} | docker login ${{ env.cr }} -u ${{ env.cr_user }} --password-stdin'
       - name: deploy container
         run: |
           ssh  ${{ secrets.PROD_SSH_USER }}@${{ secrets.PROD_SSH_HOST }} 'cd /home/deployer/${{ github.event.repository.name }}/ && ./run.sh'
