@@ -52,14 +52,10 @@
           </n-input>
         </div>
         <div class="filter__search">
-          <div>
-            <m-datatable-filter v-model="filter.period" />
-          </div>
-        </div>
-      </n-space>
-      <n-space justify="end" style="margin-bottom: 2rem" :wrap-item="false">
-        <div class="export-data">
-          <n-button block @click="onExportData">Export Data</n-button>
+          <m-datatable-filter v-model="filter.period" />
+          <n-button type="info" block @click="onExportData"
+            >Export Data</n-button
+          >
         </div>
       </n-space>
       <div style="overflow: auto; white-space: pre">
@@ -278,10 +274,7 @@
 
 <style scoped lang="postcss">
   .filter__search {
-    @apply w-full md:w-fit;
-  }
-  .export-data {
-    @apply block w-full md:w-fit;
+    @apply w-full md:w-fit grid md:grid-cols-2 gap-5;
   }
 </style>
 
