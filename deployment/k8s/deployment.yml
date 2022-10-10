@@ -19,6 +19,7 @@ spec:
       containers:
         - name: momofin-fe-emet-superadmin
           image: ghcr.io/momofin/prod-momofin-fe-emet-superadmin:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           resources: 
