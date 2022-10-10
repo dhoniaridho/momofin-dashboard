@@ -27,9 +27,10 @@ jobs:
           envkey_VITE_COOKIE_STORAGE_KEY: "emet_dashboard_token"
           file_name: .env
           fail_on_empty: false
+      - name: fix permission
         run: |
-          ls -al deployment/docker/
-          chmod +x -R deployment/docker/
+          ls -al deployment/k8s/
+          chmod +x -R deployment/k8s/
       - name: build docker image 
         run: |
           docker build -t $image_name .
