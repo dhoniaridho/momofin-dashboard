@@ -15,7 +15,7 @@
   auth.getAuthenticatedUser()
 
   const clientWidth = ref(document.body.clientWidth)
-  const activeKey = ref(null)
+  const activeKey = ref(useRoute().name as string)
   const collapsed = computed(() => {
     return clientWidth.value < 1024
   })

@@ -15,6 +15,7 @@
     isShowQuickDetail,
     isTransactionsLoading,
     pagination,
+    onExportData,
   } = useTransactionFeature()
 
   useHead({
@@ -28,11 +29,10 @@
       <template #title> Transaksi </template>
     </n-page-header>
     <main>
-      <n-space
-        justify="space-between"
-        style="margin: 2rem 0"
-        :wrap-item="false"
-      >
+      <n-space justify="end" style="margin: 2rem 0" :wrap-item="false">
+        <div class="filter__search">
+          <n-button @click="onExportData"> Export </n-button>
+        </div>
         <div class="filter__search">
           <n-input v-model:value="filter.search" placeholder="Cari Transaksi">
             <template #prefix>
