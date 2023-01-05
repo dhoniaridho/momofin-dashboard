@@ -1,12 +1,14 @@
 import { NButton as Button, NIcon, NTag, type DataTableColumns } from 'naive-ui'
 import { Icon } from '@iconify/vue'
-import { useQuery } from 'vue-query'
+import { useMutation, useQuery } from 'vue-query'
 import {
+  exportTransactions,
   getAllTransactions,
   getUserById,
 } from '@features/transactions/transactions.repository'
 import { STATUS } from '@features/transactions/transactions.constants'
 import type { TransactionResponse } from '@features/transactions/transactions.interface'
+import { exportToCSV } from './transactions.helper'
 
 export function useTransactionFeature() {
   const filter = ref({
@@ -42,6 +44,22 @@ export function useTransactionFeature() {
       return getUserById(selectedUUID.value)
     })
   }
+
+  function useExportData() {
+    return useMutation(
+      ['download'],
+      () => {
+        return exportTransactions(filterComputed.value)
+      },
+      {
+        onSuccess: (data) => {
+          exportToCSV(data)
+        },
+      }
+    )
+  }
+
+  const { mutate } = useExportData()
 
   const { data: transactions, isLoading: isTransactionsLoading } =
     useTransactions()
@@ -139,6 +157,10 @@ export function useTransactionFeature() {
     }
   }
 
+  const onExportData = () => {
+    mutate()
+  }
+
   const data = computed(() => {
     return transactions.value?.data.map((transaction) => {
       return {
@@ -157,5 +179,6 @@ export function useTransactionFeature() {
     isTransactionsLoading,
     isShowQuickDetail,
     pagination: computed(() => transactions.value?.pagination),
+    onExportData,
   }
 }

@@ -81,7 +81,7 @@
   const getLabel = computed(() => {
     switch (activeValue.value) {
       case '':
-        return 'Sort'
+        return 'Filter'
       case '7d':
         return '7 hari terakhir'
       case '30d':
