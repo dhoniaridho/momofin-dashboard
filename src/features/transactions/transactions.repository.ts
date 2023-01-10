@@ -17,7 +17,7 @@ export const exportTransactions = async (filter: any) => {
   return new Promise<TransactonExport.Transaction[]>(
     async (resolve, reject) => {
       try {
-        const { data } = await http.get('transactions/export', {
+        const { data } = await http.get('https://api-v1.momofin.com/v1/econtract/emet_dashboard/transactions/export', {
           params: {
             ...filter,
           },
