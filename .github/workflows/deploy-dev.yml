@@ -2,7 +2,7 @@ name: build and deploy DEVELOPMENT
 on:
   push:
     branches:
-      - feature/cicd
+      - dev
   workflow_dispatch:
 
 env:
@@ -151,8 +151,7 @@ jobs:
           manifests: |
             deployment/k8s/d.yml
             deployment/k8s/h.yml
-            deployment/k8s/s.yml
-            deployment/k8s/i.yml
+            
 
   build-failed:
     name: Notify build failed
