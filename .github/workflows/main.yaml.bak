@@ -1,0 +1,57 @@
+name: Build & Deploy
+
+env:
+  cr: "ghcr.io"
+  cr_user: ${{ secrets.cr_user }}
+  cr_pat: ${{ secrets.cr_pat }}
+  image_name: "ghcr.io/momofin/prod-momofin-fe-emet-superadmin:latest"
+
+on:
+  push:
+    branches: main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name:
+        uses: actions/checkout@v3
+      - name: login to container registry
+        run: echo ${{ env.cr_pat }} | docker login ${{ env.cr }} -u ${{ env.cr_user }} --password-stdin
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_VITE_API_BASE_URL: "https://api-v1.momofin.com/emet_dashboard"
+          envkey_VITE_APP_ENV: "development"
+          envkey_VITE_COOKIE_SECURE: "true"
+          envkey_VITE_COOKIE_STORAGE_KEY: "emet_dashboard_token"
+          file_name: .env
+          fail_on_empty: false
+      - name: fix permission
+        run: |
+          ls -al deployment/k8s/
+          chmod +x -R deployment/k8s/
+      - name: build docker image 
+        run: |
+          docker build -t $image_name .
+          docker push $image_name
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.PROD_SSH_KEY }} 
+          known_hosts: 'hello-world'
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H ${{ secrets.PROD_SSH_HOST }} >> ~/.ssh/known_hosts
+      - name: sync
+        run: |
+          chmod +x -R deployment/k8s/
+          rsync -avz deployment/k8s/ ${{ secrets.PROD_SSH_USER }}@${{ secrets.PROD_SSH_HOST }}:/home/deployer/${{ github.event.repository.name }}
+      - name: deploy container
+        run: |
+          ssh  ${{ secrets.PROD_SSH_USER }}@${{ secrets.PROD_SSH_HOST }} 'cd /home/deployer/${{ github.event.repository.name }}/ && ./run.sh'
