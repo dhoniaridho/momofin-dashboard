@@ -138,14 +138,15 @@ jobs:
           k8s-url: "${{ env.KUBE_HOST }}"
           k8s-secret: "${{ env.KUBE_SECRET }}"
 
-      # - name: Deploy to the Kubernetes cluster
-      #   uses: azure/k8s-deploy@v1
-      #   with:
-      #     namespace: ${{ env.NAMESPACE }}
-      #     manifests: |
-      #       deployment/k8s/d.yml
-      #       deployment/k8s/h.yml
-      #       deployment/k8s/s.yml
+      - name: Deploy to the Kubernetes cluster
+        uses: azure/k8s-deploy@v1
+        with:
+          namespace: ${{ env.NAMESPACE }}
+          manifests: |
+            deployment/k8s/d.yml
+            deployment/k8s/h.yml
+            deployment/k8s/s.yml
+            
   build-failed:
     name: Notify build failed
     needs: build
