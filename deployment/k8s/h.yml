@@ -1,15 +1,15 @@
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: momofin-fe-emet-superadmin
-  namespace: prod-emet
+  name: {{ APP_NAME }}-hpa
+  namespace: {{ NAMESPACE }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: momofin-fe-emet-superadmin
-  minReplicas: 1
-  maxReplicas: 2
+    name: {{ APP_NAME }}
+  minReplicas: {{ MIN_REPLICAS }}
+  maxReplicas: {{ MAX_REPLICAS }}
   metrics:
   - type: Resource
     resource:
