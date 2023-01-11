@@ -7,15 +7,15 @@ hpa_path="deployment/k8s/h.yml"
 dockerfile_path="Dockerfile"
 
 # deployment
-sed -i "s|{{ APP_NAME }}|$APP_NAME|g" $service_path
-sed -i "s|{{ NAMESPACE }}|$NAMESPACE|g" $service_path
-sed -i "s|{{ PORT }}|$PORT|g" $service_path
-sed -i "s|{{ PROTOCOL }}|$PROTOCOL|g" $service_path
-sed -i "s|{{ CPU_LIMIT }}|$CPU_LIMIT|g" $service_path
-sed -i "s|{{ MEMORY_LIMIT }}|$MEMORY_LIMIT|g" $service_path
-sed -i "s|{{ CPU_REQUEST }}|$CPU_REQUEST|g" $service_path
-sed -i "s|{{ MEMORY_REQUEST }}|$MEMORY_REQUEST|g" $service_path
-sed -i "s|{{ IMAGE_NAME }}|$IMAGE_NAME|g" $service_path
+sed -i "s|{{ APP_NAME }}|$APP_NAME|g" $deployment_path
+sed -i "s|{{ NAMESPACE }}|$NAMESPACE|g" $deployment_path
+sed -i "s|{{ PORT }}|$PORT|g" $deployment_path
+sed -i "s|{{ PROTOCOL }}|$PROTOCOL|g" $deployment_path
+sed -i "s|{{ CPU_LIMIT }}|$CPU_LIMIT|g" $deployment_path
+sed -i "s|{{ MEMORY_LIMIT }}|$MEMORY_LIMIT|g" $deployment_path
+sed -i "s|{{ CPU_REQUEST }}|$CPU_REQUEST|g" $deployment_path
+sed -i "s|{{ MEMORY_REQUEST }}|$MEMORY_REQUEST|g" $deployment_path
+sed -i "s|{{ IMAGE_NAME }}|$IMAGE_NAME|g" $deployment_path
 
 # service
 sed -i "s|{{ APP_NAME }}|$APP_NAME|g" $service_path
