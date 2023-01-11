@@ -100,6 +100,12 @@ jobs:
           name: IMAGE_NAME
           path: IMAGE_NAME.txt
 
+      - name: upload k8s artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: k8s
+          path: deployment/k8s/
+
       - name: cleaning
         run: |-
           rm -rf result.txt
@@ -146,7 +152,7 @@ jobs:
             deployment/k8s/d.yml
             deployment/k8s/h.yml
             deployment/k8s/s.yml
-            
+
   build-failed:
     name: Notify build failed
     needs: build
