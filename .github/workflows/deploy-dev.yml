@@ -100,11 +100,7 @@ jobs:
           name: IMAGE_NAME
           path: IMAGE_NAME.txt
 
-      - name: upload k8s artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: k8s
-          path: deployment/k8s/
+
 
       - name: cleaning
         run: |-
@@ -136,6 +132,12 @@ jobs:
           ls -al deployment/config/
           chmod +x -R deployment/config/
           deployment/config/env-filter.sh
+
+      - name: upload k8s artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: k8s
+          path: deployment/k8s/
 
       - name: Set Context
         uses: azure/k8s-set-context@v2
