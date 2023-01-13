@@ -16,6 +16,7 @@
   "dependencies": {
     "@heroicons/vue": "^2.0.8",
     "@iconify/vue": "^3.2.1",
+    "@tanstack/vue-query": "^4.22.0",
     "@vue/compiler-sfc": "3.2.37",
     "@vuepic/vue-datepicker": "^3.4.8",
     "@vueuse/components": "^9.2.0",

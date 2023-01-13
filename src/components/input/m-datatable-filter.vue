@@ -22,10 +22,20 @@
   }
 
   const valueModel = computed(() => {
+    if (activeValue.value == '7d')
+      return [
+        DateTime.now().minus({ week: 1 }).toMillis(),
+        DateTime.now().toMillis(),
+      ].join(',')
+    if (activeValue.value == '30d')
+      return [
+        DateTime.now().minus({ days: 30 }).toMillis(),
+        DateTime.now().toMillis(),
+      ].join(',')
     if (activeValue.value == 'custom')
       return [
-        formatDate(dateStart.value, timeFrom.value),
-        formatDate(dateEnd.value, timeEnd.value),
+        formatDate(dateStart.value, timeFrom.value) * 1000,
+        formatDate(dateEnd.value, timeEnd.value) * 1000,
       ].join(',')
     return dropdownValue
   })

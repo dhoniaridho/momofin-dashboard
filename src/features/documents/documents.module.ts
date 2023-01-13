@@ -8,13 +8,14 @@ import {
 } from 'naive-ui'
 import { Icon } from '@iconify/vue'
 import { STATUS } from '@features/documents/document.constant'
-import { useQuery } from 'vue-query'
+import { useQuery } from '@tanstack/vue-query'
 import {
   getAllDocuments,
   getAuditTrail,
 } from '@features/documents/document.repository'
 import type { DocumentResponse } from '~/features/documents/document.interface'
 import Signers from './components/signer.vue'
+import { DateTime } from 'luxon'
 
 export function useDocumentFeature() {
   const filter = ref({
@@ -22,10 +23,10 @@ export function useDocumentFeature() {
     page: 1,
     period: '',
     status: '',
-    limit: 10,
+    limit: 20,
   })
   const isShowQuickDetail = ref(false)
-  const selectedDocumentId = ref(0)
+  const selectedDocumentId = ref('')
 
   function useDocuments() {
     return useQuery(['documents', filter], () => {
@@ -35,7 +36,7 @@ export function useDocumentFeature() {
 
   function useAuditTrail() {
     return useQuery(['auditTrail', selectedDocumentId], () => {
-      return getAuditTrail(selectedDocumentId.value)
+      return getAuditTrail(+selectedDocumentId.value)
     })
   }
 
@@ -48,7 +49,7 @@ export function useDocumentFeature() {
         type: 'expand',
         renderExpand: (rowData) => {
           return h(Signers, {
-            signers: rowData.signer,
+            signers: rowData.signers,
           })
         },
       },
@@ -56,6 +57,13 @@ export function useDocumentFeature() {
         title: 'Waktu & Tanggal',
         key: 'created_at',
         sorter: 'default',
+        render(rowData) {
+          return DateTime.fromJSDate(
+            new Date(rowData.created_at)
+          ).toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY, {
+            locale: 'id',
+          })
+        },
       },
       {
         title: 'ID Dokumen',
@@ -133,7 +141,7 @@ export function useDocumentFeature() {
               circle: true,
               onClick() {
                 isShowQuickDetail.value = true
-                selectedDocumentId.value = row.id
+                selectedDocumentId.value = row.id.toString()
               },
             },
             () => {
@@ -148,7 +156,7 @@ export function useDocumentFeature() {
   }
 
   const data = computed(() => {
-    return documents.value?.data.map((item) => {
+    return documents.value?.items.map((item) => {
       return {
         ...item,
         created_at: new Date(item.created_at).toLocaleString(),
@@ -163,7 +171,7 @@ export function useDocumentFeature() {
     isAuditTrailsLoading,
     isDocumentLoading,
     filter,
-    pagination: computed(() => documents.value?.pagination),
+    pagination: computed(() => documents.value?.meta),
     isShowQuickDetail,
   }
 }

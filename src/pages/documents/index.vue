@@ -56,7 +56,7 @@
           <n-pagination
             v-model:page="filter.page"
             v-model:page-size="filter.limit"
-            :page-count="pagination?.total_page"
+            :page-count="pagination?.totalPages"
             :page-sizes="[10, 20, 30, 40]"
             style="margin-top: 1rem"
             show-size-picker
@@ -84,7 +84,7 @@
           <n-table bottom-bordered :bordered="false" :striped="true">
             <tr>
               <td style="width: 20%">IP Address</td>
-              <td>{{ activity.ip_address }}</td>
+              <td>{{ activity.ipAddress }}</td>
             </tr>
             <tr>
               <td style="width: 20%">Tipe</td>
@@ -101,7 +101,7 @@
             <tr>
               <td style="width: 20%">Tanggal & Waktu</td>
               <td>
-                {{ activity.datetime }}
+                {{ activity.dateTime }}
               </td>
             </tr>
           </n-table>

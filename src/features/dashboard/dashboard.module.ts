@@ -11,12 +11,13 @@ import {
   ArcElement,
   type ChartOptions,
 } from 'chart.js'
-import { useQuery } from 'vue-query'
+import { useQuery } from '@tanstack/vue-query'
 import {
   getDashboardData,
   getChartLineData,
 } from '@features/dashboard/dashboard.repository'
 import { toIdr } from '~/helpers'
+import { DateTime } from 'luxon'
 
 export function useDashboardFeature() {
   ChartJS.register(
@@ -51,7 +52,12 @@ export function useDashboardFeature() {
 
   function useChartLine() {
     return useQuery(['line', filter], () => {
-      return getChartLineData(filter.value)
+      return getChartLineData({
+        period: [
+          DateTime.now().minus({ month: 1 }).toMillis(),
+          DateTime.now().toMillis(),
+        ].join(','),
+      })
     })
   }
 
@@ -60,40 +66,43 @@ export function useDashboardFeature() {
 
   const chartDataLines = computed(() => {
     return {
-      labels: chartLine.value?.days.map((day, index) => {
-        const currentMonth = chartLine.value.month[index]
-        return `${day} ${currentMonth}`
-      }),
+      labels: chartLine.value?.documentUploaded.map((line) => line.date),
       datasets: [
         {
           label: 'Registrasi',
           borderColor: '#0067D6',
           backgroundColor: '#0067D6',
-          data: chartLine.value?.registration ?? [],
+          data: chartLine.value?.registration.map(
+            (registration) => registration.total
+          ),
         },
         {
           label: 'Verifikasi',
           borderColor: '#008060',
           backgroundColor: '#008060',
-          data: chartLine.value?.verification ?? [],
+          data: chartLine.value?.verification.map(
+            (verification) => verification.total
+          ),
         },
         {
           label: 'Transaction',
           borderColor: '#D03E34',
           backgroundColor: '#D03E34',
-          data: chartLine.value?.transaction,
+          data: chartLine.value?.transactions.map(
+            (transaction) => transaction.total
+          ),
         },
         {
           label: 'Meterai Used',
           borderColor: '#51B2C9',
           backgroundColor: '#51B2C9',
-          data: chartLine.value?.emet_used ?? [],
+          data: chartLine.value?.emetUsages.map((emet) => emet.total),
         },
         {
           label: 'Documents Uploaded',
           borderColor: '#E4762F',
           backgroundColor: '#E4762F',
-          data: chartLine.value?.doc_uploaded ?? [],
+          data: chartLine.value?.documentUploaded.map((doc) => doc.total) ?? [],
         },
       ],
     }

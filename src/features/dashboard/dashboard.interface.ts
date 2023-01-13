@@ -55,19 +55,42 @@ export declare module DashboardResponse {
 }
 
 export declare module ChartLineResponse {
+  export interface Registration {
+    date: string
+    total: number
+  }
+
+  export interface Verification {
+    date: string
+    total: number
+  }
+
+  export interface Transaction {
+    date: string
+    total: number
+  }
+
+  export interface DocumentUploaded {
+    date: string
+    total: number
+  }
+
+  export interface EmetUsage {
+    date: string
+    total: number
+  }
+
   export interface Data {
-    days: number[]
-    month: string[]
-    registration: number[]
-    verification: number[]
-    transaction: number[]
-    doc_uploaded: number[]
-    emet_used: number[]
+    registration: Registration[]
+    verification: Verification[]
+    transactions: Transaction[]
+    documentUploaded: DocumentUploaded[]
+    emetUsages: EmetUsage[]
   }
 
   export interface RootObject {
-    code: number
-    success: boolean
     data: Data
+    statusCode: number
+    message: string
   }
 }

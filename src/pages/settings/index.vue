@@ -15,7 +15,7 @@
     periode: 'Last 7 days',
     type: 'in',
     status: '',
-    limit: 10,
+    limit: 20,
   })
   const isShowQuickDetail = ref(false)
   const isShowCreateUser = ref(false)
