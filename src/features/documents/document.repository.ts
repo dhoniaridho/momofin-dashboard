@@ -10,6 +10,7 @@ export const getAllDocuments = async (filter: any) => {
 }
 
 export const getAuditTrail = async (id: number) => {
+  if (!id) return null
   return new Promise<AuditTrailResponse.Datum[]>(async (resolve, reject) => {
     if (!id) reject(null)
     const {
