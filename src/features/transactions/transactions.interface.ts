@@ -9,6 +9,7 @@ export declare module TransactionResponse {
     status: string
     order_datetime: string
     type?: string
+    document_id?: string
   }
 
   export interface Pagination {

@@ -119,6 +119,15 @@ export function useTransactionFeature() {
         sorter: 'default',
       },
       {
+        title: 'ID Dokumen',
+        key: 'documentId',
+        sorter: 'default',
+        className: 'documentId',
+        render(rowData) {
+          return rowData.document_id ?? '-'
+        },
+      },
+      {
         title: 'Email',
         key: 'buyer_email',
         sorter: 'default',

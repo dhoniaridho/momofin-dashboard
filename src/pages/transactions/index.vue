@@ -54,7 +54,11 @@
         <main>
           <div style="overflow: auto; white-space: pre">
             <n-data-table
-              :columns="createColumns()"
+              :columns="
+                createColumns().filter(
+                  (item) => item.className !== 'documentId'
+                )
+              "
               :data="transactionsEmet"
               :loading="isTransactionsLoading"
               :bordered="false"
