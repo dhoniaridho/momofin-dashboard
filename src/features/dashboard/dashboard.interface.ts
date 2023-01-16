@@ -9,8 +9,8 @@ export declare module DashboardResponse {
   }
 
   export interface Documents {
-    doc_uploaded: number
-    doc_completed: number
+    uploaded: number
+    completed: number
   }
 
   export interface Topup {
