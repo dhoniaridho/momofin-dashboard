@@ -50,7 +50,7 @@
         <m-datatable-filter v-model="filter.period" />
       </div>
     </n-space>
-    <n-spin :show="isTransactionsLoading || isMicrositeTransactionsLoading">
+    <n-spin>
       <n-tabs v-model:value="activeTab">
         <n-tab-pane name="EMET" tab="EMET">
           <main>
