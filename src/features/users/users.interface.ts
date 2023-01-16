@@ -5,14 +5,11 @@ export declare module UsersResponse {
     email: string
     account_status: string
     certificate_status: string
+    created_at: string
   }
 
   export interface Pagination {
-    total_data: number
-    total_page: number
-    total_display: number
-    first_page: boolean
-    last_page: boolean
+    totalPages: number
     prev: number
     current: number
     next: number
@@ -20,13 +17,13 @@ export declare module UsersResponse {
   }
 
   export interface Data {
-    user: User[]
-    pagination: Pagination
+    items: User[]
+    meta: Pagination
   }
 
   export interface RootObject {
-    code: number
-    success: boolean
+    message: string
+    statusCode: boolean
     data: Data
   }
 }
@@ -76,7 +73,7 @@ export declare module DeleteUser {
   export interface RootObject {
     code: number
     success: boolean
-    msg: string
+    message: string
   }
 }
 
@@ -84,7 +81,7 @@ export declare module ResendEmail {
   export interface RootObject {
     code: number
     success: boolean
-    msg: string
+    message: string
   }
 }
 
@@ -92,6 +89,6 @@ export declare module VerifyResponse {
   export interface RootObject {
     code: number
     success: boolean
-    msg: string
+    message: string
   }
 }

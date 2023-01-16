@@ -1,6 +1,6 @@
 import { Icon } from '@iconify/vue'
 import { getKycStatus, OPTIONS, STATUS } from '@features/users/users.constant'
-import { useMutation, useQuery } from 'vue-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import {
   getAllUsers,
   getUserById,
@@ -9,6 +9,7 @@ import {
   deleteUserById,
   exportUsersToFile,
 } from '@features/users/users.repository'
+import { DateTime } from 'luxon'
 
 import type { UsersResponse } from '~/features/users/users.interface'
 import {
@@ -26,12 +27,14 @@ export function useUsersFeature() {
 
   const selectedUUID = ref('')
 
+  const queryClient = useQueryClient()
+
   const filter = ref({
     search: '',
     page: 1,
     period: '',
     status: '',
-    limit: 10,
+    limit: 20,
   })
   const isShowDeleteModal = ref(false)
   const isShowQuickDetail = ref(false)
@@ -45,9 +48,15 @@ export function useUsersFeature() {
   }
 
   function useUsersDetail() {
-    return useQuery(['users', selectedUUID], () => {
-      return getUserById(selectedUUID.value)
-    })
+    return useQuery(
+      ['user', selectedUUID],
+      () => {
+        return getUserById(selectedUUID.value)
+      },
+      {
+        enabled: true,
+      }
+    )
   }
 
   function useVerifyUser() {
@@ -56,9 +65,9 @@ export function useUsersFeature() {
         return verifyUserById(selectedUUID.value)
       },
       {
-        onSuccess({ msg }) {
-          success(msg)
-          refetchUsers.value()
+        onSuccess({ message }) {
+          success(message)
+          refetchUsers()
           isShowVerificationModal.value = false
           isShowQuickDetail.value = false
         },
@@ -75,10 +84,10 @@ export function useUsersFeature() {
         return resendEmailVerification(selectedUUID.value)
       },
       {
-        onSuccess({ msg }) {
+        onSuccess({ message }) {
           isShowResend.value = false
           isShowQuickDetail.value = false
-          success(msg)
+          success(message)
         },
         onError() {
           error('Gagal Mengirim Ulang Email')
@@ -93,12 +102,12 @@ export function useUsersFeature() {
         return deleteUserById(selectedUUID.value)
       },
       {
-        onSuccess({ msg }) {
+        onSuccess({ message }) {
           isShowDeleteModal.value = false
           isShowQuickDetail.value = false
           filter.value.search = ''
-          success(msg)
-          refetchUsers.value()
+          success(message)
+          refetchUsers()
         },
         onError() {
           error('Gagal menghapus user')
@@ -123,6 +132,15 @@ export function useUsersFeature() {
         title: 'Tanggal Registrasi',
         key: 'created_at',
         sorter: 'default',
+        render(rowData) {
+          if (!!!rowData.created_at) return '-'
+          return DateTime.fromISO(rowData.created_at).toLocaleString(
+            DateTime.DATETIME_MED_WITH_WEEKDAY,
+            {
+              locale: 'id',
+            }
+          )
+        },
       },
       {
         title: 'Nama Lengkap',
@@ -195,7 +213,8 @@ export function useUsersFeature() {
                 onClick() {
                   isShowQuickDetail.value = true
                   selectedUUID.value = row.id
-                  refetchUserDetail.value()
+                  refetchUserDetail()
+                  queryClient.invalidateQueries(['user', row.id])
                 },
               },
               () =>
@@ -211,7 +230,7 @@ export function useUsersFeature() {
                 onSelect: onSelectDropdown,
                 onClick() {
                   selectedUUID.value = row.id
-                  refetchUserDetail.value()
+                  refetchUserDetail()
                 },
               },
               () =>
@@ -267,14 +286,14 @@ export function useUsersFeature() {
     onRequestVerify,
     onRequestResend,
     users: computed(() =>
-      users.value?.user.map((item) => {
+      users.value?.items.map((item) => {
         return {
           ...item,
           certificate_status: getKycStatus(item.certificate_status)?.text,
         }
       })
     ),
-    pagination: computed(() => users.value?.pagination),
+    pagination: computed(() => users.value?.meta),
     onSelectDropdown,
     isVerifiying,
     isResending,

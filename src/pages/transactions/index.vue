@@ -9,14 +9,18 @@
 
   const {
     createColumns,
-    transactions,
+    transactionsEmet,
     user,
     filter,
     isShowQuickDetail,
     isTransactionsLoading,
-    pagination,
+    emetTransactionPagination,
+    micrositeTransactionPagination,
     onExportData,
+    transactionsMicrosite,
   } = useTransactionFeature()
+
+  const activeTab = ref<'MICROSITE' | 'ECONTRACT'>('MICROSITE')
 
   useHead({
     title: `Transaksi - ${appConfig.app.name}`,
@@ -24,49 +28,79 @@
 </script>
 
 <template>
-  <n-space vertical style="gap: 1rem" :wrap-item="false">
+  <n-space vertical :wrap-item="false">
     <n-page-header>
       <template #title> Transaksi </template>
     </n-page-header>
-    <main>
-      <n-space justify="end" style="margin: 2rem 0" :wrap-item="false">
-        <div class="filter__search">
-          <n-button @click="onExportData"> Export </n-button>
-        </div>
-        <div class="filter__search">
-          <n-input v-model:value="filter.search" placeholder="Cari Transaksi">
-            <template #prefix>
-              <n-icon>
-                <Icon icon="carbon:search" />
-              </n-icon>
-            </template>
-          </n-input>
-        </div>
-        <div class="filter__search">
-          <m-datatable-filter v-model="filter.period" />
-        </div>
-      </n-space>
-      <div style="overflow: auto; white-space: pre">
-        <n-data-table
-          :columns="createColumns()"
-          :data="transactions"
-          :loading="isTransactionsLoading"
-          :bordered="false"
-        />
+    <n-space justify="end" style="margin: 2rem 0" :wrap-item="false">
+      <div class="filter__search">
+        <n-button @click="onExportData(activeTab)"> Export </n-button>
       </div>
-      <n-space justify="start">
-        <n-scrollbar x-scrollable style="margin-top: 1rem">
-          <n-pagination
-            v-model:page="filter.page"
-            v-model:page-size="filter.limit"
-            :page-count="pagination?.total_page"
-            :page-sizes="[10, 20, 30, 40]"
-            style="margin-top: 1rem"
-            show-size-picker
-          />
-        </n-scrollbar>
-      </n-space>
-    </main>
+      <div class="filter__search">
+        <n-input v-model:value="filter.search" placeholder="Cari Transaksi">
+          <template #prefix>
+            <n-icon>
+              <Icon icon="carbon:search" />
+            </n-icon>
+          </template>
+        </n-input>
+      </div>
+      <div class="filter__search">
+        <m-datatable-filter v-model="filter.period" />
+      </div>
+    </n-space>
+    <n-tabs v-model:value="activeTab">
+      <n-tab-pane name="MICROSITE" tab="Microsite">
+        <main>
+          <div style="overflow: auto; white-space: pre">
+            <n-data-table
+              :columns="
+                createColumns().filter((item) => item.className !== 'action')
+              "
+              :data="transactionsMicrosite"
+              :loading="isTransactionsLoading"
+              :bordered="false"
+            />
+          </div>
+          <n-space justify="start">
+            <n-scrollbar x-scrollable style="margin-top: 1rem">
+              <n-pagination
+                v-model:page="filter.page"
+                v-model:page-size="filter.limit"
+                :page-count="micrositeTransactionPagination?.totalPages"
+                :page-sizes="[10, 20, 30, 40]"
+                style="margin-top: 1rem"
+                show-size-picker
+              />
+            </n-scrollbar>
+          </n-space>
+        </main>
+      </n-tab-pane>
+      <n-tab-pane name="EMET" tab="EMET">
+        <main>
+          <div style="overflow: auto; white-space: pre">
+            <n-data-table
+              :columns="createColumns()"
+              :data="transactionsEmet"
+              :loading="isTransactionsLoading"
+              :bordered="false"
+            />
+          </div>
+          <n-space justify="start">
+            <n-scrollbar x-scrollable style="margin-top: 1rem">
+              <n-pagination
+                v-model:page="filter.page"
+                v-model:page-size="filter.limit"
+                :page-count="emetTransactionPagination?.totalPages"
+                :page-sizes="[10, 20, 30, 40]"
+                style="margin-top: 1rem"
+                show-size-picker
+              />
+            </n-scrollbar>
+          </n-space>
+        </main>
+      </n-tab-pane>
+    </n-tabs>
   </n-space>
   <n-modal
     v-model:show="isShowQuickDetail"
@@ -74,12 +108,12 @@
     title="Profil Pengguna"
     style="max-width: 40rem"
   >
-    <n-space vertical>
+    <n-space v-if="user" vertical>
       <n-grid cols="1 500:4 900:4" :y-gap="10" item-responsive>
         <n-gi span="2">
           <n-space vertical>
-            <n-text strong> {{ user?.profile.fullname }} </n-text>
-            <n-text> {{ user?.profile.email }}</n-text>
+            <n-text strong> {{ user?.profile?.fullname }} </n-text>
+            <n-text> {{ user?.profile?.email }}</n-text>
           </n-space>
         </n-gi>
         <n-gi>
@@ -87,7 +121,7 @@
             <n-text> Status Akun </n-text>
             <n-tag
               round
-              :type="STATUS(user?.profile.account_status  as string)"
+              :type="STATUS(user?.profile?.account_status  as string)"
               :bordered="false"
             >
               <template #icon>
@@ -95,7 +129,7 @@
                   <Iconify icon="carbon:dot-mark" />
                 </n-icon>
               </template>
-              {{ user?.profile.account_status }}
+              {{ user?.profile?.account_status }}
             </n-tag>
           </n-space>
         </n-gi>
@@ -104,7 +138,7 @@
             <n-text> Status e-KYC </n-text>
             <n-tag
               round
-              :type="getKycStatus(user?.profile.certificate_status ?? '').type as any"
+              :type="getKycStatus(user?.profile?.certificate_status ?? '').type as any"
               :bordered="false"
             >
               <template #icon>

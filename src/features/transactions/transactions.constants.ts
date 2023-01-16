@@ -1,5 +1,5 @@
 export const STATUS = (text: string) => {
-  switch (text) {
+  switch (text.toLowerCase()) {
     case 'paid':
       return 'success'
     case 'expired':

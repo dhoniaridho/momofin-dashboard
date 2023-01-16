@@ -125,7 +125,7 @@
                         :size="32"
                       />
                       <n-avatar v-else round :src="DEFAULT_AVATAR" :size="32" />
-                      {{ auth.user?.profile?.fullname }}
+                      {{ auth.user?.fullName }}
                       <n-icon><Icon icon="heroicons:chevron-down" /> </n-icon>
                     </n-space>
                   </n-button>

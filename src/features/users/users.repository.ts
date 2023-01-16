@@ -1,4 +1,5 @@
 import { http } from '~/modules/http'
+import { exportUsers } from './users.helper'
 import type {
   DeleteUser,
   ResendEmail,
@@ -23,6 +24,7 @@ export const getAllUsers = async (filter: any) => {
  * Get user detail by id
  */
 export const getUserById = async (id: string) => {
+  if (!id) return null
   const {
     data: { data: response },
   } = await http.get<UserDetailResponse.RootObject>(`users/${id}`)
@@ -55,7 +57,7 @@ export const verifyUserById = async (id: string) => {
  */
 export const resendEmailVerification = async (id: string) => {
   const { data: response } = await http.post<ResendEmail.RootObject>(
-    'users/send_email_verification',
+    'users/resend',
     {
       user_id: id,
     }
@@ -67,14 +69,8 @@ export const resendEmailVerification = async (id: string) => {
  * Export data user then download
  */
 export const exportUsersToFile = async () => {
-  const { data: response } = await http.get('users/download', {
-    responseType: 'blob',
-  })
-  const url = URL.createObjectURL(response)
-  const a = document.createElement<'a'>('a')
-  a.download = `Export-users-${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`
-  a.href = url
-  a.click()
-  URL.revokeObjectURL(url)
-  return url
+  const {
+    data: { data: response },
+  } = await http.get('users/export')
+  exportUsers(response)
 }

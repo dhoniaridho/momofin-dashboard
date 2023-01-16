@@ -9,7 +9,9 @@ export class AuthRepository {
       } = await http.post<LoginResponse.RootObject>('/login', payload)
       return response
     } catch (error: any) {
-      return Promise.reject(error.response.data)
+      console.log(error)
+
+      return Promise.reject(error.response?.data)
     }
   }
   static async forgotPassword(email: string) {

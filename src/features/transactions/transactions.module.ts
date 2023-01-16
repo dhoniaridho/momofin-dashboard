@@ -1,14 +1,21 @@
+import { exportMicrositeTransactions } from './transactions.repository'
+import { toIdr } from './../../helpers/currency'
 import { NButton as Button, NIcon, NTag, type DataTableColumns } from 'naive-ui'
 import { Icon } from '@iconify/vue'
-import { useMutation, useQuery } from 'vue-query'
+import { useMutation, useQuery } from '@tanstack/vue-query'
 import {
   exportTransactions,
+  getAllMicrositeTransactions,
   getAllTransactions,
   getUserById,
 } from '@features/transactions/transactions.repository'
 import { STATUS } from '@features/transactions/transactions.constants'
 import type { TransactionResponse } from '@features/transactions/transactions.interface'
-import { exportToCSV } from './transactions.helper'
+import {
+  exportEcontractTransactionToCSV,
+  exportMicrositeTransactionToCSV,
+} from './transactions.helper'
+import { DateTime } from 'luxon'
 
 export function useTransactionFeature() {
   const filter = ref({
@@ -16,7 +23,7 @@ export function useTransactionFeature() {
     page: 1,
     period: '',
     status: '',
-    limit: 10,
+    limit: 20,
   })
 
   const filterComputed = computed(() => {
@@ -39,30 +46,56 @@ export function useTransactionFeature() {
     })
   }
 
+  function useMicrositeTransactions() {
+    return useQuery(['microsite-transactions', filter], () => {
+      return getAllMicrositeTransactions(filterComputed.value)
+    })
+  }
+
   function useUsersDetail() {
     return useQuery(['users', selectedUUID], () => {
       return getUserById(selectedUUID.value)
     })
   }
 
-  function useExportData() {
+  function useExportEcontractTransaction() {
     return useMutation(
-      ['download'],
+      ['downloadEcontractTransactons'],
       () => {
         return exportTransactions(filterComputed.value)
       },
       {
         onSuccess: (data) => {
-          exportToCSV(data)
+          exportEcontractTransactionToCSV(data)
         },
       }
     )
   }
 
-  const { mutate } = useExportData()
+  function useExportMicrositeTransaction() {
+    return useMutation(
+      ['downloadMicrositeTransactons'],
+      () => {
+        return exportMicrositeTransactions(filterComputed.value)
+      },
+      {
+        onSuccess: (data) => {
+          exportMicrositeTransactionToCSV(data)
+        },
+      }
+    )
+  }
+
+  const { mutate } = useExportEcontractTransaction()
+  const { mutate: exportMicrositeTransaction } = useExportMicrositeTransaction()
 
   const { data: transactions, isLoading: isTransactionsLoading } =
     useTransactions()
+
+  const {
+    data: micrositeTransaction,
+    isLoading: isMicrositeTransactionsLoading,
+  } = useMicrositeTransactions()
   const { data: user } = useUsersDetail()
 
   const createColumns = (): DataTableColumns<TransactionResponse.Datum> => {
@@ -71,6 +104,14 @@ export function useTransactionFeature() {
         title: 'Waktu & Tanggal',
         key: 'order_datetime',
         sorter: 'default',
+        render(rowData) {
+          return DateTime.fromISO(rowData.order_datetime).toLocaleString(
+            DateTime.DATETIME_MED_WITH_WEEKDAY,
+            {
+              locale: 'id',
+            }
+          )
+        },
       },
       {
         title: 'ID Transaksi',
@@ -91,6 +132,17 @@ export function useTransactionFeature() {
         title: 'Value',
         key: 'total_price',
         sorter: 'default',
+        render: (data) => {
+          return toIdr(+data.total_price)
+        },
+      },
+      {
+        title: 'Source',
+        key: 'type',
+        sorter: 'default',
+        render: (data) => {
+          return data?.type
+        },
       },
       {
         title: 'Payment Status',
@@ -120,8 +172,10 @@ export function useTransactionFeature() {
 
       {
         key: 'action',
+        className: 'action',
         title: 'Aksi',
         render: (row) => {
+          if (!row.buyer_user_id) return
           return h(
             Button,
             {
@@ -157,12 +211,13 @@ export function useTransactionFeature() {
     }
   }
 
-  const onExportData = () => {
-    mutate()
+  const onExportData = (type: 'ECONTRACT' | 'MICROSITE') => {
+    if (type === 'ECONTRACT') return mutate()
+    return exportMicrositeTransaction()
   }
 
   const data = computed(() => {
-    return transactions.value?.data.map((transaction) => {
+    return transactions.value?.items.map((transaction) => {
       return {
         ...transaction,
         status: transaction.status.toLowerCase(),
@@ -172,13 +227,18 @@ export function useTransactionFeature() {
 
   return {
     createColumns,
-    transactions: computed(() => data.value),
+    transactionsEmet: computed(() => data.value),
+    transactionsMicrosite: computed(() => micrositeTransaction.value?.items),
     user,
     onSelectDropdown,
     filter,
     isTransactionsLoading,
     isShowQuickDetail,
-    pagination: computed(() => transactions.value?.pagination),
+    emetTransactionPagination: computed(() => transactions.value?.meta),
+    micrositeTransactionPagination: computed(
+      () => micrositeTransaction.value?.meta
+    ),
     onExportData,
+    isMicrositeTransactionsLoading,
   }
 }

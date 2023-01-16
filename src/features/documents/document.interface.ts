@@ -11,29 +11,25 @@ export declare module DocumentResponse {
   }
   export interface Datum {
     id: number
-    created_at: Date
+    created_at: string
     email: string
     document_name: string
     signer_count: number
     status: string
-    signer: Signer[]
+    signers: Signer[]
   }
 
   export interface Pagination {
-    total_data: number
-    total_page: number
-    total_display: number
-    first_page: boolean
-    last_page: boolean
-    prev: number
-    current: number
-    next: number
-    detail: number[]
+    currentPage: number
+    itemCount: number
+    itemsPerPage: number
+    totalItems: number
+    totalPages: number
   }
 
   export interface Data {
-    data: Datum[]
-    pagination: Pagination
+    items: Datum[]
+    meta: Pagination
   }
 
   export interface RootObject {
@@ -45,9 +41,9 @@ export declare module DocumentResponse {
 
 export declare module AuditTrailResponse {
   export interface Datum {
-    datetime: string
+    dateTime: string
     name: string
-    ip_address: string
+    ipAddress: string
     description: string
     type: string
   }

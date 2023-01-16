@@ -8,28 +8,25 @@ export declare module TransactionResponse {
     total_price: string
     status: string
     order_datetime: string
+    type?: string
   }
 
   export interface Pagination {
-    total_data: number
-    total_page: number
-    total_display: number
-    first_page: boolean
-    last_page: boolean
-    prev: number
-    current: number
-    next: number
-    detail: number[]
+    currentPage: number
+    itemCount: number
+    itemsPerPage: number
+    totalItems: number
+    totalPages: number
   }
 
   export interface Data {
-    data: Datum[]
-    pagination: Pagination
+    items: Datum[]
+    meta: Pagination
   }
 
   export interface RootObject {
-    code: number
-    success: boolean
+    statusCode: number
+    message: string
     data: Data
   }
 }

@@ -7,7 +7,16 @@ import type {
 export const getAllTransactions = async (filter: any) => {
   const {
     data: { data: response },
-  } = await http.get<TransactionResponse.RootObject>('transactions', {
+  } = await http.get<TransactionResponse.RootObject>('transactions/econtract', {
+    params: { ...filter },
+  })
+  return response
+}
+
+export const getAllMicrositeTransactions = async (filter: any) => {
+  const {
+    data: { data: response },
+  } = await http.get<TransactionResponse.RootObject>('transactions/microsite', {
     params: { ...filter },
   })
   return response
@@ -17,7 +26,24 @@ export const exportTransactions = async (filter: any) => {
   return new Promise<TransactonExport.Transaction[]>(
     async (resolve, reject) => {
       try {
-        const { data } = await http.get('https://api-v1.momofin.com/v1/econtract/emet_dashboard/transactions/export', {
+        const { data } = await http.get('transactions/econtract/export', {
+          params: {
+            ...filter,
+          },
+        })
+        resolve(data.data)
+      } catch (error: any) {
+        reject(error.response)
+      }
+    }
+  )
+}
+
+export const exportMicrositeTransactions = async (filter: any) => {
+  return new Promise<TransactonExport.Transaction[]>(
+    async (resolve, reject) => {
+      try {
+        const { data } = await http.get('transactions/microsite/export', {
           params: {
             ...filter,
           },

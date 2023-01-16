@@ -71,7 +71,7 @@
           <n-pagination
             v-model:page="filter.page"
             v-model:page-size="filter.limit"
-            :page-count="pagination?.total_page"
+            :page-count="pagination?.totalPages"
             :page-sizes="[10, 20, 30, 40]"
             style="margin-top: 1rem"
             show-size-picker

@@ -10,11 +10,14 @@ export const getAllDocuments = async (filter: any) => {
 }
 
 export const getAuditTrail = async (id: number) => {
-  if (!id) return
-  const {
-    data: { data },
-  } = await http.get<AuditTrailResponse.RootObject>(
-    `documents/audittrail/${id}`
-  )
-  return data
+  if (!id) return null
+  return new Promise<AuditTrailResponse.Datum[]>(async (resolve, reject) => {
+    if (!id) reject(null)
+    const {
+      data: { data },
+    } = await http.get<AuditTrailResponse.RootObject>(
+      `documents/audit-trail/${id}`
+    )
+    resolve(data)
+  })
 }
