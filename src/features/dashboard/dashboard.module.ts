@@ -211,11 +211,11 @@ export function useDashboardFeature() {
       },
       {
         label: 'Documents Uploaded',
-        value: dashboard.value?.documents.doc_uploaded,
+        value: dashboard.value?.documents.uploaded,
       },
       {
         label: 'Documents Completed',
-        value: dashboard.value?.documents.doc_completed,
+        value: dashboard.value?.documents.completed,
       },
       {
         label: 'Number of Paid Topup',
