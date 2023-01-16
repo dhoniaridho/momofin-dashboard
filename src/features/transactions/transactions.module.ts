@@ -211,8 +211,8 @@ export function useTransactionFeature() {
     }
   }
 
-  const onExportData = (type: 'ECONTRACT' | 'MICROSITE') => {
-    if (type === 'ECONTRACT') return mutate()
+  const onExportData = (type: 'EMET' | 'MICROSITE') => {
+    if (type === 'EMET') return mutate()
     return exportMicrositeTransaction()
   }
 

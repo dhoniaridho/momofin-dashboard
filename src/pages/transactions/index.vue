@@ -20,7 +20,7 @@
     transactionsMicrosite,
   } = useTransactionFeature()
 
-  const activeTab = ref<'MICROSITE' | 'ECONTRACT'>('MICROSITE')
+  const activeTab = ref<'MICROSITE' | 'EMET'>('EMET')
 
   useHead({
     title: `Transaksi - ${appConfig.app.name}`,
@@ -50,6 +50,30 @@
       </div>
     </n-space>
     <n-tabs v-model:value="activeTab">
+      <n-tab-pane name="EMET" tab="EMET">
+        <main>
+          <div style="overflow: auto; white-space: pre">
+            <n-data-table
+              :columns="createColumns()"
+              :data="transactionsEmet"
+              :loading="isTransactionsLoading"
+              :bordered="false"
+            />
+          </div>
+          <n-space justify="start">
+            <n-scrollbar x-scrollable style="margin-top: 1rem">
+              <n-pagination
+                v-model:page="filter.page"
+                v-model:page-size="filter.limit"
+                :page-count="emetTransactionPagination?.totalPages"
+                :page-sizes="[10, 20, 30, 40]"
+                style="margin-top: 1rem"
+                show-size-picker
+              />
+            </n-scrollbar>
+          </n-space>
+        </main>
+      </n-tab-pane>
       <n-tab-pane name="MICROSITE" tab="Microsite">
         <main>
           <div style="overflow: auto; white-space: pre">
@@ -68,30 +92,6 @@
                 v-model:page="filter.page"
                 v-model:page-size="filter.limit"
                 :page-count="micrositeTransactionPagination?.totalPages"
-                :page-sizes="[10, 20, 30, 40]"
-                style="margin-top: 1rem"
-                show-size-picker
-              />
-            </n-scrollbar>
-          </n-space>
-        </main>
-      </n-tab-pane>
-      <n-tab-pane name="EMET" tab="EMET">
-        <main>
-          <div style="overflow: auto; white-space: pre">
-            <n-data-table
-              :columns="createColumns()"
-              :data="transactionsEmet"
-              :loading="isTransactionsLoading"
-              :bordered="false"
-            />
-          </div>
-          <n-space justify="start">
-            <n-scrollbar x-scrollable style="margin-top: 1rem">
-              <n-pagination
-                v-model:page="filter.page"
-                v-model:page-size="filter.limit"
-                :page-count="emetTransactionPagination?.totalPages"
                 :page-sizes="[10, 20, 30, 40]"
                 style="margin-top: 1rem"
                 show-size-picker
