@@ -14,7 +14,6 @@ http.interceptors.request.use(
   (config) => {
     const token = AuthService.token
     if (token && config.headers) {
-      config.headers['x-access-token'] = token
       config.headers['Authorization'] = `Bearer ${token}`
     }
     return config
@@ -29,7 +28,6 @@ http.interceptors.response.use(
     return response
   },
   (error) => {
-    console.log(error)
     if (error.response.data.statusCode == 401) {
       AuthService.signOut()
     }
