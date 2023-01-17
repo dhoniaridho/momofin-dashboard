@@ -136,7 +136,6 @@ jobs:
           deployment/config/env-filter.sh
 
 
-
       - name: Set Context
         uses: azure/k8s-set-context@v2
         with:
