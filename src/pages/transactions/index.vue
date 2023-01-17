@@ -50,8 +50,7 @@
         <m-datatable-filter v-model="filter.period" />
       </div>
     </n-space>
-    <n-spin>
-      <n-tabs v-model:value="activeTab">
+    <n-tabs v-model:value="activeTab">
         <n-tab-pane name="EMET" tab="EMET">
           <main>
             <div style="overflow: auto; white-space: pre">
@@ -107,7 +106,6 @@
           </main>
         </n-tab-pane>
       </n-tabs>
-    </n-spin>
   </n-space>
   <n-modal
     v-model:show="isShowQuickDetail"
