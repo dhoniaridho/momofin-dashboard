@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { appConfig } from '~/config/app.config'
   import { useDocumentFeature } from '~/features/documents/documents.module'
-
+  import { fromIsoToLocale } from '~/plugins/date'
   const {
     auditTrails,
     isAuditTrailsLoading,
@@ -100,9 +100,7 @@
             </tr>
             <tr>
               <td style="width: 20%">Tanggal & Waktu</td>
-              <td>
-                {{ activity.dateTime }}
-              </td>
+              <td>{{ fromIsoToLocale(activity.dateTime) }}</td>
             </tr>
           </n-table>
         </n-card>
