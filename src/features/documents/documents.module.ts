@@ -164,6 +164,13 @@ export function useDocumentFeature() {
     })
   })
 
+  watch(
+    computed(() => filter.value.search),
+    () => {
+      filter.value.page = 1
+    }
+  )
+
   return {
     createColumns,
     documents: data,
