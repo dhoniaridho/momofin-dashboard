@@ -77,7 +77,6 @@ export function useTransactionFeature() {
 
   function useExportEcontractTransaction() {
     return useMutation(
-      ['downloadEcontractTransactons'],
       () => {
         return exportTransactions(filterEmetComputed.value)
       },
@@ -94,7 +93,6 @@ export function useTransactionFeature() {
 
   function useExportMicrositeTransaction() {
     return useMutation(
-      ['downloadMicrositeTransactons'],
       () => {
         return exportMicrositeTransactions(filterMicrositeComputed.value)
       },
