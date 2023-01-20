@@ -11,7 +11,8 @@
     createColumns,
     transactionsEmet,
     user,
-    filter,
+    filterEmet,
+    filterMicrosite,
     isShowQuickDetail,
     isTransactionsLoading,
     emetTransactionPagination,
@@ -33,79 +34,102 @@
     <n-page-header>
       <template #title> Transaksi </template>
     </n-page-header>
-    <n-space justify="end" style="margin: 2rem 0" :wrap-item="false">
-      <div class="filter__search">
-        <n-button @click="onExportData(activeTab)"> Export </n-button>
-      </div>
-      <div class="filter__search">
-        <n-input v-model:value="filter.search" placeholder="Cari Transaksi">
-          <template #prefix>
-            <n-icon>
-              <Icon icon="carbon:search" />
-            </n-icon>
-          </template>
-        </n-input>
-      </div>
-      <div class="filter__search">
-        <m-datatable-filter v-model="filter.period" />
-      </div>
-    </n-space>
     <n-tabs v-model:value="activeTab">
-        <n-tab-pane name="EMET" tab="EMET">
-          <main>
-            <div style="overflow: auto; white-space: pre">
-              <n-data-table
-                :columns="
-                  createColumns().filter(
-                    (item) => item.className !== 'documentId'
-                  )
-                "
-                :data="transactionsEmet"
-                :loading="isTransactionsLoading"
-                :bordered="false"
+      <n-tab-pane name="EMET" tab="EMET">
+        <n-space justify="end" style="margin: 2rem 0" :wrap-item="false">
+          <div class="filter__search">
+            <n-button @click="onExportData('EMET')"> Export </n-button>
+          </div>
+          <div class="filter__search">
+            <n-input
+              v-model:value="filterEmet.search"
+              placeholder="Cari Transaksi"
+            >
+              <template #prefix>
+                <n-icon>
+                  <Icon icon="carbon:search" />
+                </n-icon>
+              </template>
+            </n-input>
+          </div>
+          <div class="filter__search">
+            <m-datatable-filter v-model="filterEmet.period" />
+          </div>
+        </n-space>
+        <main>
+          <div style="overflow: auto; white-space: pre">
+            <n-data-table
+              :columns="
+                createColumns().filter(
+                  (item) => item.className !== 'documentId'
+                )
+              "
+              :data="transactionsEmet"
+              :loading="isTransactionsLoading"
+              :bordered="false"
+            />
+          </div>
+          <n-space justify="start">
+            <n-scrollbar x-scrollable style="margin-top: 1rem">
+              <n-pagination
+                v-model:page="filterEmet.page"
+                v-model:page-size="filterEmet.limit"
+                :page-count="emetTransactionPagination?.totalPages"
+                :page-sizes="[10, 20, 30, 40]"
+                style="margin-top: 1rem"
+                show-size-picker
               />
-            </div>
-            <n-space justify="start">
-              <n-scrollbar x-scrollable style="margin-top: 1rem">
-                <n-pagination
-                  v-model:page="filter.page"
-                  v-model:page-size="filter.limit"
-                  :page-count="emetTransactionPagination?.totalPages"
-                  :page-sizes="[10, 20, 30, 40]"
-                  style="margin-top: 1rem"
-                  show-size-picker
-                />
-              </n-scrollbar>
-            </n-space>
-          </main>
-        </n-tab-pane>
-        <n-tab-pane name="MICROSITE" tab="Microsite">
-          <main>
-            <div style="overflow: auto; white-space: pre">
-              <n-data-table
-                :columns="
-                  createColumns().filter((item) => item.className !== 'action')
-                "
-                :data="transactionsMicrosite"
-                :loading="isMicrositeTransactionsLoading"
-                :bordered="false"
+            </n-scrollbar>
+          </n-space>
+        </main>
+      </n-tab-pane>
+      <n-tab-pane name="MICROSITE" tab="Microsite">
+        <n-space justify="end" style="margin: 2rem 0" :wrap-item="false">
+          <div class="filter__search">
+            <n-button @click="onExportData('MICROSITE')"> Export </n-button>
+          </div>
+          <div class="filter__search">
+            <n-input
+              v-model:value="filterMicrosite.search"
+              placeholder="Cari Transaksi"
+            >
+              <template #prefix>
+                <n-icon>
+                  <Icon icon="carbon:search" />
+                </n-icon>
+              </template>
+            </n-input>
+          </div>
+          <div class="filter__search">
+            <m-datatable-filter v-model="filterMicrosite.period" />
+          </div>
+        </n-space>
+        <main>
+          <div style="overflow: auto; white-space: pre">
+            <n-data-table
+              :columns="
+                createColumns().filter((item) => item.className !== 'action')
+              "
+              :data="transactionsMicrosite"
+              :loading="isMicrositeTransactionsLoading"
+              :bordered="false"
+            />
+          </div>
+          <n-space justify="start">
+            <n-scrollbar x-scrollable style="margin-top: 1rem">
+              <n-pagination
+                v-model:page="filterMicrosite.page"
+                v-model:page-size="filterMicrosite.limit"
+                :page-count="micrositeTransactionPagination?.totalPages"
+                :page-sizes="[10, 20, 30, 40]"
+                style="margin-top: 1rem"
+                show-size-picker
               />
-            </div>
-            <n-space justify="start">
-              <n-scrollbar x-scrollable style="margin-top: 1rem">
-                <n-pagination
-                  v-model:page="filter.page"
-                  v-model:page-size="filter.limit"
-                  :page-count="micrositeTransactionPagination?.totalPages"
-                  :page-sizes="[10, 20, 30, 40]"
-                  style="margin-top: 1rem"
-                  show-size-picker
-                />
-              </n-scrollbar>
-            </n-space>
-          </main>
-        </n-tab-pane>
-      </n-tabs>
+            </n-scrollbar>
+          </n-space>
+        </main>
+      </n-tab-pane>
+    </n-tabs>
   </n-space>
   <n-modal
     v-model:show="isShowQuickDetail"

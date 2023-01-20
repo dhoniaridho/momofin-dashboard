@@ -278,7 +278,7 @@ export function useUsersFeature() {
   }
 
   const onExportData = () => {
-    exportUsersToFile()
+    exportUsersToFile(filter.value)
   }
 
   return {

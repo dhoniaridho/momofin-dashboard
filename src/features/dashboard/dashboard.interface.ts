@@ -1,23 +1,67 @@
 export declare module DashboardResponse {
+  export interface Topup {
+    paid_topup_value: number
+    paid_topup_count: number
+    paid_unique_user: number
+    topup_count: number
+  }
+
+  export interface Sale {
+    name: string
+    percentage?: any
+    sales: number
+  }
+
+  export interface Products {
+    total_sales: number
+    sales: Sale[]
+  }
+
+  export interface DocumentUploaded {
+    date: string
+    total: number
+  }
+
+  export interface Registration {
+    date: string
+    total: number
+  }
+
+  export interface Verification {
+    date: string
+    total: number
+  }
+
+  export interface Transactions {
+    date: string
+    total: number
+  }
+
+  export interface EmetUsage {
+    date: string
+    total: number
+  }
+
+  export interface ChartLine {
+    documentUploaded: DocumentUploaded[]
+    registration: Registration[]
+    transactions: Transactions[]
+    verification: Verification[]
+    emetUsages: EmetUsage[]
+  }
+
   export interface Reviews {
     count: number
+  }
+
+  export interface Documents {
+    completed: number
+    uploaded: number
   }
 
   export interface Token {
     emet_used: number
     esgn_used: number
-  }
-
-  export interface Documents {
-    uploaded: number
-    completed: number
-  }
-
-  export interface Topup {
-    topup_count: number
-    paid_topup_count: number
-    paid_topup_value: number
-    paid_unique_user: number
   }
 
   export interface Users {
@@ -27,30 +71,20 @@ export declare module DashboardResponse {
     first_full_cycle: number
   }
 
-  export interface Sale {
-    name: string
-    sales: number
-    percentage: number
-  }
-
-  export interface Products {
-    total_sales: number
-    sales: Sale[]
-  }
-
   export interface Data {
-    reviews: Reviews
-    token: Token
-    documents: Documents
     topup: Topup
-    users: Users
     products: Products
+    chartLine: ChartLine
+    reviews: Reviews
+    documents: Documents
+    token: Token
+    users: Users
   }
 
   export interface RootObject {
-    code: number
-    success: boolean
     data: Data
+    statusCode: number
+    message: string
   }
 }
 
