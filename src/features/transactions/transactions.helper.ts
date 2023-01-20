@@ -2,7 +2,7 @@ import type { TransactonExport } from './transactions.interface'
 
 export function exportEcontractTransactionToCSV(
   data: TransactonExport.Transaction[],
-  range?: { start?: string; end?: string }
+  fileName: string
 ): void {
   const headers = [
     'buyer_email',
@@ -50,17 +50,14 @@ export function exportEcontractTransactionToCSV(
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
-  if (!!range && !!range.start && !!range.end) {
-    link.download = `transactions ${range.start}-${range.end}.csv`
-  } else {
-    link.download = `transactions.csv`
-  }
+
+  link.download = `${fileName}.csv`
   link.click()
 }
 
 export function exportMicrositeTransactionToCSV(
   data: TransactonExport.Transaction[],
-  range?: { start?: string; end?: string }
+  fileName: string
 ): void {
   const headers = [
     'buyer_email',
@@ -108,10 +105,7 @@ export function exportMicrositeTransactionToCSV(
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
-  if (!!range && !!range.start && !!range.end) {
-    link.download = `transactions ${range.start}-${range.end}.csv`
-  } else {
-    link.download = `transactions.csv`
-  }
+  link.download = `${fileName}.csv`
+
   link.click()
 }

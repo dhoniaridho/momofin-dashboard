@@ -108,6 +108,10 @@
     emits('update:modelValue', valueModel.value)
     showPopover.value = false
   }
+
+  const onConfirm = (value: number[]) => {
+    console.log(value)
+  }
 </script>
 
 <template>
@@ -146,6 +150,7 @@
           panel
           :actions="[]"
           :is-date-disabled="isRangeDateDisabled"
+          @confirm="onConfirm"
         />
         <n-form class="form__wrapper">
           <n-space

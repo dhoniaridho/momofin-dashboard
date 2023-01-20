@@ -68,9 +68,11 @@ export const resendEmailVerification = async (id: string) => {
 /**
  * Export data user then download
  */
-export const exportUsersToFile = async () => {
+export const exportUsersToFile = async (params: any) => {
   const {
     data: { data: response },
-  } = await http.get('users/export')
+  } = await http.get('users/export', {
+    params,
+  })
   exportUsers(response)
 }

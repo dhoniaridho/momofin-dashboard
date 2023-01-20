@@ -18,7 +18,7 @@ import {
 import { DateTime } from 'luxon'
 
 export function useTransactionFeature() {
-  const filter = ref({
+  const filterEmet = ref({
     search: '',
     page: 1,
     period: '',
@@ -26,12 +26,29 @@ export function useTransactionFeature() {
     limit: 20,
   })
 
-  const filterComputed = computed(() => {
+  const filterMicrosite = ref({
+    search: '',
+    page: 1,
+    period: '',
+    status: '',
+    limit: 20,
+  })
+
+  const filterEmetComputed = computed(() => {
     return {
-      limit: filter.value.limit,
-      page: filter.value.page,
-      search: filter.value.search,
-      period: filter.value.period,
+      limit: filterEmet.value.limit,
+      page: filterEmet.value.page,
+      search: filterEmet.value.search,
+      period: filterEmet.value.period,
+    }
+  })
+
+  const filterMicrositeComputed = computed(() => {
+    return {
+      limit: filterMicrosite.value.limit,
+      page: filterMicrosite.value.page,
+      search: filterMicrosite.value.search,
+      period: filterMicrosite.value.period,
     }
   })
 
@@ -41,14 +58,14 @@ export function useTransactionFeature() {
   const selectedUUID = ref('')
 
   function useTransactions() {
-    return useQuery(['transactions', filter], () => {
-      return getAllTransactions(filterComputed.value)
+    return useQuery(['transactions', filterEmetComputed], () => {
+      return getAllTransactions(filterEmetComputed.value)
     })
   }
 
   function useMicrositeTransactions() {
-    return useQuery(['microsite-transactions', filter], () => {
-      return getAllMicrositeTransactions(filterComputed.value)
+    return useQuery(['microsite-transactions', filterMicrositeComputed], () => {
+      return getAllMicrositeTransactions(filterMicrositeComputed.value)
     })
   }
 
@@ -62,11 +79,14 @@ export function useTransactionFeature() {
     return useMutation(
       ['downloadEcontractTransactons'],
       () => {
-        return exportTransactions(filterComputed.value)
+        return exportTransactions(filterEmetComputed.value)
       },
       {
         onSuccess: (data) => {
-          exportEcontractTransactionToCSV(data)
+          exportEcontractTransactionToCSV(
+            data,
+            `Transaksi Emet ${filterEmet.value.search} ${filterEmet.value.period}`.trim()
+          )
         },
       }
     )
@@ -76,11 +96,14 @@ export function useTransactionFeature() {
     return useMutation(
       ['downloadMicrositeTransactons'],
       () => {
-        return exportMicrositeTransactions(filterComputed.value)
+        return exportMicrositeTransactions(filterMicrositeComputed.value)
       },
       {
         onSuccess: (data) => {
-          exportMicrositeTransactionToCSV(data)
+          exportMicrositeTransactionToCSV(
+            data,
+            `Transaksi Microsite  ${filterMicrositeComputed.value.search} ${filterMicrositeComputed.value.period}`.trim()
+          )
         },
       }
     )
@@ -240,7 +263,8 @@ export function useTransactionFeature() {
     transactionsMicrosite: computed(() => micrositeTransaction.value?.items),
     user,
     onSelectDropdown,
-    filter,
+    filterEmet,
+    filterMicrosite,
     isTransactionsLoading,
     isShowQuickDetail,
     emetTransactionPagination: computed(() => transactions.value?.meta),
