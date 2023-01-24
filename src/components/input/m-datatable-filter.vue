@@ -10,6 +10,8 @@
   const timeFrom = ref(Date.now())
   const timeEnd = ref(Date.now())
 
+  const validationError = ref(true)
+
   const d = 86400000
 
   const dateStart = computed(() => dateRange.value[0])
@@ -25,27 +27,50 @@
     if (activeValue.value == '7d')
       return [
         DateTime.now().minus({ week: 1 }).toMillis(),
-        DateTime.now().toMillis(),
+        DateTime.now().plus({ day: 1 }).toMillis(),
       ].join(',')
     if (activeValue.value == '30d')
       return [
         DateTime.now().minus({ days: 30 }).toMillis(),
-        DateTime.now().toMillis(),
+        DateTime.now().plus({ day: 1 }).toMillis(),
       ].join(',')
     if (activeValue.value == 'custom')
       return [
-        formatDate(dateStart.value, timeFrom.value) * 1000,
-        formatDate(dateEnd.value, timeEnd.value) * 1000,
+        DateTime.fromMillis(formatDate(dateStart.value, timeFrom.value) * 1000)
+          .minus({ day: 1 })
+          .toMillis(),
+        DateTime.fromMillis(formatDate(dateEnd.value, timeEnd.value) * 1000)
+          .plus({ day: 1 })
+          .toMillis(),
       ].join(',')
-    return dropdownValue
+    return ''
   })
 
   defineProps(['modelValue'])
   const emits = defineEmits(['update:modelValue'])
 
   watchEffect(() => {
-    if (valueModel) {
+    if (valueModel && activeValue.value != 'custom') {
       emits('update:modelValue', valueModel.value)
+    }
+  })
+
+  watch(dateRange, () => {
+    const start = DateTime.fromMillis(
+      formatDate(dateStart.value, timeFrom.value) * 1000
+    )
+    const end = DateTime.fromMillis(
+      formatDate(dateEnd.value, timeEnd.value) * 1000
+    )
+
+    const diff = end.diff(start, ['day']).toObject()
+
+    if (diff.days != undefined) {
+      if (diff.days < 2) {
+        validationError.value = true
+      } else {
+        validationError.value = false
+      }
     }
   })
 
@@ -84,7 +109,6 @@
   ]
 
   const changeValue = (value: string) => {
-    dropdownValue.value = value
     activeValue.value = value
   }
 
@@ -106,11 +130,8 @@
 
   const onClose = () => {
     emits('update:modelValue', valueModel.value)
-    showPopover.value = false
-  }
 
-  const onConfirm = (value: number[]) => {
-    console.log(value)
+    showPopover.value = false
   }
 </script>
 
@@ -150,7 +171,6 @@
           panel
           :actions="[]"
           :is-date-disabled="isRangeDateDisabled"
-          @confirm="onConfirm"
         />
         <n-form class="form__wrapper">
           <n-space
@@ -176,7 +196,28 @@
               </n-form-item>
             </n-space>
             <n-space justify="end">
-              <n-button size="tiny" type="primary" @click="onClose">
+              <n-tooltip v-if="validationError">
+                <template #trigger>
+                  <n-button
+                    :disabled="validationError"
+                    size="tiny"
+                    type="primary"
+                    tag="div"
+                    @click="onClose"
+                  >
+                    Konfirmasi
+                  </n-button>
+                </template>
+                Harap pilih tanggal minimal 2 hari
+              </n-tooltip>
+              <n-button
+                v-else
+                :disabled="validationError"
+                size="tiny"
+                type="primary"
+                tag="div"
+                @click="onClose"
+              >
                 Konfirmasi
               </n-button>
             </n-space>
