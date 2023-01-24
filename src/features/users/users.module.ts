@@ -281,6 +281,14 @@ export function useUsersFeature() {
     exportUsersToFile(filter.value)
   }
 
+  watch(
+    computed(() => filter.value.search),
+    () => {
+      filter.value.page = 1
+    },
+    { deep: true }
+  )
+
   return {
     onRequestDelete,
     onRequestVerify,
