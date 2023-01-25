@@ -165,9 +165,15 @@ export function useDocumentFeature() {
   })
 
   watch(
-    computed(() => filter.value.search),
+    computed(() => ({
+      search: filter.value.search,
+      period: filter.value.period,
+    })),
     () => {
       filter.value.page = 1
+    },
+    {
+      deep: true,
     }
   )
 

@@ -255,6 +255,32 @@ export function useTransactionFeature() {
     })
   })
 
+  watch(
+    computed(() => ({
+      search: filterMicrosite.value.search,
+      period: filterMicrosite.value.period,
+    })),
+    () => {
+      filterMicrosite.value.page = 1
+    },
+    {
+      deep: true,
+    }
+  )
+
+  watch(
+    computed(() => ({
+      search: filterEmet.value.search,
+      period: filterEmet.value.period,
+    })),
+    () => {
+      filterEmet.value.page = 1
+    },
+    {
+      deep: true,
+    }
+  )
+
   return {
     createColumns,
     transactionsEmet: computed(() => data.value),

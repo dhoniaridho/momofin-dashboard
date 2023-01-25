@@ -282,11 +282,16 @@ export function useUsersFeature() {
   }
 
   watch(
-    computed(() => filter.value.search),
+    computed(() => ({
+      period: filter.value.period,
+      search: filter.value.search,
+    })),
     () => {
       filter.value.page = 1
     },
-    { deep: true }
+    {
+      deep: true,
+    }
   )
 
   return {
