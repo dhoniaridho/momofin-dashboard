@@ -29,7 +29,7 @@ env:
   MAX_REPLICAS: "2"
   DOMAIN_NAME: "superadmin.emet.momofin.com"
   SECRET_NAME: "superadmin-emet-momofin-com-tls"
-  VITE_API_BASE_URL: "https://api-v1.momofin.com/emet_dashboard"
+  VITE_API_BASE_URL: "https://api-v1.momofin.com/emet-dashboard"
   TOKEN_STORAGE_KEY: "emet_dashboard_token"
   VITE_APP_ENV: "production"
   VITE_COOKIE_SECURE: "true"
