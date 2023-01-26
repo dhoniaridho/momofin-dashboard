@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon'
 import {
   Chart as ChartJS,
   Title,
@@ -14,7 +13,7 @@ import {
 } from 'chart.js'
 import { useQuery } from '@tanstack/vue-query'
 import {
-  getChartLineData,
+  // getChartLineData,
   getDashboardData,
 } from '@features/dashboard/dashboard.repository'
 import { toIdr } from '~/helpers'
@@ -50,29 +49,31 @@ export function useDashboardFeature() {
     )
   }
 
-  function useChartLine() {
-    return useQuery(['line', filter], () => {
-      return getChartLineData({
-        period: [
-          DateTime.now().minus({ month: 1 }).toMillis(),
-          DateTime.now().set({ hour: 23, minute: 59 }).toMillis(),
-        ].join(','),
-      })
-    })
-  }
+  // function useChartLine() {
+  //   return useQuery(['line', filter], () => {
+  //     return getChartLineData({
+  //       period: [
+  //         DateTime.now().minus({ month: 1 }).toMillis(),
+  //         DateTime.now().set({ hour: 23, minute: 59 }).toMillis(),
+  //       ].join(','),
+  //     })
+  //   })
+  // }
 
   const { data: dashboard, dataUpdatedAt } = useDashboard()
-  const { data: chartLine } = useChartLine()
+  // const { data: chartLine } = useChartLine()
 
   const chartDataLines = computed(() => {
     return {
-      labels: chartLine.value?.documentUploaded.map((line) => line.date),
+      labels: dashboard.value?.chartLine?.documentUploaded.map(
+        (line) => line.date
+      ),
       datasets: [
         {
           label: 'Registrasi',
           borderColor: '#0067D6',
           backgroundColor: '#0067D6',
-          data: chartLine.value?.registration.map(
+          data: dashboard.value?.chartLine?.registration.map(
             (registration) => registration.total
           ),
         },
@@ -80,7 +81,7 @@ export function useDashboardFeature() {
           label: 'Verifikasi',
           borderColor: '#008060',
           backgroundColor: '#008060',
-          data: chartLine.value?.verification.map(
+          data: dashboard.value?.chartLine?.verification.map(
             (verification) => verification.total
           ),
         },
@@ -88,7 +89,7 @@ export function useDashboardFeature() {
           label: 'Transaction',
           borderColor: '#D03E34',
           backgroundColor: '#D03E34',
-          data: chartLine.value?.transactions.map(
+          data: dashboard.value?.chartLine?.transactions.map(
             (transaction) => transaction.total
           ),
         },
@@ -96,13 +97,18 @@ export function useDashboardFeature() {
           label: 'Meterai Used',
           borderColor: '#51B2C9',
           backgroundColor: '#51B2C9',
-          data: chartLine.value?.emetUsages.map((emet) => emet.total),
+          data: dashboard.value?.chartLine?.emetUsages.map(
+            (emet) => emet.total
+          ),
         },
         {
           label: 'Documents Uploaded',
           borderColor: '#E4762F',
           backgroundColor: '#E4762F',
-          data: chartLine.value?.documentUploaded.map((doc) => doc.total) ?? [],
+          data:
+            dashboard.value?.chartLine?.documentUploaded.map(
+              (doc) => doc.total
+            ) ?? [],
         },
       ],
     }
