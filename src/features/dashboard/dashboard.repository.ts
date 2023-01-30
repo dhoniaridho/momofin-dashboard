@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon'
 import { http } from '~/modules/http'
 import type {
   ChartLineResponse,
@@ -9,6 +10,9 @@ export const getDashboardData = async (filter: any) => {
   } = await http.get<DashboardResponse.RootObject>('dashboard', {
     params: {
       ...filter,
+      period:
+        filter.period ||
+        [0, DateTime.now().plus({ day: 1 }).toMillis()].join(','),
     },
   })
   return response
