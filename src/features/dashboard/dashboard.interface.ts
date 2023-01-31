@@ -99,27 +99,14 @@ export declare module ChartLineResponse {
     total: number
   }
 
-  export interface Transaction {
-    date: string
-    total: number
-  }
-
-  export interface DocumentUploaded {
-    date: string
-    total: number
-  }
-
-  export interface EmetUsage {
-    date: string
-    total: number
-  }
-
   export interface Data {
+    emet: number[]
+    documentUploaded: number[]
+    documentCompleted: number[]
+    transactions: number[]
+    days: string[]
     registration: Registration[]
     verification: Verification[]
-    transactions: Transaction[]
-    documentUploaded: DocumentUploaded[]
-    emetUsages: EmetUsage[]
   }
 
   export interface RootObject {

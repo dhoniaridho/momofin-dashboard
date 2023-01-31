@@ -66,9 +66,11 @@ export function useDashboardFeature() {
 
   const chartDataLines = computed(() => {
     return {
-      labels: dashboard.value?.chartLine?.documentUploaded.map(
-        (line) => line.date
-      ),
+      labels: chartLine.value?.days.map((item) => {
+        return DateTime.fromISO(item).toLocaleString(DateTime.DATE_MED, {
+          locale: 'id',
+        })
+      }),
       datasets: [
         {
           label: 'Registrasi',
@@ -90,21 +92,19 @@ export function useDashboardFeature() {
           label: 'Transaction',
           borderColor: '#D03E34',
           backgroundColor: '#D03E34',
-          data: chartLine.value?.transactions.map(
-            (transaction) => transaction.total
-          ),
+          data: chartLine.value?.transactions,
         },
         {
           label: 'Meterai Used',
           borderColor: '#51B2C9',
           backgroundColor: '#51B2C9',
-          data: chartLine.value?.emetUsages.map((emet) => emet.total),
+          data: chartLine.value?.emet,
         },
         {
           label: 'Documents Uploaded',
           borderColor: '#E4762F',
           backgroundColor: '#E4762F',
-          data: chartLine.value?.documentUploaded.map((doc) => doc.total) ?? [],
+          data: chartLine.value?.documentUploaded,
         },
       ],
     }
