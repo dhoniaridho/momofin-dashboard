@@ -61,7 +61,7 @@ export function useDashboardFeature() {
     })
   }
 
-  const { data: dashboard, dataUpdatedAt } = useDashboard()
+  const { data: dashboard, dataUpdatedAt, isLoading } = useDashboard()
   const { data: chartLine } = useChartLine()
 
   const chartDataLines = computed(() => {
@@ -248,5 +248,6 @@ export function useDashboardFeature() {
     chartDataLines,
     dataUpdatedAt,
     filter,
+    isLoading,
   }
 }
