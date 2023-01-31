@@ -9,6 +9,12 @@ export const getDashboardData = async (filter: any) => {
   } = await http.get<DashboardResponse.RootObject>('dashboard', {
     params: {
       ...filter,
+      period: filter.period
+        ? [
+            +filter.period.split(',')[0] / 1000,
+            +filter.period.split(',')[1] / 1000,
+          ].join(',')
+        : '',
     },
   })
   return response
