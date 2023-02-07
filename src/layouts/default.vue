@@ -9,8 +9,11 @@
   } from '~/constants/menus'
   import Icons from '../components/Icons.vue'
   import useAuthStore from '@features/auth/auth.store'
+  import { AuthRepository } from '~/features/auth/auth.repository'
 
   const auth = useAuthStore()
+
+  AuthRepository.refreshToken()
 
   auth.getAuthenticatedUser()
 

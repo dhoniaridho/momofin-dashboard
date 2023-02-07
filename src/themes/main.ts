@@ -7,6 +7,7 @@ export const lightThemeOvverides: GlobalThemeOverrides = {
     primaryColorHover: '#0067D6',
     primaryColorPressed: '#0067D6',
     primaryColorSuppl: '#0067D6',
+    borderRadius: '8px',
   },
 }
 
@@ -17,5 +18,6 @@ export const darkThemeOvverides: GlobalThemeOverrides = {
     primaryColorHover: '#0067D6',
     primaryColorPressed: '#0067D6',
     primaryColorSuppl: '#0067D6',
+    borderRadius: '8px',
   },
 }

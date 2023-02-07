@@ -4,7 +4,7 @@ meta:
 </route>
 
 <script setup lang="ts">
-  import { useMutation }from '@tanstack/vue-query'
+  import { useMutation } from '@tanstack/vue-query'
   import { AuthRepository } from '@features/auth/auth.repository'
   import type { ILoginPayload } from '@features/auth/auth.interface'
   import { LoginPayloadSchema } from '@features/auth/auth.schema'

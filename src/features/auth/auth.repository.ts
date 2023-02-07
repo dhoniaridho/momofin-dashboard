@@ -1,5 +1,6 @@
 import type { ILoginPayload, LoginResponse } from './auth.interface'
 import { http } from '~/modules/http'
+import { AuthService } from './auth.service'
 
 export class AuthRepository {
   static async login(payload: ILoginPayload) {
@@ -20,5 +21,15 @@ export class AuthRepository {
     })
     if (!response.success) return Promise.reject(response)
     return Promise.resolve(response)
+  }
+  static async refreshToken() {
+    const {
+      data: {
+        data: { token },
+      },
+    } = await http.get('/refresh')
+    console.log(token)
+    AuthService.signIn(token, true)
+    return Promise.resolve(token)
   }
 }
