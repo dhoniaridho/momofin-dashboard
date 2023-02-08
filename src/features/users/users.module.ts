@@ -29,7 +29,15 @@ export function useUsersFeature() {
 
   const queryClient = useQueryClient()
 
-  const filter = ref({
+  type Filter = {
+    search: string
+    page: number
+    period: string
+    status: string
+    limit: number
+  }
+
+  const filter = ref<Partial<Filter>>({
     search: '',
     page: 1,
     period: '',
@@ -125,6 +133,9 @@ export function useUsersFeature() {
   const { mutate: execVerify, isLoading: isVerifiying } = useVerifyUser()
   const { mutate: execResend, isLoading: isResending } = useResendEmail()
   const { mutate: execDelete, isLoading: isDeleting } = useDeleteUser()
+  const { mutate: exportData, isLoading: isExporting } = useMutation(
+    (val: Partial<Filter>) => exportUsersToFile(val)
+  )
 
   const createColumns = (): DataTableColumns<UsersResponse.User> => {
     return [
@@ -278,7 +289,7 @@ export function useUsersFeature() {
   }
 
   const onExportData = () => {
-    exportUsersToFile(filter.value)
+    exportData(filter.value)
   }
 
   watch(
@@ -320,5 +331,6 @@ export function useUsersFeature() {
     isShowVerificationModal,
     isShowDeleteModal,
     onExportData,
+    isExporting,
   }
 }

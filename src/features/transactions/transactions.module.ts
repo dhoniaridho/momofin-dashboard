@@ -107,8 +107,12 @@ export function useTransactionFeature() {
     )
   }
 
-  const { mutate } = useExportEcontractTransaction()
-  const { mutate: exportMicrositeTransaction } = useExportMicrositeTransaction()
+  const { mutate, isLoading: isExportingEcontract } =
+    useExportEcontractTransaction()
+  const {
+    mutate: exportMicrositeTransaction,
+    isLoading: isExportingMicrosite,
+  } = useExportMicrositeTransaction()
 
   const { data: transactions, isLoading: isTransactionsLoading } =
     useTransactions()
@@ -297,5 +301,7 @@ export function useTransactionFeature() {
     ),
     onExportData,
     isMicrositeTransactionsLoading,
+    isExportingMicrosite,
+    isExportingEcontract,
   }
 }

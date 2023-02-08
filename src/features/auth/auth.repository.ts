@@ -28,7 +28,6 @@ export class AuthRepository {
         data: { token },
       },
     } = await http.get('/refresh')
-    console.log(token)
     AuthService.signIn(token, true)
     return Promise.resolve(token)
   }

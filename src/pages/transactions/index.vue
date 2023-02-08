@@ -20,6 +20,8 @@
     onExportData,
     transactionsMicrosite,
     isMicrositeTransactionsLoading,
+    isExportingEcontract,
+    isExportingMicrosite,
   } = useTransactionFeature()
 
   const activeTab = ref<'MICROSITE' | 'EMET'>('EMET')
@@ -38,7 +40,12 @@
       <n-tab-pane name="EMET" tab="EMET">
         <n-space justify="end" style="margin: 2rem 0" :wrap-item="false">
           <div class="filter__search">
-            <n-button @click="onExportData('EMET')"> Export </n-button>
+            <n-button
+              :loading="isExportingEcontract"
+              @click="onExportData('EMET')"
+            >
+              Export
+            </n-button>
           </div>
           <div class="filter__search">
             <n-input
@@ -86,7 +93,12 @@
       <n-tab-pane name="MICROSITE" tab="Microsite">
         <n-space justify="end" style="margin: 2rem 0" :wrap-item="false">
           <div class="filter__search">
-            <n-button @click="onExportData('MICROSITE')"> Export </n-button>
+            <n-button
+              :loading="isExportingMicrosite"
+              @click="onExportData('MICROSITE')"
+            >
+              Export
+            </n-button>
           </div>
           <div class="filter__search">
             <n-input

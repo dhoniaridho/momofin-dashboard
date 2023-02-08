@@ -73,6 +73,7 @@ export const exportUsersToFile = async (params: any) => {
     data: { data: response },
   } = await http.get('users/export', {
     params,
+    timeout: 400000000,
   })
   exportUsers(response)
 }

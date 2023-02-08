@@ -30,6 +30,7 @@ export const exportTransactions = async (filter: any) => {
           params: {
             ...filter,
           },
+          timeout: 1000000000000,
         })
         resolve(data.data)
       } catch (error: any) {
@@ -47,6 +48,7 @@ export const exportMicrositeTransactions = async (filter: any) => {
           params: {
             ...filter,
           },
+          timeout: 1000000000000,
         })
         resolve(data.data)
       } catch (error: any) {

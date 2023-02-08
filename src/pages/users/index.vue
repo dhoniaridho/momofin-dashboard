@@ -24,6 +24,7 @@
     isShowVerificationModal,
     isShowDeleteModal,
     onExportData,
+    isExporting,
   } = useUsersFeature()
 
   useHead({
@@ -52,7 +53,12 @@
           </n-input>
         </div>
         <div class="filter__search">
-          <n-button type="primary" block @click="onExportData">
+          <n-button
+            :loading="isExporting"
+            type="primary"
+            block
+            @click="onExportData"
+          >
             Export Data
           </n-button>
           <m-datatable-filter v-model="filter.period" />
