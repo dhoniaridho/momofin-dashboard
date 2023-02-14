@@ -43,7 +43,6 @@
     <n-space vertical>
       <n-h4> Token Dipakai </n-h4>
       <div v-for="user in $props?.signers" :key="user.email">
-        {{ user }}
         <n-space>
           <n-space v-if="user.signature_type == 'momofin'">
             <n-icon size="25">
