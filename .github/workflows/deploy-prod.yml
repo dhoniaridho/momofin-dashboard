@@ -1,4 +1,4 @@
-name: build and deploy PRODUCTION
+name: Production Build and Deploy
 on:
   push:
     branches:
@@ -167,8 +167,8 @@ jobs:
           echo ${{ env.GITHUB_REPO }} >> intro.txt
           echo ${{ env.TELEGRAM_CHAT_ID }} > chat_id
           echo ${{ env.TELEGRAM_BOT_ID }} > bot_id
-          echo "Build%20PRODUCTION message
-          echo "Log: ${{ env.github_actions_url }}" >> log.txt
+          echo "Build%20PRODUCTION" > message
+          echo "Log: ${{ env.GITHUB_ACTIONS_URL }}" >> log.txt
           chmod +x deployment/config/success.sh
           ./deployment/config/failed.sh
   build-success:
@@ -186,8 +186,8 @@ jobs:
           echo ${{ env.GITHUB_REPO }} >> intro.txt
           echo ${{ env.TELEGRAM_CHAT_ID }} > chat_id
           echo ${{ env.TELEGRAM_BOT_ID }} > bot_id
-          echo "Build%20PRODUCTION message
-          echo "Log: ${{ env.github_actions_url }}" >> log.txt
+          echo "Build%20PRODUCTION" > message
+          echo "Log: ${{ env.GITHUB_ACTIONS_URL }}" >> log.txt
           chmod +x deployment/config/success.sh
           ./deployment/config/success.sh
 
@@ -206,8 +206,8 @@ jobs:
           echo ${{ env.GITHUB_REPO }} >> intro.txt
           echo ${{ env.TELEGRAM_CHAT_ID }} > chat_id
           echo ${{ env.TELEGRAM_BOT_ID }} > bot_id
-          echo "Deploy%20PRODUCTION message
-          echo "Log: ${{ env.github_actions_url }}" >> log.txt
+          echo "Deploy%20PRODUCTION" > message
+          echo "Log: ${{ env.GITHUB_ACTIONS_URL }}" >> log.txt
           chmod +x deployment/config/success.sh
           ./deployment/config/failed.sh
   deploy-success:
@@ -225,7 +225,7 @@ jobs:
           echo ${{ env.GITHUB_REPO }} >> intro.txt
           echo ${{ env.TELEGRAM_CHAT_ID }} > chat_id
           echo ${{ env.TELEGRAM_BOT_ID }} > bot_id
-          echo "Deploy%20PRODUCTION message
-          echo "Log: ${{ env.github_actions_url }}" >> log.txt
+          echo "Deploy%20PRODUCTION" > message
+          echo "Log: ${{ env.GITHUB_ACTIONS_URL }}" >> log.txt
           chmod +x deployment/config/success.sh
           ./deployment/config/success.sh
