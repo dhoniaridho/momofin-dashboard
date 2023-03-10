@@ -1,8 +1,8 @@
-name: Development Build and Deploy 
+name: Production Build and Deploy
 on:
   push:
     branches:
-      - dev
+      - none
   workflow_dispatch:
 
 env:
@@ -15,10 +15,10 @@ env:
   GITHUB_URL: ${{ github.server_url }}/${{ github.repository }}/actions/
   GITHUB_ACTIONS_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
   IMAGE_NAME_RAW: "ghcr.io/${{ github.repository }}:${{ github.sha }}"
-  KUBE_HOST: "${{ secrets.DEV_KUBE_HOST }}"
-  KUBE_SECRET: "${{ secrets.DEV_KUBE_SECRET }}"
+  KUBE_HOST: "${{ secrets.PROD_KUBE_HOST }}"
+  KUBE_SECRET: "${{ secrets.PROD_KUBE_SECRET }}"
   APP_NAME: ${{ github.event.repository.name }}
-  NAMESPACE: "momofin-dev"
+  NAMESPACE: "momofin-prod"
   PORT: "80"
   PROTOCOL: "TCP"
   CPU_LIMIT: "250m"
@@ -27,11 +27,11 @@ env:
   MEMORY_REQUEST: "128Mi"
   MIN_REPLICAS: "1"
   MAX_REPLICAS: "2"
-  DOMAIN_NAME: "superadmin.dev.emet.momofin.com"
-  SECRET_NAME: "superadmin-dev-emet-momofin-com-tls"
-  VITE_API_BASE_URL: "https://api-dev.momofin.com/emet-dashboard"
+  DOMAIN_NAME: "superadmin.emet.momofin.com"
+  SECRET_NAME: "superadmin-emet-momofin-com-tls"
+  VITE_API_BASE_URL: "https://api-v1.momofin.com/emet-dashboard"
   TOKEN_STORAGE_KEY: "emet_dashboard_token"
-  VITE_APP_ENV: "development"
+  VITE_APP_ENV: "production"
   VITE_COOKIE_SECURE: "true"
   VITE_COOKIE_STORAGE_KEY: "emet_dashboard_token"
   
@@ -167,7 +167,7 @@ jobs:
           echo ${{ env.GITHUB_REPO }} >> intro.txt
           echo ${{ env.TELEGRAM_CHAT_ID }} > chat_id
           echo ${{ env.TELEGRAM_BOT_ID }} > bot_id
-          echo "Build%20DEVELOPMENT" > message
+          echo "Build%20PRODUCTION" > message
           echo "Log: ${{ env.GITHUB_ACTIONS_URL }}" >> log.txt
           chmod +x deployment/config/success.sh
           ./deployment/config/failed.sh
@@ -186,7 +186,7 @@ jobs:
           echo ${{ env.GITHUB_REPO }} >> intro.txt
           echo ${{ env.TELEGRAM_CHAT_ID }} > chat_id
           echo ${{ env.TELEGRAM_BOT_ID }} > bot_id
-          echo "Build%20DEVELOPMENT" > message
+          echo "Build%20PRODUCTION" > message
           echo "Log: ${{ env.GITHUB_ACTIONS_URL }}" >> log.txt
           chmod +x deployment/config/success.sh
           ./deployment/config/success.sh
@@ -206,7 +206,7 @@ jobs:
           echo ${{ env.GITHUB_REPO }} >> intro.txt
           echo ${{ env.TELEGRAM_CHAT_ID }} > chat_id
           echo ${{ env.TELEGRAM_BOT_ID }} > bot_id
-          echo "Deploy%20DEVELOPMENT" > message
+          echo "Deploy%20PRODUCTION" > message
           echo "Log: ${{ env.GITHUB_ACTIONS_URL }}" >> log.txt
           chmod +x deployment/config/success.sh
           ./deployment/config/failed.sh
@@ -225,7 +225,7 @@ jobs:
           echo ${{ env.GITHUB_REPO }} >> intro.txt
           echo ${{ env.TELEGRAM_CHAT_ID }} > chat_id
           echo ${{ env.TELEGRAM_BOT_ID }} > bot_id
-          echo "Deploy%20DEVELOPMENT" > message
+          echo "Deploy%20PRODUCTION" > message
           echo "Log: ${{ env.GITHUB_ACTIONS_URL }}" >> log.txt
           chmod +x deployment/config/success.sh
           ./deployment/config/success.sh
