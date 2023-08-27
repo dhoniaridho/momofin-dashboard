@@ -3,8 +3,20 @@
   import { darkTheme, dateIdID, idID } from 'naive-ui'
   import { useTheme } from './store/theme'
   import { UseOnline } from '@vueuse/components'
+  import useAuthStore from './features/auth/auth.store'
 
   const theme = useTheme()
+  const auth = useAuthStore()
+  const route = useRoute()
+
+  watch(
+    computed(() => auth.user),
+    (user) => {
+      if (!user?.role) return
+      console.log(user)
+      route.meta.layout = user.role
+    },
+  )
 </script>
 
 <template>

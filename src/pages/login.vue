@@ -14,6 +14,7 @@ meta:
   import useAuthStore from '@features/auth/auth.store'
   import { appConfig } from '~/config/app.config'
   import { useTheme } from '~/store/theme'
+  import { ability } from '~/modules/casl'
 
   const { error, success } = useMessage()
   const auth = useAuthStore()
@@ -41,13 +42,14 @@ meta:
           success('Login berhasil, anda akan di arahkan ke halaman dashboard')
           AuthService.signIn(response.token, formData.remember)
           router.push('/')
-          auth.user = response.account
+          ability.can('emet', 'emet')
+          auth.user = response.account as any
         },
         onError: (response: any) => {
           error(response?.message)
           formData.password = ''
         },
-      }
+      },
     )
   }
 

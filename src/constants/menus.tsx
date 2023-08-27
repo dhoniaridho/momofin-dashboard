@@ -24,6 +24,21 @@ export const mainMenuOptions: MenuOption[] = [
         </NIcon>
       )
     },
+    permission: ['emet'],
+  },
+  {
+    label: () => {
+      return <RouterLink to="/">Dashboard</RouterLink>
+    },
+    key: 'dashboard',
+    icon: () => {
+      return (
+        <NIcon>
+          <Icons name="dashboard" />
+        </NIcon>
+      )
+    },
+    permission: ['momofingo'],
   },
   {
     label: () => {
@@ -37,6 +52,7 @@ export const mainMenuOptions: MenuOption[] = [
         </NIcon>
       )
     },
+    permission: ['emet'],
   },
   {
     label: () => {
@@ -50,6 +66,7 @@ export const mainMenuOptions: MenuOption[] = [
         </NIcon>
       )
     },
+    permission: ['emet'],
   },
   {
     label: () => {
@@ -63,6 +80,7 @@ export const mainMenuOptions: MenuOption[] = [
         </NIcon>
       )
     },
+    permission: ['emet'],
   },
   // {
   //   label: () => {
@@ -87,7 +105,7 @@ export const altMenuOptions: MenuOption[] = [
     icon: () => {
       return (
         <NIcon>
-          <Icons name="logout" rotate="180deg" />
+          <Icons name="logout" />
         </NIcon>
       )
     },

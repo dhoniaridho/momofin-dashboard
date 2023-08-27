@@ -23,6 +23,7 @@ export declare module LoginResponse {
     business_id: string
     company_role: string
     id: string
+    role: string
   }
 
   export interface Data {
@@ -46,15 +47,15 @@ export declare module ProfileResponse {
   }
 
   export interface User {
-    id?: string
-    _id?: string
-    roles?: Roles
-    fullname?: string
-    email?: string
-    profile?: Cridential
-    email_verification?: boolean
-    avatar?: string
-    name?: string
+    role: string
+    _id: string
+    firstName: string
+    lastName: string
+    email: string
+    fullName: string
+    createdAt: string
+    updatedAt: string
+    __v: number
   }
 
   interface Roles {

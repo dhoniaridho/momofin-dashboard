@@ -22,6 +22,13 @@
   const collapsed = computed(() => {
     return clientWidth.value < 1024
   })
+  const allowedMenu = computed(() => {
+    return mainMenuOptions.filter((item) => {
+      const permissions = item.permission as string[]
+      return permissions.includes(auth.user?.role as string)
+    })
+  })
+
   onMounted(async () => {
     document.body.onresize = () => {
       clientWidth.value = document.body.clientWidth
@@ -62,7 +69,7 @@
               v-model:value="activeKey"
               :root-indent="20"
               :indent="12"
-              :options="mainMenuOptions"
+              :options="allowedMenu"
             />
           </n-scrollbar>
         </n-space>

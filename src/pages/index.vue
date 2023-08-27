@@ -44,10 +44,7 @@
 
     <n-grid cols="1 400:1 600:2" :x-gap="40" :y-gap="30">
       <n-grid-item>
-        <Line
-          :chart-data="(chartDataLines as any)"
-          :chart-options="chartOptionsLine"
-        />
+        <Line :data="chartDataLines as any" :options="chartOptionsLine" />
       </n-grid-item>
       <n-grid-item class="filter__search_sm">
         <div>
@@ -56,10 +53,7 @@
       </n-grid-item>
       <n-grid-item>
         <n-spin :show="isLoading">
-          <Doughnut
-            :chart-data="(chartData as any)"
-            :chart-options="chartOptions"
-          />
+          <Doughnut :data="chartData as any" :options="chartOptions" />
         </n-spin>
       </n-grid-item>
     </n-grid>

@@ -3,12 +3,22 @@ import { defineStore } from 'pinia'
 import type { ProfileResponse } from './auth.interface'
 
 interface IState {
-  user: any
+  user?: {
+    role: string
+    _id: string
+    firstName: string
+    lastName: string
+    email: string
+    fullName: string
+    createdAt: string
+    updatedAt: string
+    __v: number
+  }
 }
 
 const useAuthStore = defineStore('useAuthStore', {
   state: (): IState => ({
-    user: {},
+    user: undefined,
   }),
   actions: {
     async getAuthenticatedUser() {
