@@ -355,7 +355,6 @@ declare module 'vue' {
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly head: UnwrapRef<typeof import('./modules/head')['default']>
     readonly http: UnwrapRef<typeof import('./modules/http')['default']>
-    readonly i18n: UnwrapRef<typeof import('./modules/i18n')['default']>
     readonly iconify: UnwrapRef<typeof import('./modules/iconify')['default']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
@@ -656,7 +655,6 @@ declare module '@vue/runtime-core' {
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly head: UnwrapRef<typeof import('./modules/head')['default']>
     readonly http: UnwrapRef<typeof import('./modules/http')['default']>
-    readonly i18n: UnwrapRef<typeof import('./modules/i18n')['default']>
     readonly iconify: UnwrapRef<typeof import('./modules/iconify')['default']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
